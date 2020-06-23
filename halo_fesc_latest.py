@@ -32,17 +32,20 @@ def compute_fesc(out_nb,ldx,path,sim_name):
         #star_path='/data2/jlewis/dusts/'
         #info_path='/data2/jlewis/dusts/output_00'+out_nb
 
+        assoc_path='/gpfswork/rech/xpu/uoj51ok/assoc_outs/'
+        analy_path='/gpfswork/rech/xpu/uoj51ok/analysis_outs'
+        
         info_path=os.path.join(path,'output_00'+out_nb)
-        data_pth_fullres=path.replace('/gpfswork/rech/xpu/uws19zc/home/sims/CoDaIII/sims/8Mpc/1024/','/gpfswork/rech/xpu/uoj51ok/pierre_sim_outs/')
+        data_pth_fullres=path
         phew_path=os.path.join(path,'output_00'+out_nb)
-        data_pth_assoc=os.path.join('/gpfswork/rech/xpu/uoj51ok/assoc_outs/',sim_name,'assoc'+out_nb)
+        data_pth_assoc=os.path.join(assoc_path,sim_name,'assoc'+out_nb)
 
         plt.rcParams.update({'font.size': 18})   
 
 
 
 
-        out = os.path.join('/gpfswork/rech/xpu/uoj51ok/analysis_outs/',sim_name)
+        out = os.path.join(analy_path,sim_name)
 
         #Get scale factor and co
         '''Get scale factor and co'''
@@ -51,7 +54,7 @@ def compute_fesc(out_nb,ldx,path,sim_name):
                                                                                            ldx)
         tstep=0 #temp need this >0!
 
-        with open(os.path.join('/gpfswork/rech/xpu/uoj51ok/analysis_outs/',sim_name,'Mp_%s' %out_nb), 'rb') as mass_file :
+        with open(os.path.join(out,'Mp'), 'rb') as mass_file :
             Mp = np.fromfile(mass_file,dtype=np.float64)
         print(Mp)
 

@@ -36,8 +36,12 @@ def assoc_stars_to_haloes(out_nb,ldx,path,sim_name):
         #star_path='/data2/jlewis/dusts/'
         #info_path='/data2/jlewis/dusts/output_00'+out_nb
 
+        assoc_path='/gpfswork/rech/xpu/uoj51ok/assoc_outs'
+        analy_path='/gpfswork/rech/xpu/uoj51ok/analysis_outs'
+
+        
         info_path=os.path.join(path,'output_00'+out_nb)
-        star_path=path.replace('/gpfswork/rech/xpu/uws19zc/home/sims/CoDaIII/sims/8Mpc/1024/','/gpfswork/rech/xpu/uoj51ok/pierre_sim_outs/')
+        star_path=path
         phew_path=os.path.join(path,'output_00'+out_nb)
 
 
@@ -55,23 +59,23 @@ def assoc_stars_to_haloes(out_nb,ldx,path,sim_name):
         tstep=0.0 #temporary
 
 
-        out = os.path.join('/gpfswork/rech/xpu/uoj51ok/analysis_outs/',sim_name)
-        assoc_out=os.path.join('/gpfswork/rech/xpu/uoj51ok/assoc_outs/',sim_name,'assoc_halos_%s' %out_nb)
+        out = os.path.join(analy_path,sim_name)
+        assoc_out=os.path.join(assoc_path,sim_name,'assoc_halos_%s' %out_nb)
 
 
 
         #if no out folder, make it
-        if sim_name not in os.listdir('/gpfswork/rech/xpu/uoj51ok/assoc_outs/'):
+        if sim_name not in os.listdir(assoc_path):
             os.makedirs(assoc_out)
 
         #if no out folder, make it
-        if 'assoc_halos_%s'%out_nb not in os.listdir('/gpfswork/rech/xpu/uoj51ok/assoc_outs/%s'%sim_name):
+        if 'assoc_halos_%s'%out_nb not in os.listdir(os.path.join(assoc_path,sim_name)):
             os.mkdir(assoc_out)
 
 
 
         #if no out folder, make it
-        if sim_name not in os.listdir('/gpfswork/rech/xpu/uoj51ok/analysis_outs/'):
+        if sim_name not in os.listdir(analy_path):
             os.mkdir(out)
 
 
@@ -79,9 +83,10 @@ def assoc_stars_to_haloes(out_nb,ldx,path,sim_name):
 
         Mp=3.*(H0*1e3/(pc*1e6))**2.*(om_m-om_b)*(Lco*pc*1e6)**3./Np_tot/8./np.pi/G/Msol #En Msol 4.04*1e5
         print("Partcle mass is :",Mp)
-        out_Mp = open(os.path.join('/gpfswork/rech/xpu/uoj51ok/analysis_outs/',sim_name,'Mp_%s' %out_nb),'wb')
-        out_Mp.write(np.float64(Mp))
-        out_Mp.close()
+        if not  'Mp' in  os.listdir(out):
+                out_Mp = open(os.path.join(out,'Mp'),'wb')
+                out_Mp.write(np.float64(Mp))
+                out_Mp.close()
 
 
 
@@ -284,7 +289,7 @@ def assoc_stars_to_haloes(out_nb,ldx,path,sim_name):
 
         print(len(not_lone_star_ids),len(lone_star_ids))
 
-        out= open(os.path.join('/gpfswork/rech/xpu/uoj51ok/assoc_outs/',sim_name,'assoc_dust_%s_star_nb' %out_nb),'wb')
+        out= open(os.path.join(assoc_path,sim_name,'assoc_dust_%s_star_nb' %out_nb),'wb')
         out.write(np.int64(tot_nb_stars))
         out.close()
 
