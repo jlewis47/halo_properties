@@ -303,12 +303,12 @@ def compute_fesc(out_nb,ldx,path,sim_name):
                     cur_star_emissivity=get_star_xis_metals(cur_stars[:,-2],cur_stars[:,-1],xis,age_bins,metal_bins)*cur_stars[:,0] #ph/s
 
 
-                    low_conts=get_star_xis_metals(cur_stars[:,-2],cur_stars[:,-1],contbetalow,age_bins,metal_bins)*cur_stars[:,0]
-                    high_conts=get_star_xis_metals(cur_stars[:,-2],cur_stars[:,-1],contbetahigh,age_bins,metal_bins)*cur_stars[:,0]
+                    low_conts=get_star_xis_metals(cur_stars[:,-2],cur_stars[:,-1],contbetalow,age_bins,metal_bins)
+                    high_conts=get_star_xis_metals(cur_stars[:,-2],cur_stars[:,-1],contbetahigh,age_bins,metal_bins)
 
                     delta_lamb=np.log10(2621/1492)
 
-                    halo_betas[ind]=np.log10(np.sum(high_conts)/np.sum(low_conts))/delta_lamb
+                    halo_betas[ind]=np.log10(np.sum(high_conts*cur_stars[:,0])/np.sum(low_conts*cur_stars[:,0]))/delta_lamb
 
                     halo_emissivity[ind]=np.sum(cur_star_emissivity) #ph/s
 
@@ -425,7 +425,8 @@ def compute_fesc(out_nb,ldx,path,sim_name):
 
 
 
-                    halo_betas_with_dust[ind]=-2.5*np.log10(np.sum(high_conts*cur_stars[:,0]*np.exp(-star_taus/dust_1500_opacity*dust_2621_opacity))/np.sum(low_conts*cur_stars[:,0]*np.exp(-star_taus/dust_1500_opacity*dust_1492_opacity)))/delta_lamb
+
+                    halo_betas_with_dust[ind]=np.log10(np.sum(high_conts*cur_stars[:,0]*np.exp(-star_taus/dust_1500_opacity*dust_2621_opacity))/np.sum(low_conts*cur_stars[:,0]*np.exp(-star_taus/dust_1500_opacity*dust_1492_opacity)))/delta_lamb
 
 
 
