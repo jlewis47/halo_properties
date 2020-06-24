@@ -1,0 +1,4 @@
++ srun python run.py
+srun: Job step aborted: Waiting up to 62 seconds for job step to finish.
+slurmstepd: error: *** STEP 2070480.0 ON r6i5n5 CANCELLED AT 2020-06-24T10:24:16 ***
+slurmstepd: error: *** JOB 2070480 ON r6i5n5 CANCELLED AT 2020-06-24T10:24:16 ***

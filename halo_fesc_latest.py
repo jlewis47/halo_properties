@@ -420,11 +420,12 @@ def compute_fesc(out_nb,ldx,path,sim_name):
                         dust_trans[cond]=np.exp(-non_zero_taus)
 
                         star_trans=dust_trans[star_sm_pos[:,0],star_sm_pos[:,1],star_sm_pos[:,2]]
+                        star_taus=dust_taus[star_sm_pos[:,0],star_sm_pos[:,1],star_sm_pos[:,2]]
                     
                     halo_mags_ext[ind]=-2.5*np.log10(np.nansum(halo_fluxes*star_trans))
 
 
-                    halo_betas_with_dust[ind]=np.log10(np.sum(high_conts*cur_stars[:,0]*star_trans/dust_1500_opacity*dust_2621_opacity)/np.sum(low_conts*cur_stars[:,0]*star_trans/dust_1500_opacity*dust_1492_opacity))/delta_lamb
+                    halo_betas_with_dust[ind]=np.log10(np.sum(high_conts*cur_stars[:,0]*np.exp(-star_taus/dust_1500_opacity*dust_2621_opacity))/np.sum(low_conts*cur_stars[:,0]*np.exp(-star_taus/dust_1500_opacity*dust_1492_opacity)))/delta_lamb
 
 
 
