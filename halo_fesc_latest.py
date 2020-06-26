@@ -21,19 +21,13 @@ from functions_latest import *
 import healpy as hp
 from dust_opacity import *
 #from wrap_boxes import *
-
+from output_paths import *
 
 
 
 def compute_fesc(out_nb,ldx,path,sim_name):
 
 
-        #phew_path='/data2/jlewis/dusts/output_00'+out_nb
-        #star_path='/data2/jlewis/dusts/'
-        #info_path='/data2/jlewis/dusts/output_00'+out_nb
-
-        assoc_path='/gpfswork/rech/xpu/uoj51ok/assoc_outs/'
-        analy_path='/gpfswork/rech/xpu/uoj51ok/analysis_outs'
         
         info_path=os.path.join(path,'output_00'+out_nb)
         data_pth_fullres=path

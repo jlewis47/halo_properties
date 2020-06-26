@@ -1,5 +1,6 @@
 from star_halo_latest import assoc_stars_to_haloes
 from halo_fesc_latest import compute_fesc
+from halo_dust_latest import compute_dust
 import numpy as np
 
 
@@ -15,4 +16,6 @@ for out_nb in np.arange(10,23,1):
     #assoc_stars_to_haloes('%03i'%out_nb,ldx,path,sim_name) 
 
     
-    compute_fesc('%03i'%out_nb,ldx,path,sim_name) 
+    #compute_fesc('%03i'%out_nb,ldx,path,sim_name)
+
+    compute_dust('%03i'%out_nb,ldx,path,sim_name) 

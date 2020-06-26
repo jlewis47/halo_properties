@@ -26,7 +26,7 @@ import string
 import argparse
 import os
 from functions_latest import *
-
+from output_paths import *
 
 
 
@@ -35,9 +35,6 @@ def assoc_stars_to_haloes(out_nb,ldx,path,sim_name):
         #phew_path='/data2/jlewis/dusts/output_00'+out_nb
         #star_path='/data2/jlewis/dusts/'
         #info_path='/data2/jlewis/dusts/output_00'+out_nb
-
-        assoc_path='/gpfswork/rech/xpu/uoj51ok/assoc_outs'
-        analy_path='/gpfswork/rech/xpu/uoj51ok/analysis_outs'
 
         
         info_path=os.path.join(path,'output_00'+out_nb)
