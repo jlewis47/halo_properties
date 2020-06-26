@@ -9,8 +9,6 @@ def read_assoc(out_nb,sim_name):
     '''
     Get right binary files, format correctly and return
     '''
-
-    #assoc_out=os.path.join('/gpfswork/rech/xpu/uoj51ok/assoc_outs/',sim_name,'assoc_halos_%s' %out_nb)
     
 
     """
@@ -38,8 +36,6 @@ def read_assoc(out_nb,sim_name):
     
     fofs = np.reshape(fof_tmp,(int(len(fof_tmp)/5),5))
     stars =np.reshape(star_tmp,(int(len(star_tmp)/6),6))
-
-    #print(len(tmp_lone_stars),float(len(tmp_lone_stars))/6)
     
     lone_stars =np.reshape(tmp_lone_stars,(int(len(tmp_lone_stars)/6),6))
     

@@ -1,0 +1,113 @@
++ srun python run.py
+/gpfs7kw/linkhome/rech/genoba01/uoj51ok/codes/get_halo_pties/halo_properties/functions_latest.py:1065: RuntimeWarning: invalid value encountered in true_divide
+  scal=((x_matches-ctr[0])*x_matches+(y_matches-ctr[1])*y_matches+(z_matches-ctr[2])*z_matches)/((np.linalg.norm([x_matches,y_matches,z_matches],axis=0)*np.linalg.norm([x_matches-ctr[0],y_matches-ctr[1],z_matches-ctr[2]],axis=0)))
++ conda deactivate
++ '[' 1 -lt 1 ']'
++ local cmd=deactivate
++ shift
++ case "$cmd" in
++ __conda_activate deactivate
++ '[' -n '' ']'
++ local cmd=deactivate
++ shift
++ local ask_conda
++ CONDA_INTERNAL_OLDPATH=/linkhome/rech/genoba01/uoj51ok/.conda/envs/healpy_loc_env/bin:/gpfslocalsup/pub/anaconda-py3/2019.10/condabin:/gpfslocalsup/spack_soft/environment-modules/4.3.1/gcc-4.8.5-ism7cdy4xverxywj27jvjstqwk5oxe2v/bin:/opt/clmgr/sbin:/opt/clmgr/bin:/opt/sgi/sbin:/opt/sgi/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/c3/bin:/usr/lpp/mmfs/bin:/sbin:/bin:/gpfslocalsys/slurm/current/bin:/gpfslocalsup/bin:/gpfslocalsys/bin:/gpfslocalsys/idrzap/current/bin
++ __add_sys_prefix_to_path
++ '[' -n '' ']'
+++ dirname /gpfslocalsup/pub/anaconda-py3/2020.02/bin/conda
++ SYSP=/gpfslocalsup/pub/anaconda-py3/2020.02/bin
+++ dirname /gpfslocalsup/pub/anaconda-py3/2020.02/bin
++ SYSP=/gpfslocalsup/pub/anaconda-py3/2020.02
++ '[' -n '' ']'
++ PATH=/gpfslocalsup/pub/anaconda-py3/2020.02/bin:/linkhome/rech/genoba01/uoj51ok/.conda/envs/healpy_loc_env/bin:/gpfslocalsup/pub/anaconda-py3/2019.10/condabin:/gpfslocalsup/spack_soft/environment-modules/4.3.1/gcc-4.8.5-ism7cdy4xverxywj27jvjstqwk5oxe2v/bin:/opt/clmgr/sbin:/opt/clmgr/bin:/opt/sgi/sbin:/opt/sgi/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/c3/bin:/usr/lpp/mmfs/bin:/sbin:/bin:/gpfslocalsys/slurm/current/bin:/gpfslocalsup/bin:/gpfslocalsys/bin:/gpfslocalsys/idrzap/current/bin
++ export PATH
+++ PS1='(healpy_loc_env) '
+++ /gpfslocalsup/pub/anaconda-py3/2020.02/bin/conda shell.posix deactivate
++ ask_conda='export PATH='\''/gpfslocalsup/pub/anaconda-py3/2020.02/bin:/gpfslocalsup/pub/anaconda-py3/2019.10/condabin:/gpfslocalsup/spack_soft/environment-modules/4.3.1/gcc-4.8.5-ism7cdy4xverxywj27jvjstqwk5oxe2v/bin:/opt/clmgr/sbin:/opt/clmgr/bin:/opt/sgi/sbin:/opt/sgi/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/c3/bin:/usr/lpp/mmfs/bin:/sbin:/bin:/gpfslocalsys/slurm/current/bin:/gpfslocalsup/bin:/gpfslocalsys/bin:/gpfslocalsys/idrzap/current/bin'\''
+unset CONDA_PREFIX_2
+PS1='\''(base) '\''
+export CONDA_PREFIX='\''/gpfslocalsup/pub/anaconda-py3/2020.02'\''
+export CONDA_SHLVL='\''2'\''
+export CONDA_DEFAULT_ENV='\''base'\''
+export CONDA_PROMPT_MODIFIER='\''(base) '\''
+export CONDA_EXE='\''/gpfslocalsup/pub/anaconda-py3/2020.02/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/gpfslocalsup/pub/anaconda-py3/2020.02/bin/python'\''
+. "/gpfslocalsup/pub/anaconda-py3/2020.02/etc/conda/activate.d/gdal-activate.sh"
+. "/gpfslocalsup/pub/anaconda-py3/2020.02/etc/conda/activate.d/geotiff-activate.sh"
+. "/gpfslocalsup/pub/anaconda-py3/2020.02/etc/conda/activate.d/proj4-activate.sh"
+. "/gpfslocalsup/pub/anaconda-py3/2020.02/etc/conda/activate.d/udunits2-activate.sh"'
++ rc=0
++ PATH=/linkhome/rech/genoba01/uoj51ok/.conda/envs/healpy_loc_env/bin:/gpfslocalsup/pub/anaconda-py3/2019.10/condabin:/gpfslocalsup/spack_soft/environment-modules/4.3.1/gcc-4.8.5-ism7cdy4xverxywj27jvjstqwk5oxe2v/bin:/opt/clmgr/sbin:/opt/clmgr/bin:/opt/sgi/sbin:/opt/sgi/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/c3/bin:/usr/lpp/mmfs/bin:/sbin:/bin:/gpfslocalsys/slurm/current/bin:/gpfslocalsup/bin:/gpfslocalsys/bin:/gpfslocalsys/idrzap/current/bin
++ eval 'export PATH='\''/gpfslocalsup/pub/anaconda-py3/2020.02/bin:/gpfslocalsup/pub/anaconda-py3/2019.10/condabin:/gpfslocalsup/spack_soft/environment-modules/4.3.1/gcc-4.8.5-ism7cdy4xverxywj27jvjstqwk5oxe2v/bin:/opt/clmgr/sbin:/opt/clmgr/bin:/opt/sgi/sbin:/opt/sgi/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/c3/bin:/usr/lpp/mmfs/bin:/sbin:/bin:/gpfslocalsys/slurm/current/bin:/gpfslocalsup/bin:/gpfslocalsys/bin:/gpfslocalsys/idrzap/current/bin'\''
+unset CONDA_PREFIX_2
+PS1='\''(base) '\''
+export CONDA_PREFIX='\''/gpfslocalsup/pub/anaconda-py3/2020.02'\''
+export CONDA_SHLVL='\''2'\''
+export CONDA_DEFAULT_ENV='\''base'\''
+export CONDA_PROMPT_MODIFIER='\''(base) '\''
+export CONDA_EXE='\''/gpfslocalsup/pub/anaconda-py3/2020.02/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/gpfslocalsup/pub/anaconda-py3/2020.02/bin/python'\''
+. "/gpfslocalsup/pub/anaconda-py3/2020.02/etc/conda/activate.d/gdal-activate.sh"
+. "/gpfslocalsup/pub/anaconda-py3/2020.02/etc/conda/activate.d/geotiff-activate.sh"
+. "/gpfslocalsup/pub/anaconda-py3/2020.02/etc/conda/activate.d/proj4-activate.sh"
+. "/gpfslocalsup/pub/anaconda-py3/2020.02/etc/conda/activate.d/udunits2-activate.sh"'
+++ export PATH=/gpfslocalsup/pub/anaconda-py3/2020.02/bin:/gpfslocalsup/pub/anaconda-py3/2019.10/condabin:/gpfslocalsup/spack_soft/environment-modules/4.3.1/gcc-4.8.5-ism7cdy4xverxywj27jvjstqwk5oxe2v/bin:/opt/clmgr/sbin:/opt/clmgr/bin:/opt/sgi/sbin:/opt/sgi/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/c3/bin:/usr/lpp/mmfs/bin:/sbin:/bin:/gpfslocalsys/slurm/current/bin:/gpfslocalsup/bin:/gpfslocalsys/bin:/gpfslocalsys/idrzap/current/bin
+++ PATH=/gpfslocalsup/pub/anaconda-py3/2020.02/bin:/gpfslocalsup/pub/anaconda-py3/2019.10/condabin:/gpfslocalsup/spack_soft/environment-modules/4.3.1/gcc-4.8.5-ism7cdy4xverxywj27jvjstqwk5oxe2v/bin:/opt/clmgr/sbin:/opt/clmgr/bin:/opt/sgi/sbin:/opt/sgi/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/c3/bin:/usr/lpp/mmfs/bin:/sbin:/bin:/gpfslocalsys/slurm/current/bin:/gpfslocalsup/bin:/gpfslocalsys/bin:/gpfslocalsys/idrzap/current/bin
+++ unset CONDA_PREFIX_2
+++ PS1='(base) '
+++ export CONDA_PREFIX=/gpfslocalsup/pub/anaconda-py3/2020.02
+++ CONDA_PREFIX=/gpfslocalsup/pub/anaconda-py3/2020.02
+++ export CONDA_SHLVL=2
+++ CONDA_SHLVL=2
+++ export CONDA_DEFAULT_ENV=base
+++ CONDA_DEFAULT_ENV=base
+++ export 'CONDA_PROMPT_MODIFIER=(base) '
+++ CONDA_PROMPT_MODIFIER='(base) '
+++ export CONDA_EXE=/gpfslocalsup/pub/anaconda-py3/2020.02/bin/conda
+++ CONDA_EXE=/gpfslocalsup/pub/anaconda-py3/2020.02/bin/conda
+++ export _CE_M=
+++ _CE_M=
+++ export _CE_CONDA=
+++ _CE_CONDA=
+++ export CONDA_PYTHON_EXE=/gpfslocalsup/pub/anaconda-py3/2020.02/bin/python
+++ CONDA_PYTHON_EXE=/gpfslocalsup/pub/anaconda-py3/2020.02/bin/python
+++ . /gpfslocalsup/pub/anaconda-py3/2020.02/etc/conda/activate.d/gdal-activate.sh
++++ [[ -n '' ]]
++++ [[ -n '' ]]
++++ '[' -d /gpfslocalsup/pub/anaconda-py3/2020.02/share/gdal ']'
++++ export GDAL_DATA=/gpfslocalsup/pub/anaconda-py3/2020.02/share/gdal
++++ GDAL_DATA=/gpfslocalsup/pub/anaconda-py3/2020.02/share/gdal
++++ export GDAL_DRIVER_PATH=/gpfslocalsup/pub/anaconda-py3/2020.02/lib/gdalplugins
++++ GDAL_DRIVER_PATH=/gpfslocalsup/pub/anaconda-py3/2020.02/lib/gdalplugins
++++ [[ ! -d /gpfslocalsup/pub/anaconda-py3/2020.02/lib/gdalplugins ]]
++++ unset GDAL_DRIVER_PATH
++++ export CPL_ZIP_ENCODING=UTF-8
++++ CPL_ZIP_ENCODING=UTF-8
+++ . /gpfslocalsup/pub/anaconda-py3/2020.02/etc/conda/activate.d/geotiff-activate.sh
++++ [[ -n '' ]]
++++ '[' -d /gpfslocalsup/pub/anaconda-py3/2020.02/share/epsg_csv ']'
++++ '[' -d /gpfslocalsup/pub/anaconda-py3/2020.02/Library/share/epsg_csv ']'
+++ . /gpfslocalsup/pub/anaconda-py3/2020.02/etc/conda/activate.d/proj4-activate.sh
++++ '[' -n /gpfslocalsup/pub/anaconda-py3/2019.10/share/proj ']'
++++ export _CONDA_SET_PROJ_LIB=/gpfslocalsup/pub/anaconda-py3/2019.10/share/proj
++++ _CONDA_SET_PROJ_LIB=/gpfslocalsup/pub/anaconda-py3/2019.10/share/proj
++++ '[' -d /gpfslocalsup/pub/anaconda-py3/2020.02/share/proj ']'
++++ export PROJ_LIB=/gpfslocalsup/pub/anaconda-py3/2020.02/share/proj
++++ PROJ_LIB=/gpfslocalsup/pub/anaconda-py3/2020.02/share/proj
++++ '[' -f /gpfslocalsup/pub/anaconda-py3/2020.02/share/proj/copyright_and_licenses.csv ']'
++++ export PROJ_NETWORK=ON
++++ PROJ_NETWORK=ON
+++ . /gpfslocalsup/pub/anaconda-py3/2020.02/etc/conda/activate.d/udunits2-activate.sh
++++ [[ -n '' ]]
++++ '[' -d /gpfslocalsup/pub/anaconda-py3/2020.02/share/udunits ']'
++++ export UDUNITS2_XML_PATH=/gpfslocalsup/pub/anaconda-py3/2020.02/share/udunits/udunits2.xml
++++ UDUNITS2_XML_PATH=/gpfslocalsup/pub/anaconda-py3/2020.02/share/udunits/udunits2.xml
++ '[' 0 '!=' 0 ']'
++ __conda_hashr
++ '[' -n '' ']'
++ '[' -n '' ']'
++ hash -r

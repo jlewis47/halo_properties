@@ -195,6 +195,9 @@ def compute_dust(out_nb,ldx,path,sim_name):
         max_dust_dens=np.zeros((np.shape(phew_tab)[0]),dtype=np.float64)
         max_metal_dens=np.zeros((np.shape(phew_tab)[0]),dtype=np.float64)
 
+        stellarZmax=np.zeros((np.shape(phew_tab)[0]),dtype=np.float64)
+        stellarZmean=np.zeros((np.shape(phew_tab)[0]),dtype=np.float64)
+        
 
         for ind,halo in enumerate(phew_tab):
 
@@ -216,13 +219,19 @@ def compute_dust(out_nb,ldx,path,sim_name):
             max_metal_dens[ind]=np.max(sm_metals)
             max_neutral_gas_dens[ind]=np.max(sm_nHI)*rho_fact
 
-                                      
+
+            if phew_star_nb[ind]>0:
+
+                    cur_stars=stars[phew_tot_star_nb[ind]:phew_tot_star_nb[ind]+phew_star_nb[ind],:]
+            
+                    stellarZmax[ind]=np.max(cur_stars[:,-1])
+                    stellarZmean[ind]=np.mean(cur_stars[:,-1])            
 
         idx = np.copy(idxs)
         mass,x,y,z = np.transpose(phew_tab[:,:-1])
 
         print('Writing data file')
-        dict_keys=['idx','M','x','y','z','gas_mass','dust_mass','metal_mass','neutral_gas_mass','max_gas_dens','max_dust_dens','max_metal_dens','max_neutral_gas_dens']
+        dict_keys=['idx','M','x','y','z','gas_mass','dust_mass','metal_mass','neutral_gas_mass','max_gas_dens','max_dust_dens','max_metal_dens','max_neutral_gas_dens','mean stellar Z','max stellar Z']
 
         file_bytes = (np.transpose([idx,
                                     mass,
@@ -236,7 +245,9 @@ def compute_dust(out_nb,ldx,path,sim_name):
                                     max_gas_dens,
                                     max_dust_dens,
                                     max_metal_dens,
-                                    max_neutral_gas_dens]))
+                                    max_neutral_gas_dens,
+                                    stellarZmax,
+                                    stellarZmean]))
                                     
         assert len(dict_keys)==len(np.transpose(file_bytes)), "mismatch between number of keys and number of data entries"
 

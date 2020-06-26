@@ -16,6 +16,6 @@ for out_nb in np.arange(10,23,1):
     #assoc_stars_to_haloes('%03i'%out_nb,ldx,path,sim_name) 
 
     
-    #compute_fesc('%03i'%out_nb,ldx,path,sim_name)
+    compute_fesc('%03i'%out_nb,ldx,path,sim_name)
 
-    compute_dust('%03i'%out_nb,ldx,path,sim_name) 
+    #compute_dust('%03i'%out_nb,ldx,path,sim_name) 
