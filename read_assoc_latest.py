@@ -2,7 +2,7 @@ import numpy as np
 import string
 import argparse
 import os
-
+from output_paths import *
 
 
 def read_assoc(out_nb,sim_name):
@@ -10,22 +10,23 @@ def read_assoc(out_nb,sim_name):
     Get right binary files, format correctly and return
     '''
 
-    assoc_out=os.path.join('/gpfswork/rech/xpu/uoj51ok/assoc_outs/',sim_name,'assoc_halos_%s' %out_nb)
+    #assoc_out=os.path.join('/gpfswork/rech/xpu/uoj51ok/assoc_outs/',sim_name,'assoc_halos_%s' %out_nb)
+    
 
     """
     Open association files
     """
 
-    with open(os.path.join(assoc_out,'assoc_halos_%s' %out_nb),'rb') as File:
+    with open(os.path.join(assoc_path,sim_name,'assoc_halos_%s' %out_nb,'assoc_halos_%s' %out_nb),'rb') as File:
         fof_nb = np.fromfile(File,dtype=np.int32,count=1)
         fof_tmp = np.fromfile(File,dtype=np.float32)
 
-    star_tmp = np.fromfile(os.path.join(assoc_out,'assoc_stars_%s' %out_nb),dtype=np.float32)
-    star_nbs = np.fromfile(os.path.join(assoc_out,'assoc_halosST_%s' %out_nb),dtype=np.int64)
-    star_idxs = np.fromfile(os.path.join(assoc_out,'assoc_starsIDs_%s' %out_nb),dtype=np.int64)
-    tmp_lone_stars = np.fromfile(os.path.join(assoc_out,'assoc_lone_stars_%s' %out_nb),dtype=np.float32)    
-    tot_star_nbs = np.fromfile(os.path.join(assoc_out,'assoc_halosST_tot_%s' %out_nb),dtype=np.int64)
-    idxs =  np.fromfile(os.path.join(assoc_out,'assoc_halosID_%s' %out_nb),dtype=np.int64)
+    star_tmp = np.fromfile(os.path.join(assoc_path,sim_name,'assoc_halos_%s' %out_nb,'assoc_stars_%s' %out_nb),dtype=np.float32)
+    star_nbs = np.fromfile(os.path.join(assoc_path,sim_name,'assoc_halos_%s' %out_nb,'assoc_halosST_%s' %out_nb),dtype=np.int64)
+    star_idxs = np.fromfile(os.path.join(assoc_path,sim_name,'assoc_halos_%s' %out_nb,'assoc_starsIDs_%s' %out_nb),dtype=np.int64)
+    tmp_lone_stars = np.fromfile(os.path.join(assoc_path,sim_name,'assoc_halos_%s' %out_nb,'assoc_lone_stars_%s' %out_nb),dtype=np.float32)    
+    tot_star_nbs = np.fromfile(os.path.join(assoc_path,sim_name,'assoc_halos_%s' %out_nb,'assoc_halosST_tot_%s' %out_nb),dtype=np.int64)
+    idxs =  np.fromfile(os.path.join(assoc_path,sim_name,'assoc_halos_%s' %out_nb,'assoc_halosID_%s' %out_nb),dtype=np.int64)
 
 
 
