@@ -300,7 +300,7 @@ def compute_fesc(out_nb,ldx,path,sim_name):
                     low_conts=get_star_xis_metals(cur_stars[:,-2],cur_stars[:,-1],contbetalow,age_bins,metal_bins)
                     high_conts=get_star_xis_metals(cur_stars[:,-2],cur_stars[:,-1],contbetahigh,age_bins,metal_bins)
 
-                    delta_lamb=np.log10(2621/1492)
+                    delta_lamb=np.log10(2621./1492.)
 
                     halo_betas[ind]=np.log10(np.sum(high_conts*cur_stars[:,0])/np.sum(low_conts*cur_stars[:,0]))/delta_lamb
 
