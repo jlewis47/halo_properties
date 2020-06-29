@@ -1,5 +1,6 @@
 '''
 Gather some dust and gas data from haloes in a simulation
+metal stuff is in absolute metallicity
 '''
 
 
@@ -224,8 +225,8 @@ def compute_dust(out_nb,ldx,path,sim_name):
 
                     cur_stars=stars[phew_tot_star_nb[ind]:phew_tot_star_nb[ind]+phew_star_nb[ind],:]
             
-                    stellarZmax[ind]=np.max(cur_stars[:,-1])
-                    stellarZmean[ind]=np.mean(cur_stars[:,-1])            
+                    stellarZmax[ind]=np.max(cur_stars[:,-1])/0.02
+                    stellarZmean[ind]=np.average(cur_stars[:,-1],weights=cur_stars[:,0])/0.02            
 
         idx = np.copy(idxs)
         mass,x,y,z = np.transpose(phew_tab[:,:-1])
