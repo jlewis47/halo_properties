@@ -136,7 +136,7 @@ def compute_fesc(out_nb,ldx,path,sim_name):
         # if tst :nrg = o_rad_cube_big(data_pth_rad,1,f_side,subcube_nb)
         xion=o_data(os.path.join(data_pth_fullres,'xion_%05i'%int(out_nb)))
         rho=o_data(os.path.join(data_pth_fullres,'rho_%05i'%int(out_nb)))
-        dust=o_data(os.path.join(data_pth_fullres,'dust_%05i'%int(out_nb)))*dust_fact
+        dust=o_data(os.path.join(data_pth_fullres,'dust_%05i'%int(out_nb)))
         metals=o_data(os.path.join(data_pth_fullres,'Z_%05i'%int(out_nb))) #absolute
         # temp =  o_fullbox_big(data_pth_fullres,'temp',512,512,subcube_nb)
         # temp = temp/(rho*(1.+xion))
@@ -149,7 +149,7 @@ def compute_fesc(out_nb,ldx,path,sim_name):
 
 
 
-        dilate_fact=1.05
+        dilate_fact=1.1
         rescale=(dilate_fact-1)/2.
         delta=int(rescale*ldx)
 
@@ -161,10 +161,10 @@ def compute_fesc(out_nb,ldx,path,sim_name):
         ctr_bxd=ctr_bxd+delta
         ctr_big_box=np.int16(pos+delta)
 
-        big_xion=np.ones((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)))
-        big_rho=np.ones((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)))                 
-        big_metals=np.ones((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)))
-        big_dust=np.ones((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)))                 
+        big_xion=np.zeros((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)))
+        big_rho=np.zeros((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)))                 
+        big_metals=np.zeros((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)))
+        big_dust=np.zeros((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)))                 
 
         centre_slice=slice(int(rescale*ldx),int((1+rescale)*ldx))
 
@@ -213,8 +213,9 @@ def compute_fesc(out_nb,ldx,path,sim_name):
                     big_dust[xput,yput,zput]=dust[xgrab,ygrab,zgrab]                        
 
 
-
-
+        print("WRAP CHECK",big_rho[512,512,:],big_dust[512,512,:],big_xion[512,512,:])
+        print("WRAP CHECK",big_dust[512,512,:].tolist())
+        
 
         halo_ray_Tr=np.zeros((np.shape(phew_tab)[0]),dtype=np.float64)
         halo_ray_Tr_dust=np.zeros((np.shape(phew_tab)[0]),dtype=np.float64)
@@ -253,8 +254,8 @@ def compute_fesc(out_nb,ldx,path,sim_name):
 
             sm_tau = (sm_xHI*sm_rho)*(rho_fact*tau_fact) #includes partial dx
 
-            sm_tau_dust_1500 = (sm_dust)*(dust_1500_opacity*px_to_m*100.0)
-            sm_tau_dust_LyC = (sm_dust)*(dust_LyC_opacity*px_to_m*100.0) 
+            sm_tau_dust_1500 = (sm_dust)*(dust_1500_opacity*px_to_m*100.0)*dust_fact
+            sm_tau_dust_LyC = (sm_dust)*(dust_LyC_opacity*px_to_m*100.0)*dust_fact
 
             rs=np.arange(0,2*r_px,rad_res) #so we do edge cases properly
 
@@ -292,13 +293,13 @@ def compute_fesc(out_nb,ldx,path,sim_name):
 
 
 
-                    halo_fluxes=cur_stars[:,0]*10**(-get_star_mags_metals(cur_stars[:,-2],cur_stars[:,-1],mags,age_bins,metal_bins)/2.5)
+                    halo_fluxes=cur_stars[:,0]*10**(-get_star_mags_metals(cur_stars[:,-2],cur_stars[:,-1]*0.02,mags,age_bins,metal_bins)/2.5)
 
-                    cur_star_emissivity=get_star_xis_metals(cur_stars[:,-2],cur_stars[:,-1],xis,age_bins,metal_bins)*cur_stars[:,0] #ph/s
+                    cur_star_emissivity=get_star_xis_metals(cur_stars[:,-2],cur_stars[:,-1]*0.02,xis,age_bins,metal_bins)*cur_stars[:,0] #ph/s
 
 
-                    low_conts=get_star_xis_metals(cur_stars[:,-2],cur_stars[:,-1],contbetalow,age_bins,metal_bins)
-                    high_conts=get_star_xis_metals(cur_stars[:,-2],cur_stars[:,-1],contbetahigh,age_bins,metal_bins)
+                    low_conts=get_star_mags_metals(cur_stars[:,-2],cur_stars[:,-1]*0.02,contbetalow,age_bins,metal_bins)
+                    high_conts=get_star_mags_metals(cur_stars[:,-2],cur_stars[:,-1]*0.02,contbetahigh,age_bins,metal_bins)
 
                     delta_lamb=np.log10(2621./1492.)
 
@@ -306,15 +307,7 @@ def compute_fesc(out_nb,ldx,path,sim_name):
 
                     halo_emissivity[ind]=np.sum(cur_star_emissivity) #ph/s
 
-                    halo_mags[ind]=-2.5*np.log10(np.nansum(halo_fluxes))
-
-
-
-
-
-
-
-
+                    halo_mags[ind]=-2.5*np.log10(np.nansum(halo_fluxes)) 
 
                     emissivity_box = np.zeros_like(sm_rho,dtype=np.float64)
                     #stellar_box_mass = np.zeros_like(sm_rho,dtype=np.float64)
@@ -380,9 +373,9 @@ def compute_fesc(out_nb,ldx,path,sim_name):
                         xind,yind,zind=xind[cond],yind[cond],zind[cond]
 
 
-                        dust_taus=np.ones_like(emissivity_box,dtype=np.float32)
+                        dust_taus=np.zeros_like(emissivity_box,dtype=np.float32)
                         dust_trans=np.ones_like(emissivity_box,dtype=np.float32)
-                        non_zero_taus=np.ones_like(cells_w_stars,dtype=np.float32)
+
 
                         #plt.show()
 
@@ -398,30 +391,29 @@ def compute_fesc(out_nb,ldx,path,sim_name):
                             halo_ray_Tr_dust[ind]+=(sum_over_rays_bias(sm_tau_dust_LyC,sm_ctr,r_px,rad_res,Xs,Ys,Zs))*cell_w_stars
 
 
+                            big_box_sm_ctr = np.int32(sm_ctr-sample_r[ind]-0.5+pos_nrmd[ind]*ldx+delta)
+                            dust_taus[z_cell,y_cell,x_cell]=star_path(big_box_sm_ctr,dist_obs,big_dust,dust_1500_opacity,2*halo[-1],px_to_m*100,ldx)*dust_fact
+                            #dust_taus[z_cell,y_cell,x_cell]=star_path_cheap(sm_ctr,sm_tau_dust_1500,2*halo[-1])
+                            
+
+                        
+                            
+
+                        dust_trans=np.exp(-dust_taus)
+
+                        star_trans=dust_trans[star_sm_pos[:,2],star_sm_pos[:,1],star_sm_pos[:,0]]
+                        star_taus=dust_taus[star_sm_pos[:,2],star_sm_pos[:,1],star_sm_pos[:,0]]
 
 
-                            # halo_ray_Tr[ind]+=np.mean(sum_over_rays_angle(sm_tau,sm_ctr,r_px,rad_res,X_circ,Y_circ,Z_circ))*cell_w_stars
-                            # halo_ray_Tr_dust[ind]+=np.mean(sum_over_rays_angle(sm_tau_dust_LyC,sm_ctr,r_px,rad_res,X_circ,Y_circ,Z_circ))*cell_w_stars
-
-
-
-                            #big_box_sm_ctr = np.int16(sm_ctr-sample_r[ind]-0.5+pos_nrmd[ind]*ldx+delta)
-
-                            non_zero_taus[icell]=star_path_cheap(sm_ctr,sm_tau_dust_1500,2*halo[-1])
-                            #print(non_zero_trans[icell])
-
-                        dust_taus[cond]=non_zero_taus
-                        dust_trans[cond]=np.exp(-non_zero_taus)
-
-                        star_trans=dust_trans[star_sm_pos[:,0],star_sm_pos[:,1],star_sm_pos[:,2]]
-                        star_taus=dust_taus[star_sm_pos[:,0],star_sm_pos[:,1],star_sm_pos[:,2]]
-                    
+                        #print(dust_taus,emissivity_box)
+                        
+                        print("CELL MAX",np.min(star_trans),np.min(dust_trans),sm_tau_dust_1500[dust_trans==np.min(star_trans)],flush=True)
+                        
                     halo_mags_ext[ind]=-2.5*np.log10(np.nansum(halo_fluxes*star_trans))
 
-
-                    #print(high_conts*cur_stars[:,0],np.exp(-star_taus/dust_1500_opacity*dust_2621_opacity),low_conts*cur_stars[:,0],np.exp(-star_taus/dust_1500_opacity*dust_1492_opacity))
+                    #print(np.exp(-star_taus*dust_2621_opacity/dust_1500_opacity),np.exp(-star_taus*dust_1492_opacity/dust_1500_opacity))
                     
-                    halo_betas_with_dust[ind]=np.log10(np.nansum(high_conts*cur_stars[:,0]*np.exp(-star_taus/dust_1500_opacity*dust_2621_opacity))/np.nansum(low_conts*cur_stars[:,0]*np.exp(-star_taus/dust_1500_opacity*dust_1492_opacity)))/delta_lamb
+                    halo_betas_with_dust[ind]=np.log10(np.sum(high_conts*cur_stars[:,0]*np.exp(-star_taus*dust_2621_opacity/dust_1500_opacity))/np.sum(low_conts*cur_stars[:,0]*np.exp(-star_taus*dust_1492_opacity/dust_1500_opacity)))/delta_lamb
                     #print(halo_betas_with_dust[ind])
 
 

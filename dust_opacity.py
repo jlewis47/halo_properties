@@ -222,33 +222,35 @@ def star_path(pos,dist_obs,dust,opacity,rlim,px_to_m,ldx):
 
     #Xs,Ys,Zs=np.int16([Xs,Ys,Zs])
 
+    if np.exp(-np.sum(dust[Zs,Ys,Xs]*Ds)*px_to_m*opacity*3.06710019042e-27)<0.5:
+        print("PATH",dust[Zs,Ys,Xs],flush=True)
+    
     return(np.sum(dust[Zs,Ys,Xs]*Ds)*px_to_m*opacity)
 
 
 
-def star_path_cheap(pos,dust_tau,rlim):
+
+
+def star_path_cheap(pos,dust,rlim):
     
     """
     doesn't do trig and just takes a straight line
     takes small box around halo not all box
 
 
+    SEEMS BUGGED !!!!
+
     pos in cells
-    dust tau in units of optical depth
     """
 
     xstt,ystt,zstt=pos #in cartesian ref centred at 0,0,0 of box
     
     #out of box target in stt ref
 
-    Zs=np.arange(zstt,min(zstt+rlim,len(dust_tau)),1,dtype=np.int16)
+    print("star_path_cheap isn't working as designed atm")
+    
+    Zs=np.arange(zstt,min(zstt+rlim,len(dust)),1,dtype=np.int16)
     Ys=np.ones_like(Zs,dtype=np.int16)*int(ystt)
     Xs=np.ones_like(Zs,dtype=np.int16)*int(xstt)
-    # print(Zs,Ys,Xs,Ds)
 
-    # print(np.shape(dust_tau))
-
-    # print(zstt,ystt,xstt,np.argmax(dust_tau))
-    # print(np.sum(dust_tau[int(zstt),int(ystt),int(xstt)]),np.max(dust_tau))
-    
-    return(np.sum(dust_tau[Zs,Ys,Xs]))
+    return(np.sum(dust[Zs,Ys,Xs]))

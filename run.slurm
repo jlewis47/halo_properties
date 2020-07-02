@@ -1,5 +1,6 @@
 #!/bin/bash
 #SBATCH -A ybr@gpu
+#SBATCH --qos=qos_gpu-dev
 #SBATCH --nodes=1
 #SBATCH  --ntasks=1
 #SBATCH  --gres=gpu:0
@@ -13,7 +14,7 @@ cd ${SLURM_SUBMIT_DIR}
 module purge 
 module load python
 
-conda activate healpy_loc_env
+
 
 ulimit -c 0
 set -x
@@ -21,6 +22,4 @@ set -x
 
 srun  python run.py >run_log
 
-
-conda deactivate
 

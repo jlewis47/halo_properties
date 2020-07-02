@@ -119,7 +119,7 @@ def compute_dust(out_nb,ldx,path,sim_name):
 
 
 
-        dilate_fact=1.05
+        dilate_fact=1.1
         rescale=(dilate_fact-1)/2.
         delta=int(rescale*ldx)
 
@@ -131,10 +131,10 @@ def compute_dust(out_nb,ldx,path,sim_name):
         ctr_bxd=ctr_bxd+delta
         ctr_big_box=np.int16(pos+delta)
 
-        big_xion=np.ones((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)))
-        big_rho=np.ones((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)))                 
-        big_metals=np.ones((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)))
-        big_dust=np.ones((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)))                 
+        big_xion=np.zeros((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)))
+        big_rho=np.zeros((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)))                 
+        big_metals=np.zeros((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)))
+        big_dust=np.zeros((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)))                 
 
         centre_slice=slice(int(rescale*ldx),int((1+rescale)*ldx))
 
@@ -193,9 +193,12 @@ def compute_dust(out_nb,ldx,path,sim_name):
 
         max_gas_dens=np.zeros((np.shape(phew_tab)[0]),dtype=np.float64)
         max_neutral_gas_dens=np.zeros((np.shape(phew_tab)[0]),dtype=np.float64)
-        max_dust_dens=np.zeros((np.shape(phew_tab)[0]),dtype=np.float64)
         max_metal_dens=np.zeros((np.shape(phew_tab)[0]),dtype=np.float64)
+        max_dust_dens=np.zeros((np.shape(phew_tab)[0]),dtype=np.float64)
 
+        gasZmean=np.zeros((np.shape(phew_tab)[0]),dtype=np.float64)
+        gasZmax=np.zeros((np.shape(phew_tab)[0]),dtype=np.float64)
+        
         stellarZmax=np.zeros((np.shape(phew_tab)[0]),dtype=np.float64)
         stellarZmean=np.zeros((np.shape(phew_tab)[0]),dtype=np.float64)
         
@@ -217,8 +220,11 @@ def compute_dust(out_nb,ldx,path,sim_name):
                                       
             max_dust_dens[ind]=np.max(sm_dust)*dust_fact
             max_gas_dens[ind]=np.max(sm_rho)*rho_fact
-            max_metal_dens[ind]=np.max(sm_metals)
+            max_metal_dens[ind]=np.max(sm_metals*sm_rho)*rho_fact
             max_neutral_gas_dens[ind]=np.max(sm_nHI)*rho_fact
+
+            gasZmean[ind]=np.mean(sm_metals)
+            gasZmax[ind]=np.max(sm_metals)            
 
 
             if phew_star_nb[ind]>0:
@@ -232,7 +238,7 @@ def compute_dust(out_nb,ldx,path,sim_name):
         mass,x,y,z = np.transpose(phew_tab[:,:-1])
 
         print('Writing data file')
-        dict_keys=['idx','M','x','y','z','gas_mass','dust_mass','metal_mass','neutral_gas_mass','max_gas_dens','max_dust_dens','max_metal_dens','max_neutral_gas_dens','mean stellar Z','max stellar Z']
+        dict_keys=['idx','M','x','y','z','gas_mass','dust_mass','metal_mass','neutral_gas_mass','max_gas_dens','max_dust_dens','max_metal_dens','max_neutral_gas_dens','mean_stellar_Z','max_stellar_Z','max_gas_Z','mean_gas_Z']
 
         file_bytes = (np.transpose([idx,
                                     mass,
@@ -248,7 +254,9 @@ def compute_dust(out_nb,ldx,path,sim_name):
                                     max_metal_dens,
                                     max_neutral_gas_dens,
                                     stellarZmax,
-                                    stellarZmean]))
+                                    stellarZmean,
+                                    gasZmax,
+                                    gasZmean]))
                                     
         assert len(dict_keys)==len(np.transpose(file_bytes)), "mismatch between number of keys and number of data entries"
 
