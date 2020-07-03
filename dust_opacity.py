@@ -184,6 +184,8 @@ def ray3D(X0,Y0,Z0,D_lim,phi,theta,lim):
         
     return(map(np.asarray,[Xs,Ys,Zs,Ds,D_tot]))
 
+
+
 def star_path(pos,dist_obs,dust,opacity,rlim,px_to_m,ldx):
     
     """
@@ -195,7 +197,10 @@ def star_path(pos,dist_obs,dust,opacity,rlim,px_to_m,ldx):
     px_to_m in cm
     """
 
+
+    
     xstt,ystt,zstt=pos #in cartesian ref centred at 0,0,0 of box
+    
     
     #out of box target in stt ref
  
@@ -222,9 +227,6 @@ def star_path(pos,dist_obs,dust,opacity,rlim,px_to_m,ldx):
 
     #Xs,Ys,Zs=np.int16([Xs,Ys,Zs])
 
-    if np.exp(-np.sum(dust[Zs,Ys,Xs]*Ds)*px_to_m*opacity*3.06710019042e-27)<0.5:
-        print("PATH",dust[Zs,Ys,Xs],flush=True)
-    
     return(np.sum(dust[Zs,Ys,Xs]*Ds)*px_to_m*opacity)
 
 
@@ -237,20 +239,15 @@ def star_path_cheap(pos,dust,rlim):
     doesn't do trig and just takes a straight line
     takes small box around halo not all box
 
-
-    SEEMS BUGGED !!!!
-
     pos in cells
     """
 
     xstt,ystt,zstt=pos #in cartesian ref centred at 0,0,0 of box
     
     #out of box target in stt ref
-
-    print("star_path_cheap isn't working as designed atm")
     
     Zs=np.arange(zstt,min(zstt+rlim,len(dust)),1,dtype=np.int16)
     Ys=np.ones_like(Zs,dtype=np.int16)*int(ystt)
     Xs=np.ones_like(Zs,dtype=np.int16)*int(xstt)
-
+    
     return(np.sum(dust[Zs,Ys,Xs]))

@@ -112,7 +112,7 @@ def compute_fesc(out_nb,ldx,path,sim_name):
 
 
         M,pos_nrmd = phew_tab[:,0],(phew_tab[:,1:4])
-        pos =do_half_round(ldx*pos_nrmd) #was np.int16
+        pos =do_half_round((ldx)*pos_nrmd) #was np.int16
 
         #(0,0,0) px location of 512**3 cube within whole data set
 
@@ -148,8 +148,9 @@ def compute_fesc(out_nb,ldx,path,sim_name):
         # vvrho=vv*rho
 
 
+        #This bit makes an array dilate_fact times bigger than the RAMSES data and fills using the periodicity of the data that way we don't care about being close to the edge with r200 (memory inefficient but fast, only works for one big chuck .... best use with ldx<=1024)
 
-        dilate_fact=1.1
+        dilate_fact=1.05
         rescale=(dilate_fact-1)/2.
         delta=int(rescale*ldx)
 
@@ -161,17 +162,17 @@ def compute_fesc(out_nb,ldx,path,sim_name):
         ctr_bxd=ctr_bxd+delta
         ctr_big_box=np.int16(pos+delta)
 
-        big_xion=np.zeros((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)))
-        big_rho=np.zeros((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)))                 
-        big_metals=np.zeros((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)))
-        big_dust=np.zeros((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)))                 
+        big_xion=np.zeros((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)),dtype=np.float64)
+        big_rho=np.zeros((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)),dtype=np.float64)              
+        big_metals=np.zeros((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)),dtype=np.float64)
+        big_dust=np.zeros((int(ldx*dilate_fact),int(ldx*dilate_fact),int(ldx*dilate_fact)),dtype=np.float64)                 
 
         centre_slice=slice(int(rescale*ldx),int((1+rescale)*ldx))
 
-        big_rho[centre_slice,centre_slice,centre_slice]=rho
-        big_xion[centre_slice,centre_slice,centre_slice]=xion
-        big_metals[centre_slice,centre_slice,centre_slice]=metals
-        big_dust[centre_slice,centre_slice,centre_slice]=dust
+        big_rho[centre_slice,centre_slice,centre_slice]=np.copy(rho)
+        big_xion[centre_slice,centre_slice,centre_slice]=np.copy(xion)
+        big_metals[centre_slice,centre_slice,centre_slice]=np.copy(metals)
+        big_dust[centre_slice,centre_slice,centre_slice]=np.copy(dust)
 
         #big_dust=big_dust #g/cm^3
 
@@ -207,14 +208,11 @@ def compute_fesc(out_nb,ldx,path,sim_name):
                     zgrab,zput=put_and_grab(k,delta,ldx)            
 
 
-                    big_rho[xput,yput,zput]=rho[xgrab,ygrab,zgrab]
-                    big_xion[xput,yput,zput]=xion[xgrab,ygrab,zgrab]
-                    big_metals[xput,yput,zput]=metals[xgrab,ygrab,zgrab]            
-                    big_dust[xput,yput,zput]=dust[xgrab,ygrab,zgrab]                        
-
-
-        print("WRAP CHECK",big_rho[512,512,:],big_dust[512,512,:],big_xion[512,512,:])
-        print("WRAP CHECK",big_dust[512,512,:].tolist())
+                    big_rho[xput,yput,zput]=np.copy(rho[xgrab,ygrab,zgrab])
+                    big_xion[xput,yput,zput]=np.copy(xion[xgrab,ygrab,zgrab])
+                    big_metals[xput,yput,zput]=np.copy(metals[xgrab,ygrab,zgrab])            
+                    big_dust[xput,yput,zput]=np.copy(dust[xgrab,ygrab,zgrab])
+        
         
 
         halo_ray_Tr=np.zeros((np.shape(phew_tab)[0]),dtype=np.float64)
@@ -276,7 +274,6 @@ def compute_fesc(out_nb,ldx,path,sim_name):
 
                     halo_stellar_mass[ind]=np.sum(cur_stars[:,0])
 
-                    #print('%.2e %.2e %.2e %.2e %.2e' %(SFR_10[ind],SFR_20[ind],SFR_30[ind],SFR_50[ind],SFR_100[ind]))
 
 
 
@@ -284,9 +281,6 @@ def compute_fesc(out_nb,ldx,path,sim_name):
                     halo_youngest[ind]=np.min(cur_stars[:,-2])
 
 
-
-                    # active = fractions!=0
-                    # active_fraction = fractions[active]
 
                     young=cur_stars[:,-2]<10.
                     halo_SFR10s[ind]=np.sum(cur_stars[young,0])/10./1e6 #Msun/Myr #np.sum(cur_stars[active,0]*active_fraction)/(10*1e6)
@@ -314,7 +308,7 @@ def compute_fesc(out_nb,ldx,path,sim_name):
 
 
 
-
+                    #If only one cell (possible!) then we need to special take care as functions arent all built for that
                     if  np.shape(emissivity_box)==1:
 
                         emissivity_box[:]=1
@@ -326,49 +320,60 @@ def compute_fesc(out_nb,ldx,path,sim_name):
 
                         for star_nb,star in enumerate(cur_stars):
 
-                            #sm_ctr = np.int32(star[1:4]*ldx-[lower_bounds[ind,0][ind],lower_bounds[ind,1],lower_bounds[ind,2]])+0.5
-                            sm_ctr = np.int32(star[1:4]*ldx-[lower_bounds[ind,0],lower_bounds[ind,1],lower_bounds[ind,2]])+0.5
 
-                            # halo_ray_Tr[ind]+=np.mean(sum_over_rays_angle(sm_tau,sm_ctr,r_px,rad_res,X_circ,Y_circ,Z_circ))*(star[0])*cur_star_emissivity[star_nb]
-                            # halo_ray_Tr_dust[ind]+=np.mean(sum_over_rays_angle(sm_tau_dust_LyC,sm_ctr,r_px,rad_res,X_circ,Y_circ,Z_circ))*cur_star_emissivity[star_nb]
-
-
+                            sm_ctr = np.int32(star[1:4]*(ldx)-[lower_bounds[ind,0],lower_bounds[ind,1],lower_bounds[ind,2]])+0.5
 
                             halo_ray_Tr[ind]+=(sum_over_rays_bias(sm_tau,sm_ctr,r_px,rad_res,Xs,Ys,Zs))*(star[0])*cur_star_emissivity[star_nb]
                             halo_ray_Tr_dust[ind]+=(sum_over_rays_bias(sm_tau_dust_LyC,sm_ctr,r_px,rad_res,Xs,Ys,Zs))*cur_star_emissivity[star_nb]
-                            dust_trans[star_nb]=np.exp(-star_path_cheap(sm_ctr,sm_tau_dust_1500,2*halo[-1]))
-                            #halo_ray_Tr[ind]+=(sum_over_rays_angle_bias(sm_tau,sm_ctr,r_px,rad_res,Xs,Ys,Zs))*(star[0]*active_fraction[star_nb])
+                            dust_taus[star_nb]=star_path_cheap(sm_ctr,sm_tau_dust_1500,2*halo[-1])
+
 
                         halo_ray_Tr[ind]=halo_ray_Tr[ind]/halo_emissivity[ind]
                         halo_ray_Tr_dust[ind]=halo_ray_Tr_dust[ind]/halo_emissivity[ind]                
 
+                        halo_mags_ext[ind]=-2.5*np.log10(np.nansum(halo_fluxes*np.exp(-dust_taus)))
+
+                        halo_betas_with_dust[ind]=np.log10(np.sum(high_conts*cur_stars[:,0]*np.exp(-dust_taus*dust_2621_opacity/dust_1500_opacity))/np.sum(low_conts*cur_stars[:,0]*np.exp(-dust_taus*dust_1492_opacity/dust_1500_opacity)))/delta_lamb
+
+
+                    #if more than one cell in sm_data stuff
                     else:
 
 
                         fracd_stars = np.copy(cur_stars)
-                        fracd_stars[:,1:4] *= ldx
+                        fracd_stars[:,1:4] = fracd_stars[:,1:4]*(ldx)+delta
 
-                        star_sm_pos=np.zeros_like(fracd_stars[:,1:4],dtype=np.int16)
+                        #basically we get the indices of stars for a position histogram
+                        sm_xgrid=np.arange(lower_bounds[ind,0],upper_bounds[ind,0],1)
+                        star_sm_posx=np.digitize(fracd_stars[:,1],sm_xgrid)-1
 
+                        sm_ygrid=np.arange(lower_bounds[ind,1],upper_bounds[ind,1],1)
+                        star_sm_posy=np.digitize(fracd_stars[:,2],sm_ygrid)-1
+
+                        sm_zgrid=np.arange(lower_bounds[ind,2],upper_bounds[ind,2],1)
+                        star_sm_posz=np.digitize(fracd_stars[:,3],sm_zgrid)-1                      
+
+                        #print(fracd_stars[:,3],sm_zgrid)
+
+                        #Using indices we can sum up all the emissities in every cell of our halo
                         for istar,star in enumerate(fracd_stars):
 
                                 #Need to be careful when star is on the other side of te box when compared to halo centre
-                                star[1:4] += pos_vects[np.argmin(get_27(pos[ind],star[1:4],pos_vects))] 
-                                emissivity_box,star_sm_pos[istar,:]=get_box_sum(star,cur_star_emissivity[istar],pos[ind]-sample_r[ind],emissivity_box)
-                                #stellar_box_mass,star_sm_pos[istar,:]=get_box_sum(star,low_conts[istar],pos[ind]-sample_r[ind],stellar_box_mass)
+                                star[1:4] += pos_vects[np.argmin(get_27(pos[ind],star[1:4]-delta,pos_vects))] 
+                                emissivity_box[star_sm_posz[istar],star_sm_posy[istar],star_sm_posx[istar]]+=cur_star_emissivity[istar]
 
 
 
                         emissivity_box = np.float64(emissivity_box)/halo_emissivity[ind]
 
-
-                        # #get cell centres
-
-                        lbox=np.shape(emissivity_box)[0]
-                        xind,yind,zind=np.mgrid[0:lbox,0:lbox,0:lbox]
-
                         cond=(emissivity_box!=0)#*(np.linalg.norm([xind-0.5*lbox,yind-0.5*lbox,zind-0.5*lbox],axis=0)<r_px) #need to check that cell centre is in r200 even if stars won't be outside of r200, ok but does this create weird values ??? Seems to fuck up hist plot of fesc=f(M) ... !
 
+
+                        smldx=np.shape(emissivity_box)[0]
+                        xind,yind,zind=np.mgrid[0:smldx,0:smldx,0:smldx]
+
+
+                        
                         cells_w_stars=emissivity_box[cond]
                         xind,yind,zind=xind[cond],yind[cond],zind[cond]
 
@@ -376,45 +381,32 @@ def compute_fesc(out_nb,ldx,path,sim_name):
                         dust_taus=np.zeros_like(emissivity_box,dtype=np.float32)
                         dust_trans=np.ones_like(emissivity_box,dtype=np.float32)
 
-
-                        #plt.show()
-
-
-
-                        #comp_old=0
+                            
+                        #instead of doing star per star for fesc, fesc_dust, extinction, we loop over halo cells with stellar particles
                         for icell,(cell_w_stars,x_cell,y_cell,z_cell) in enumerate(zip(cells_w_stars,xind,yind,zind)):
                             sm_ctr=np.asarray([x_cell,y_cell,z_cell])+.5
-
-
 
                             halo_ray_Tr[ind]+=(sum_over_rays_bias(sm_tau,sm_ctr,r_px,rad_res,Xs,Ys,Zs))*cell_w_stars
                             halo_ray_Tr_dust[ind]+=(sum_over_rays_bias(sm_tau_dust_LyC,sm_ctr,r_px,rad_res,Xs,Ys,Zs))*cell_w_stars
 
 
-                            big_box_sm_ctr = np.int32(sm_ctr-sample_r[ind]-0.5+pos_nrmd[ind]*ldx+delta)
-                            dust_taus[z_cell,y_cell,x_cell]=star_path(big_box_sm_ctr,dist_obs,big_dust,dust_1500_opacity,2*halo[-1],px_to_m*100,ldx)*dust_fact
-                            #dust_taus[z_cell,y_cell,x_cell]=star_path_cheap(sm_ctr,sm_tau_dust_1500,2*halo[-1])
+
+                            big_box_sm_ctr=np.asarray([sm_xgrid[x_cell],sm_ygrid[y_cell],sm_zgrid[z_cell]])
                             
+                            dust_taus[z_cell,y_cell,x_cell]=star_path(big_box_sm_ctr,dist_obs,big_dust,dust_1500_opacity,2*halo[-1],px_to_m*100,ldx)*dust_fact
+
 
                         
-                            
-
                         dust_trans=np.exp(-dust_taus)
 
-                        star_trans=dust_trans[star_sm_pos[:,2],star_sm_pos[:,1],star_sm_pos[:,0]]
-                        star_taus=dust_taus[star_sm_pos[:,2],star_sm_pos[:,1],star_sm_pos[:,0]]
-
-
-                        #print(dust_taus,emissivity_box)
+                        #now we can use our indices again to get the proper tau/trans for every star : SO MUCH MUCH MUCH MUCH FASTER !
+                        star_trans=dust_trans[star_sm_posz,star_sm_posy,star_sm_posx]
+                        star_taus=dust_taus[star_sm_posz,star_sm_posy,star_sm_posx]
                         
-                        print("CELL MAX",np.min(star_trans),np.min(dust_trans),sm_tau_dust_1500[dust_trans==np.min(star_trans)],flush=True)
-                        
-                    halo_mags_ext[ind]=-2.5*np.log10(np.nansum(halo_fluxes*star_trans))
+                        halo_mags_ext[ind]=-2.5*np.log10(np.nansum(halo_fluxes*star_trans))
 
-                    #print(np.exp(-star_taus*dust_2621_opacity/dust_1500_opacity),np.exp(-star_taus*dust_1492_opacity/dust_1500_opacity))
                     
-                    halo_betas_with_dust[ind]=np.log10(np.sum(high_conts*cur_stars[:,0]*np.exp(-star_taus*dust_2621_opacity/dust_1500_opacity))/np.sum(low_conts*cur_stars[:,0]*np.exp(-star_taus*dust_1492_opacity/dust_1500_opacity)))/delta_lamb
-                    #print(halo_betas_with_dust[ind])
+                        halo_betas_with_dust[ind]=np.log10(np.sum(high_conts*cur_stars[:,0]*np.exp(-star_taus*dust_2621_opacity/dust_1500_opacity))/np.sum(low_conts*cur_stars[:,0]*np.exp(-star_taus*dust_1492_opacity/dust_1500_opacity)))/delta_lamb
 
 
 
@@ -444,6 +436,7 @@ def compute_fesc(out_nb,ldx,path,sim_name):
 
         assert len(dict_keys)==len(np.transpose(file_bytes)), "mismatch between number of keys and number of data entries"
 
+        #Write our output ... everything before _out_ is read by the read_out function as the key parameter
         with open(os.path.join(out,'fesc_dust_out_'+out_nb+'_0'),'wb') as newFile:
             np.save(newFile,np.int32(len(idx)))
             np.save(newFile,np.int32(len(dict_keys)))
