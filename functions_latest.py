@@ -542,8 +542,6 @@ def sum_over_rays(field,ctr,r200,rad_res,X_primes,Y_primes,Z_primes):
     
     #sampled[Rs>r200]=0
     
-    rays=np.exp(-np.sum(sampled,axis=1)*rad_res)
-    #rays=np.exp(-np.sum(field[np.int32(Xs+0.5*size),np.int32(Ys+0.5*size),np.int32(Zs+0.5*size)]*(Rs<=r200),axis=1)*rad_res)
 
 
     
@@ -556,24 +554,6 @@ def sum_over_rays(field,ctr,r200,rad_res,X_primes,Y_primes,Z_primes):
     
     argmin=np.argmin(np.abs(Rs[:,:]-r200),axis=1)
 
-
-    #check=np.copy(z_matches)
-
-    # #if ang,ang
-    # for ind_the in range(np.shape(Rs)[2]):
-    #     for ind_phi in range(np.shape(Rs)[0]):
-
-
-    #         loc_argmin=argmin[ind_phi,ind_the]
-    #         #r_matches[ind_phi,ind_the]=Rs[ind_phi,np.argmin(np.abs(Rs[:,:,:]-r200),axis=1)[ind_phi,ind_the],ind_the]
-    #         x_matches[ind_phi,ind_the]=Xs[ind_phi,loc_argmin,ind_the]
-    #         y_matches[ind_phi,ind_the]=Ys[ind_phi,loc_argmin,ind_the]
-    #         z_matches[ind_phi,ind_the]=Zs[ind_phi,loc_argmin,ind_the]
-
-    #         #check[ind_phi,ind_the]=1
-
-    #print(Rs)
-    #print(np.shape(Xs),np.shape(argmin))
     #if paths
     inds=np.arange(len(x_matches))
     x_matches[inds]=Xs[inds,argmin]
@@ -585,8 +565,7 @@ def sum_over_rays(field,ctr,r200,rad_res,X_primes,Y_primes,Z_primes):
 
 
     
-    #scal=((x_matches-ctr[0])*x_matches+(y_matches-ctr[1])*y_matches+(z_matches-ctr[2])*z_matches)/((np.linalg.norm([x_matches,y_matches,z_matches],axis=0)*np.linalg.norm([x_matches-ctr[0],y_matches-ctr[1],z_matches-ctr[2]],axis=0)))
-    #scal=((x_matches-ctr[0])*x_matches+(y_matches-ctr[1])*y_matches+(z_matches-ctr[2])*z_matches)/np.max([(np.linalg.norm([x_matches,y_matches,z_matches],axis=0)*np.linalg.norm([x_matches-ctr[0],y_matches-ctr[1],z_matches-ctr[2]],axis=0)),np.finfo(np.float32).eps*np.ones(np.shape(x_matches))],axis=0) #must never divide by 0 !!!!
+
     #if norms are 0 then we are on the border and the result should be 1
     #scal[np.isnan(scal)]=1
 
@@ -594,41 +573,13 @@ def sum_over_rays(field,ctr,r200,rad_res,X_primes,Y_primes,Z_primes):
     
     scal[np.isnan(scal)]=1
 
-    
-    # plt.figure()
-    # plt.scatter(x_matches,np.isnan(scal))
-    # plt.scatter(y_matches,np.isnan(scal))
-    # plt.scatter(z_matches,np.isnan(scal))
-    
-    # print()
-    
-    # if r200>10:
-
-    #     plt.figure(figsize=(10,10))
-    #     plt.subplot(111)
-    #     plt.title("")
-    #     plt.grid(True)
-    #     plt.imshow(np.log10(field[int(ctr[2]+0.5*size),:,:]*rad_res),origin='lower',extent=[0,size,0,size])
-    #     plt.colorbar()
-
-    #     p=pat.Circle((0.5*size,0.5*size),r200,color="magenta",fill=False,edgecolor='k',linewidth=2)
-    #     axis=plt.gca()
-    #     axis.add_patch(p)
-
-
-    #     plt.scatter(ctr[0]+0.5*size,ctr[1]+0.5*size,c='r')
+    rays=np.exp(-np.sum(sampled,axis=1)*rad_res*scal)
 
 
 
-    #     plt.scatter(Xs[IB]+0.5*size,Ys[IB]+0.5*size,c="white",alpha=0.5,s=0.2)
-    #     plt.scatter(Xs_snap[IB]+0.5,Ys_snap[IB]+0.5,c="k",alpha=0.5,s=0.4)
 
 
-    #     # #    plt.scatter(Xs[OOB],Ys[OOB],c="red",alpha=0.5,marker="x")
-    #     plt.show()
-    #print(rays,scal)
-    # print(rays*scal)
-    return(rays*scal)
+    return(rays)
 
 def sum_over_rays_bias(field,ctr,r200,rad_res,X_primes,Y_primes,Z_primes):
 
@@ -660,19 +611,9 @@ def sum_over_rays_bias(field,ctr,r200,rad_res,X_primes,Y_primes,Z_primes):
     OOB=~IB
 
     
-    #print(np.shape(OOB),np.shape(sampled))
+
     sampled=np.zeros_like(Xs)
     sampled[IB]=field[Xs_snap[IB],Ys_snap[IB],Zs_snap[IB]]
-
-
-    
-    #sampled[Rs>r200]=0
-    
-    rays=np.exp(-np.sum(sampled,axis=1)*rad_res)
-    #rays=np.exp(-np.sum(field[np.int32(Xs+0.5*size),np.int32(Ys+0.5*size),np.int32(Zs+0.5*size)]*(Rs<=r200),axis=1)*rad_res)
-
-
-    
 
     #if paths
     x_matches=np.zeros((np.shape(Xs)[0]),dtype=np.float32)
@@ -683,36 +624,11 @@ def sum_over_rays_bias(field,ctr,r200,rad_res,X_primes,Y_primes,Z_primes):
     argmin=np.argmin(np.abs(Rs[:,:]-r200),axis=1)
 
 
-    #check=np.copy(z_matches)
-
-    # #if ang,ang
-    # for ind_the in range(np.shape(Rs)[2]):
-    #     for ind_phi in range(np.shape(Rs)[0]):
-
-
-    #         loc_argmin=argmin[ind_phi,ind_the]
-    #         #r_matches[ind_phi,ind_the]=Rs[ind_phi,np.argmin(np.abs(Rs[:,:,:]-r200),axis=1)[ind_phi,ind_the],ind_the]
-    #         x_matches[ind_phi,ind_the]=Xs[ind_phi,loc_argmin,ind_the]
-    #         y_matches[ind_phi,ind_the]=Ys[ind_phi,loc_argmin,ind_the]
-    #         z_matches[ind_phi,ind_the]=Zs[ind_phi,loc_argmin,ind_the]
-
-    #         #check[ind_phi,ind_the]=1
-
-    #print(Rs)
-    #print(np.shape(Xs),np.shape(argmin))
-    #if paths
     inds=np.arange(len(x_matches))
     x_matches[inds]=Xs[inds,argmin]
     y_matches[inds]=Ys[inds,argmin]
     z_matches[inds]=Zs[inds,argmin]
 
-    
-    
-
-
-    
-    #scal=((x_matches-ctr[0])*x_matches+(y_matches-ctr[1])*y_matches+(z_matches-ctr[2])*z_matches)/((np.linalg.norm([x_matches,y_matches,z_matches],axis=0)*np.linalg.norm([x_matches-ctr[0],y_matches-ctr[1],z_matches-ctr[2]],axis=0)))
-    #scal=((x_matches-ctr[0])*x_matches+(y_matches-ctr[1])*y_matches+(z_matches-ctr[2])*z_matches)/np.max([(np.linalg.norm([x_matches,y_matches,z_matches],axis=0)*np.linalg.norm([x_matches-ctr[0],y_matches-ctr[1],z_matches-ctr[2]],axis=0)),np.finfo(np.float32).eps*np.ones(np.shape(x_matches))],axis=0) #must never divide by 0 !!!!
     #if norms are 0 then we are on the border and the result should be 1
     #scal[np.isnan(scal)]=1
 
@@ -720,42 +636,9 @@ def sum_over_rays_bias(field,ctr,r200,rad_res,X_primes,Y_primes,Z_primes):
     
     scal[np.isnan(scal)]=1
 
-    
-    # plt.figure()
-    # plt.scatter(x_matches,np.isnan(scal))
-    # plt.scatter(y_matches,np.isnan(scal))
-    # plt.scatter(z_matches,np.isnan(scal))
-    
-    # print()
-    
-    # if r200>10:
-
-    #     plt.figure(figsize=(10,10))
-    #     plt.subplot(111)
-    #     plt.title("")
-    #     plt.grid(True)
-    #     plt.imshow(np.log10(field[int(ctr[2]+0.5*size),:,:]*rad_res),origin='lower',extent=[0,size,0,size])
-    #     plt.colorbar()
-
-    #     p=pat.Circle((0.5*size,0.5*size),r200,color="magenta",fill=False,edgecolor='k',linewidth=2)
-    #     axis=plt.gca()
-    #     axis.add_patch(p)
+    rays=np.exp(-np.sum(sampled,axis=1)*rad_res*scal)
 
 
-    #     plt.scatter(ctr[0]+0.5*size,ctr[1]+0.5*size,c='r')
-
-
-
-    #     plt.scatter(Xs[IB]+0.5*size,Ys[IB]+0.5*size,c="white",alpha=0.5,s=0.2)
-    #     plt.scatter(Xs_snap[IB]+0.5,Ys_snap[IB]+0.5,c="k",alpha=0.5,s=0.4)
-
-
-    #     # #    plt.scatter(Xs[OOB],Ys[OOB],c="red",alpha=0.5,marker="x")
-    #     plt.show()
-    #print(rays,scal)
-    # print(rays*scal)
-
-    #print(rays
     
     weights=(Rs[inds,argmin]**-2)/np.sum(Rs[inds,argmin]**-2)
     return(np.sum(rays*scal*weights))
@@ -836,13 +719,13 @@ def sum_over_rays_angle(field,ctr,r200,rad_res,X_circ,Y_circ,Z_circ):
     #plt.scatter(ctr[0],ctr[1],c='r')                              
 
 
-
-
-    rays_int=np.exp(-np.sum(rays,axis=1)*rad_res)
-
     scal=((X_primes*X_circ)+(Y_primes*Y_circ)+(Z_primes*Z_circ))/np.linalg.norm([X_circ,Y_circ,Z_circ],axis=0)/Rs
     
     scal[np.isnan(scal)]=1
+
+
+    rays_int=np.exp(-np.sum(rays,axis=1)*rad_res*scal)
+
 
     
 
@@ -853,7 +736,7 @@ def sum_over_rays_angle(field,ctr,r200,rad_res,X_circ,Y_circ,Z_circ):
     #plt.show()
     #print(rays_int,scal)
 
-    return(rays_int*scal)
+    return(rays_int)
 
 
 
@@ -937,13 +820,14 @@ def cumsum_over_rays_angle(field,ctr,r200,rad_res,X_circ,Y_circ,Z_circ):
 
 
 
-    rays_int=np.exp(np.cumsum(-rays*rad_res,axis=1)) #cumulative sum of optical depths along the ray's axis
 
     scal=((X_primes*X_circ)+(Y_primes*Y_circ)+(Z_primes*Z_circ))/np.linalg.norm([X_circ,Y_circ,Z_circ],axis=0)/Rs
     
     scal[np.isnan(scal)]=1
 
 
+    rays_int=np.exp(np.cumsum(-rays*rad_res,axis=1)*scal[:,np.newaxis]) #cumulative sum of optical depths along the ray's axis
+    
 
     #print(rays_int,scal)
 
@@ -952,7 +836,7 @@ def cumsum_over_rays_angle(field,ctr,r200,rad_res,X_circ,Y_circ,Z_circ):
     #plt.show()
     #print(rays_int,scal)
 
-    return(rays_int*scal[:,np.newaxis])
+    return(rays_int)
 
 
 def sum_over_rays_nexp(field,ctr,r200,rad_res,X_primes,Y_primes,Z_primes):
@@ -987,54 +871,7 @@ def sum_over_rays_nexp(field,ctr,r200,rad_res,X_primes,Y_primes,Z_primes):
     sampled=np.zeros_like(Xs)
     sampled[IB]=field[Xs_snap[IB],Ys_snap[IB],Zs_snap[IB]]
 
-    
-    rays=np.sum(sampled,axis=1)*rad_res
-
-
-    return(rays)
-
-
-def old_sum_over_rays(field,ctr,r200,rad_res,X_primes,Y_primes,Z_primes):
-
-    """
-    compute sum over rays centred at ctr using given resolution
-    field is a box to sum
-
-    """
-
-    size=np.shape(field)[0]
-
-    ctr=np.asarray(ctr)-0.5*size
-    delta_R=np.copy(ctr)
-    Xs,Ys,Zs=[X_primes,Y_primes,Z_primes]+delta_R[:,np.newaxis,np.newaxis]
-
-
-    
     Rs=np.linalg.norm([Xs,Ys,Zs],axis=0)
-
-
-    #used for getting data ... Need to be between 0 and size !!!
-    Xs_snap,Ys_snap,Zs_snap=np.int32([Xs+0.5*size,Ys+0.5*size,Zs+0.5*size])
-
-    
-    
-    IB=Rs<=r200 #if points in r200 ...
-    OOB=~IB
-
-    
-    #print(np.shape(OOB),np.shape(sampled))
-    #sampled=np.zeros(np.shape(Xs))
-    #sampled[IB]=field[Xs_snap[IB],Ys_snap[IB],Zs_snap[IB]]
-
-
-    
-    #sampled[Rs>r200]=0
-    
-    #rays=np.exp(-np.sum(sampled,axis=1)*rad_res)
-    rays=np.exp(-np.sum(field[np.int32(Xs+0.5*size),np.int32(Ys+0.5*size),np.int32(Zs+0.5*size)]*(Rs<=r200),axis=1)*rad_res)
-
-
-    
 
     #if paths
     x_matches=np.zeros((np.shape(Xs)[0]),dtype=np.float32)
@@ -1045,65 +882,24 @@ def old_sum_over_rays(field,ctr,r200,rad_res,X_primes,Y_primes,Z_primes):
     argmin=np.argmin(np.abs(Rs[:,:]-r200),axis=1)
 
 
-    #check=np.copy(z_matches)
-
-    # #if ang,ang
-    # for ind_the in range(np.shape(Rs)[2]):
-    #     for ind_phi in range(np.shape(Rs)[0]):
-
-
-    #         loc_argmin=argmin[ind_phi,ind_the]
-    #         #r_matches[ind_phi,ind_the]=Rs[ind_phi,np.argmin(np.abs(Rs[:,:,:]-r200),axis=1)[ind_phi,ind_the],ind_the]
-    #         x_matches[ind_phi,ind_the]=Xs[ind_phi,loc_argmin,ind_the]
-    #         y_matches[ind_phi,ind_the]=Ys[ind_phi,loc_argmin,ind_the]
-    #         z_matches[ind_phi,ind_the]=Zs[ind_phi,loc_argmin,ind_the]
-
-    #         #check[ind_phi,ind_the]=1
-
-    #print(Rs)
-    #print(np.shape(Xs),np.shape(argmin))
-    #if paths
     inds=np.arange(len(x_matches))
     x_matches[inds]=Xs[inds,argmin]
     y_matches[inds]=Ys[inds,argmin]
     z_matches[inds]=Zs[inds,argmin]
 
-    
-    
+    #if norms are 0 then we are on the border and the result should be 1
+    #scal[np.isnan(scal)]=1
 
-
-    
-    #scal=((x_matches-ctr[0])*x_matches+(y_matches-ctr[1])*y_matches+(z_matches-ctr[2])*z_matches)/np.max([(np.linalg.norm([x_matches,y_matches,z_matches],axis=0)*np.linalg.norm([x_matches-ctr[0],y_matches-ctr[1],z_matches-ctr[2]],axis=0)),np.finfo(float).eps*np.ones(np.shape(x_matches))]) #must never divide by 0 !!!!
-    #scal=((x_matches-ctr[0])*x_matches+(y_matches-ctr[1])*y_matches+(z_matches-ctr[2])*z_matches)/np.max([(np.linalg.norm([x_matches,y_matches,z_matches],axis=0)*np.linalg.norm([x_matches-ctr[0],y_matches-ctr[1],z_matches-ctr[2]],axis=0)),np.finfo(np.float32).eps*np.ones(np.shape(x_matches))],axis=0) #must never divide by 0 !!!!
-
-    scal=np.float64((x_matches-ctr[0])*x_matches+(y_matches-ctr[1])*y_matches+(z_matches-ctr[2])*z_matches)/((np.linalg.norm([x_matches,y_matches,z_matches],axis=0)*np.linalg.norm([x_matches-ctr[0],y_matches-ctr[1],z_matches-ctr[2]],axis=0)))
+    scal=((x_matches-ctr[0])*x_matches+(y_matches-ctr[1])*y_matches+(z_matches-ctr[2])*z_matches)/((np.linalg.norm([x_matches,y_matches,z_matches],axis=0)*np.linalg.norm([x_matches-ctr[0],y_matches-ctr[1],z_matches-ctr[2]],axis=0)))
     
     scal[np.isnan(scal)]=1
 
-    # # plt.figure(figsize=(10,10))
-    # plt.subplot(111)
-    # plt.title("")
-    # plt.grid(True)
-    # plt.imshow(np.log10(field[int(ctr[2]+0.5*size),:,:]*rad_res),origin='lower',extent=[0,size,0,size])
-    # plt.colorbar()
-
-    # p=pat.Circle((0.5*size,0.5*size),r200,color="magenta",fill=False,edgecolor='k',linewidth=2)
-    # axis=plt.gca()
-    # axis.add_patch(p)
-
-
-    # plt.scatter(ctr[0]+0.5*size,ctr[1]+0.5*size,c='r')
-
-
     
-    # plt.scatter(Xs[IB]+0.5*size,Ys[IB]+0.5*size,c="white",alpha=0.5,s=0.2)
-    # plt.scatter(Xs_snap[IB]+0.5,Ys_snap[IB]+0.5,c="k",alpha=0.5,s=0.4)
+    rays=np.sum(sampled,axis=1)*rad_res*scal
 
-    # # # #    plt.scatter(Xs[OOB],Ys[OOB],c="red",alpha=0.5,marker="x")
-    # plt.show()
 
-    
-    return(rays*scal)
+    return(rays)
+
 
     
 
