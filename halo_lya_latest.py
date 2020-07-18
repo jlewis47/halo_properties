@@ -23,11 +23,22 @@ from lya_func import *
 #from wrap_boxes import *
 from output_paths import *
 
+def compute_lya(out_nb,ldx,path,sim_name,lya_n_path=3,lya_skip=256,lya_angle=40.0):
 
+        """
 
-def compute_lya(out_nb,ldx,path,sim_name):
+        shoot lya LoS at an angle in the (x,y) plane
+        uses box periodicity to reach 50cMpc/h length
 
+        lya_n_path is the number of paths per (x,y) plane
+        lya_skip is the number of cells between each (x,y) plane
+        lya_angle is the angle between each LoS and the x axis within the (x,y) plane
 
+        number of shot LoS is lya_n_path*(ldx/lya_skip)
+
+        """
+
+        
 
         info_path=os.path.join(path,'output_00'+out_nb)
         data_pth_fullres=path
@@ -105,9 +116,9 @@ def compute_lya(out_nb,ldx,path,sim_name):
 
 
         lya_n_lines=ldx
-        lya_n_path=3
-        lya_skip=ldx/4
-        lya_angle=40.0
+        #lya_n_path=3
+        #lya_skip=ldx/4
+        #lya_angle=40.0
 
         taus=[]
 
