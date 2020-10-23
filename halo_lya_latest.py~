@@ -23,22 +23,11 @@ from lya_func import *
 #from wrap_boxes import *
 from output_paths import *
 
-def compute_lya(out_nb,ldx,path,sim_name,lya_n_path=3,lya_skip=256,lya_angle=40.0):
 
-        """
 
-        shoot lya LoS at an angle in the (x,y) plane
-        uses box periodicity to reach 50cMpc/h length
+def compute_lya(out_nb,ldx,path,sim_name):
 
-        lya_n_path is the number of paths per (x,y) plane
-        lya_skip is the number of cells between each (x,y) plane
-        lya_angle is the angle between each LoS and the x axis within the (x,y) plane
 
-        number of shot LoS is lya_n_path*(ldx/lya_skip)
-
-        """
-
-        
 
         info_path=os.path.join(path,'output_00'+out_nb)
         data_pth_fullres=path
@@ -93,15 +82,15 @@ def compute_lya(out_nb,ldx,path,sim_name,lya_n_path=3,lya_skip=256,lya_angle=40.
         #Get data
         #fl= o_rad_cube_big(data_pth_rad,2,f_side,subcube_nb)
         # if tst :nrg = o_rad_cube_big(data_pth_rad,1,f_side,subcube_nb)
-        xion=o_data(os.path.join(data_pth_fullres,'xion_00'+out_nb))
-        rho=o_data(os.path.join(data_pth_fullres,'rho_%05i'+out_nb))
-        #dust=o_data(os.path.join(data_pth_fullres,'dust_%05i'+out_nb))
-        #metals=o_data(os.path.join(data_pth_fullres,'Z_%05i'+out_nb)) #absolute
-        temp=o_data(os.path.join(data_pth_fullres,'T_%05i'+out_nb))
+        xion=o_data(os.path.join(data_pth_fullres,'xion_%05i'%int(out_nb)))
+        rho=o_data(os.path.join(data_pth_fullres,'rho_%05i'%int(out_nb)))
+        #dust=o_data(os.path.join(data_pth_fullres,'dust_%05i'%int(out_nb)))
+        #metals=o_data(os.path.join(data_pth_fullres,'Z_%05i'%int(out_nb))) #absolute
+        temp=o_data(os.path.join(data_pth_fullres,'T_%05i'%int(out_nb)))
         temp = temp/(rho*(1.+xion))
         #rho = rho
-        vx=o_data(os.path.join(data_pth_fullres,'vx_%05i'+out_nb))
-        vy=o_data(os.path.join(data_pth_fullres,'vy_%05i'+out_nb))
+        vx=o_data(os.path.join(data_pth_fullres,'vx_%05i'%int(out_nb)))
+        vy=o_data(os.path.join(data_pth_fullres,'vy_%05i'%int(out_nb)))
 
         nHI=(1-xion)*rho
 
@@ -116,9 +105,9 @@ def compute_lya(out_nb,ldx,path,sim_name,lya_n_path=3,lya_skip=256,lya_angle=40.
 
 
         lya_n_lines=ldx
-        #lya_n_path=3
-        #lya_skip=ldx/4
-        #lya_angle=40.0
+        lya_n_path=3
+        lya_skip=ldx/4
+        lya_angle=40.0
 
         taus=[]
 
@@ -173,7 +162,7 @@ def compute_lya(out_nb,ldx,path,sim_name,lya_n_path=3,lya_skip=256,lya_angle=40.
                 Zray=int(i_z*lya_skip)
                     
                 loc_T_vects=temp[Xray,Yray,Zray]*temp_fact
-                loc_nHI_vects=nHI[Xray,Yray,Zray]*unit_d*1e-3/Pmass*1e6
+                loc_nHI_vects=nHI[Xray,Yray,Zray]*rho_fact
                 loc_v_vects=v_direction[Xray,Yray,Zray]*unit_l/unit_t/100.0 #m/s
 
                 loc_T_vects=Nresample_vect(loc_T_vects,8)
@@ -182,8 +171,8 @@ def compute_lya(out_nb,ldx,path,sim_name,lya_n_path=3,lya_skip=256,lya_angle=40.
 
                 loc_tau_vects=jon_forest(loc_nHI_vects,loc_T_vects,loc_v_vects,vexp,Ds,cum_Ds,HzSI,px_to_m)
 
-                print('\t %f'%(-np.log(np.nanmean(np.exp(-loc_tau_vects)))))
-                taus.append(-np.log(np.nanmean(np.exp(-loc_tau_vects))))
+                print('\t %f'%(np.log(np.nanmean(np.exp(-loc_tau_vects)))))
+                taus.append(np.log(np.nanmean(np.exp(-loc_tau_vects))))
 
 
                 i_z+=1

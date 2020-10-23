@@ -23,6 +23,10 @@ import filecmp
 import matplotlib.patches as pat
 from scipy.interpolate import interp2d
 
+def rmv_inf(data):
+
+    return(data[~np.inf(data)])
+
 def linr(x,a,b):
     return(x*a+b)
 
@@ -71,7 +75,7 @@ def get_infos_no_t(info_path,out_nb,whole_side) :
 
     infos=np.zeros(10,dtype=np.float64)
     j=0
-    with open(os.path.join(info_path,'info_%05i.txt'%int(out_nb)),'r') as f:
+    with open(os.path.join(info_path,'info_00'+out_nb),'r') as f:
         for i,line in enumerate(f):
             if (i>7) and (i<18):
                 
@@ -583,6 +587,7 @@ def sum_over_rays(field,ctr,r200,rad_res,X_primes,Y_primes,Z_primes):
 
 def sum_over_rays_bias(field,ctr,r200,rad_res,X_primes,Y_primes,Z_primes):
 
+    
     """
     compute sum over rays centred at ctr using given resolution
     field is a box to sum
@@ -637,11 +642,12 @@ def sum_over_rays_bias(field,ctr,r200,rad_res,X_primes,Y_primes,Z_primes):
     scal[np.isnan(scal)]=1
 
     rays=np.exp(-np.sum(sampled,axis=1)*rad_res*scal)
-
-
     
     weights=(Rs[inds,argmin]**-2)/np.sum(Rs[inds,argmin]**-2)
-    return(np.sum(rays*scal*weights))
+
+    print(np.sum(np.isinf(scal)),np.sum(np.isinf(rays)),np.sum(np.isinf(weights)),(np.sum(sampled,axis=1)*rad_res*scal)[np.isinf(rays)],(scal)[np.isinf(rays)],flush=True)
+    
+    return(np.sum(rays*weights))
 
 
 def sum_over_rays_angle(field,ctr,r200,rad_res,X_circ,Y_circ,Z_circ):

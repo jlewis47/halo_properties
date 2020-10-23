@@ -64,7 +64,10 @@ def compute_dust(out_nb,ldx,path,sim_name):
         nb_halo = np.shape(phew_tab)[0]
 
 
+        ran = [-ldx,0,ldx]
+        pos_vects = np.asarray([[i,j,k] for k in ran for j in ran for i in ran])
 
+        
         #Conversion factors
         tau_fact = px_to_m*sigma_UV*1e6
         rho_fact=unit_d #g/cm^3
@@ -82,7 +85,7 @@ def compute_dust(out_nb,ldx,path,sim_name):
 
 
         M,pos_nrmd = phew_tab[:,0],(phew_tab[:,1:4])
-        pos =do_half_round(ldx*pos_nrmd) #was np.int16
+        pos =np.asarray(do_half_round(ldx*pos_nrmd)) #was np.int16
 
         #(0,0,0) px location of 512**3 cube within whole data set
 
@@ -104,10 +107,10 @@ def compute_dust(out_nb,ldx,path,sim_name):
         #Get data
         #fl= o_rad_cube_big(data_pth_rad,2,f_side,subcube_nb)
         # if tst :nrg = o_rad_cube_big(data_pth_rad,1,f_side,subcube_nb)
-        xion=o_data(os.path.join(data_pth_fullres,'xion_%05i'%int(out_nb)))
-        rho=o_data(os.path.join(data_pth_fullres,'rho_%05i'%int(out_nb)))
-        dust=o_data(os.path.join(data_pth_fullres,'dust_%05i'%int(out_nb)))
-        metals=o_data(os.path.join(data_pth_fullres,'Z_%05i'%int(out_nb))) #absolute
+        xion=o_data(os.path.join(data_pth_fullres,'xion_00'+out_nb))
+        rho=o_data(os.path.join(data_pth_fullres,'rho_00'+out_nb))
+        dust=o_data(os.path.join(data_pth_fullres,'dust_00'+out_nb))
+        metals=o_data(os.path.join(data_pth_fullres,'Z_00'+out_nb)
         # temp =  o_fullbox_big(data_pth_fullres,'temp',512,512,subcube_nb)
         # temp = temp/(rho*(1.+xion))
         #rho = rho
@@ -212,27 +215,70 @@ def compute_dust(out_nb,ldx,path,sim_name):
             sm_nHI=sm_rho*(1-sm_xion)
 
 
-                                      
-            dust_mass[ind]=np.sum(sm_dust)*(px_to_m*100)**3*1e-3/Msol*dust_fact
-            gas_mass[ind]=np.sum(sm_rho)*(px_to_m*100)**3*1e-3/Msol*rho_fact
-            metal_mass[ind]=np.sum(sm_metals*sm_rho)*(px_to_m*100)**3*1e-3/Msol*rho_fact
-            neutral_gas_mass[ind]=np.sum(sm_nHI)*(px_to_m*100)**3*1e-3/Msol*rho_fact
-                                      
-            max_dust_dens[ind]=np.max(sm_dust)*dust_fact
-            max_gas_dens[ind]=np.max(sm_rho)*rho_fact
-            max_metal_dens[ind]=np.max(sm_metals*sm_rho)*rho_fact
-            max_neutral_gas_dens[ind]=np.max(sm_nHI)*rho_fact
-
-            gasZmean[ind]=np.mean(sm_metals)
-            gasZmax[ind]=np.max(sm_metals)            
-
-
             if phew_star_nb[ind]>0:
 
                     cur_stars=stars[phew_tot_star_nb[ind]:phew_tot_star_nb[ind]+phew_star_nb[ind],:]
-            
+
+
+                    fracd_stars=np.copy(cur_stars)
+                    fracd_stars[:,1:4] = np.asarray(cur_stars[:,1:4]*(ldx)+delta)
+                    #Need to be careful when star is on the other side of te box when compared to halo centre
+
+
+                    fracd_stars[:,1:4] += pos_vects[np.argmin(get_mult_27(pos[ind],fracd_stars[:,1:4]-delta,pos_vects),axis=1)]
+         
+                    
+                    sm_xgrid=np.arange(lower_bounds[ind,0],upper_bounds[ind,0],1)
+                    star_sm_posx=np.digitize(fracd_stars[:,1],sm_xgrid)-1
+
+                    sm_ygrid=np.arange(lower_bounds[ind,1],upper_bounds[ind,1],1)
+                    star_sm_posy=np.digitize(fracd_stars[:,2],sm_ygrid)-1
+                    
+                    sm_zgrid=np.arange(lower_bounds[ind,2],upper_bounds[ind,2],1)
+                    star_sm_posz=np.digitize(fracd_stars[:,3],sm_zgrid)-1                      
+
+                    stellar_box_mass = np.zeros_like(sm_rho,dtype=np.float64)
+                    
+                    for istar,star in enumerate(fracd_stars):
+
+        
+                            stellar_box_mass[star_sm_posz[istar],star_sm_posy[istar],star_sm_posx[istar]]+=star[0]
+
+
+                    # print(np.max(stellar_box_mass),sm_metals[np.max(stellar_box_mass)==stellar_box_mass])
+                    # print(np.max(sm_metals),stellar_box_mass[np.max(sm_metals)==sm_metals])
+
+                    print(stellar_box_mass,sm_metals,sm_rho)
+                    
+                    stellar_box_mass=stellar_box_mass/np.sum(stellar_box_mass) #weights ...
+                    
                     stellarZmax[ind]=np.max(cur_stars[:,-1])*0.02
-                    stellarZmean[ind]=np.average(cur_stars[:,-1],weights=cur_stars[:,0])*0.02       
+                    stellarZmean[ind]=np.average(cur_stars[:,-1],weights=cur_stars[:,0])*0.02      
+
+                    dust_mass[ind]=np.sum(sm_dust)*(px_to_m*100)**3*1e-3/Msol*dust_fact
+                    metal_mass[ind]=np.sum(sm_metals*sm_rho)*(px_to_m*100)**3*1e-3/Msol*rho_fact
+
+
+                    max_dust_dens[ind]=np.max(sm_dust)*dust_fact
+                    max_metal_dens[ind]=np.max(sm_metals*sm_rho)*rho_fact
+
+
+                    gasZmean[ind]=np.average(sm_metals,weights=stellar_box_mass)
+                    gasZmax[ind]=np.max(sm_metals)            
+
+
+
+                    
+
+
+                    
+                    
+            max_neutral_gas_dens[ind]=np.max(sm_nHI)*rho_fact
+            max_gas_dens[ind]=np.max(sm_rho)*rho_fact
+            neutral_gas_mass[ind]=np.sum(sm_nHI)*(px_to_m*100)**3*1e-3/Msol*rho_fact
+            gas_mass[ind]=np.sum(sm_rho)*(px_to_m*100)**3*1e-3/Msol*rho_fact
+
+
 
         idx = np.copy(idxs)
         mass,x,y,z = np.transpose(phew_tab[:,:-1])

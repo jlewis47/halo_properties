@@ -102,13 +102,13 @@ def assoc_stars_to_haloes(out_nb,ldx,path,sim_name):
 
 
         #Stars
-        stars=read_stars(star_path,int(out_nb))
+        stars=read_stars(star_path,out_nb)
 
         stars=np.transpose([stars['msol'],stars['x'],stars['y'],stars['z'],stars['Age'],stars['Z']])
 
         #print(np.shape(stars))
 
-        star_tree = spatial.cKDTree(stars[:,1:4]*ldx)
+        star_tree = spatial.cKDTree(stars[:,1:4]*(ldx))
 
         #Local star IDs for creating list of 'lone stars'
         star_ids = np.arange(len(stars))
@@ -156,7 +156,7 @@ def assoc_stars_to_haloes(out_nb,ldx,path,sim_name):
 
 
             ctr_vanilla = phew[2:5] #ctr without rounding
-            ctr = do_half_round(phew[2:5]*ldx)
+            ctr = do_half_round(phew[2:5]*(ldx))
 
             #Find nearby stars
             #big_ball = star_tree.query_ball_point(ctr,r_px)
@@ -187,7 +187,7 @@ def assoc_stars_to_haloes(out_nb,ldx,path,sim_name):
                 ctr_star = phew_stars[phew_stars[:,4]<10.+tstep,1:4][0]
                 phews[phew_nb,2:5]=ctr_star
                 ctr_vanilla = ctr_star #ctr without rounding
-                ctr=do_half_round(ctr_star*ldx)
+                ctr=do_half_round(ctr_star*(ldx))
                 #big_ball = star_tree.query_ball_point(ctr,r_px) #Use fast method for ball that holds box
                 #this line checks all edge reflexions
                 big_ball=np.int32(get_27_tree(ctr,star_tree,r_px,pos_vects))

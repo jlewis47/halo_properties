@@ -1,4 +1,0 @@
-+ srun python run.py
-srun: Job step aborted: Waiting up to 62 seconds for job step to finish.
-slurmstepd: error: *** JOB 2070512 ON r6i5n5 CANCELLED AT 2020-06-24T12:02:08 DUE TO TIME LIMIT ***
-slurmstepd: error: *** STEP 2070512.0 ON r6i5n5 CANCELLED AT 2020-06-24T12:02:08 DUE TO TIME LIMIT ***
