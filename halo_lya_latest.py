@@ -94,14 +94,14 @@ def compute_lya(out_nb,ldx,path,sim_name,lya_n_path=3,lya_skip=256,lya_angle=40.
         #fl= o_rad_cube_big(data_pth_rad,2,f_side,subcube_nb)
         # if tst :nrg = o_rad_cube_big(data_pth_rad,1,f_side,subcube_nb)
         xion=o_data(os.path.join(data_pth_fullres,'xion_00'+out_nb))
-        rho=o_data(os.path.join(data_pth_fullres,'rho_%05i'+out_nb))
+        rho=o_data(os.path.join(data_pth_fullres,'rho_00'+out_nb))
         #dust=o_data(os.path.join(data_pth_fullres,'dust_%05i'+out_nb))
         #metals=o_data(os.path.join(data_pth_fullres,'Z_%05i'+out_nb)) #absolute
-        temp=o_data(os.path.join(data_pth_fullres,'T_%05i'+out_nb))
+        temp=o_data(os.path.join(data_pth_fullres,'T_00'+out_nb))
         temp = temp/(rho*(1.+xion))
         #rho = rho
-        vx=o_data(os.path.join(data_pth_fullres,'vx_%05i'+out_nb))
-        vy=o_data(os.path.join(data_pth_fullres,'vy_%05i'+out_nb))
+        vx=o_data(os.path.join(data_pth_fullres,'vx_00'+out_nb))
+        vy=o_data(os.path.join(data_pth_fullres,'vy_00'+out_nb))
 
         nHI=(1-xion)*rho
 

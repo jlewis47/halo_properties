@@ -110,7 +110,7 @@ def compute_dust(out_nb,ldx,path,sim_name):
         xion=o_data(os.path.join(data_pth_fullres,'xion_00'+out_nb))
         rho=o_data(os.path.join(data_pth_fullres,'rho_00'+out_nb))
         dust=o_data(os.path.join(data_pth_fullres,'dust_00'+out_nb))
-        metals=o_data(os.path.join(data_pth_fullres,'Z_00'+out_nb)
+        metals=o_data(os.path.join(data_pth_fullres,'Z_00'+out_nb))
         # temp =  o_fullbox_big(data_pth_fullres,'temp',512,512,subcube_nb)
         # temp = temp/(rho*(1.+xion))
         #rho = rho

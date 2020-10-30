@@ -109,7 +109,7 @@ def compute_fesc(out_nb,ldx,path,sim_name):
 
 
         limit_r=phew_tab[:,-1]+1
-        sample_r=do_half_round(limiot_r)
+        sample_r=do_half_round(limit_r)
 
 
         M,pos_nrmd = phew_tab[:,0],(phew_tab[:,1:4])
@@ -138,7 +138,7 @@ def compute_fesc(out_nb,ldx,path,sim_name):
         xion=o_data(os.path.join(data_pth_fullres,'xion_00'+out_nb))
         rho=o_data(os.path.join(data_pth_fullres,'rho_00'+out_nb))
         dust=o_data(os.path.join(data_pth_fullres,'dust_00'+out_nb))
-        metals=o_data(os.path.join(data_pth_fullres,'Z_00'+out_nb) #absolute
+        metals=o_data(os.path.join(data_pth_fullres,'Z_00'+out_nb)) #absolute
         # temp =  o_fullbox_big(data_pth_fullres,'temp',512,512,subcube_nb)
         # temp = temp/(rho*(1.+xion))
         #rho = rho

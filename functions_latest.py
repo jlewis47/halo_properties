@@ -75,7 +75,7 @@ def get_infos_no_t(info_path,out_nb,whole_side) :
 
     infos=np.zeros(10,dtype=np.float64)
     j=0
-    with open(os.path.join(info_path,'info_00'+out_nb),'r') as f:
+    with open(os.path.join(info_path,'info_00'+out_nb+'.txt'),'r') as f:
         for i,line in enumerate(f):
             if (i>7) and (i<18):
                 
