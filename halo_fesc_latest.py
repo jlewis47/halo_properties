@@ -78,7 +78,7 @@ def compute_fesc(out_nb,ldx,path,sim_name):
 
 
         #Conversion factors
-        tau_fact = px_to_m*sigma_UV*1e6
+        tau_fact = px_to_m*sigma_UV*1e6*0.76 #important musnt count the helium...
         rho_fact=1e-3*unit_d/Pmass#unit_d*1e-3*(1e2)**3. #H/cm**3
         dust_fact=unit_d #g/cm^3
         vvrho_fact=1e6*1e3*1e-2*unit_l/unit_t/1e3 #m/s #H/m**2/s
