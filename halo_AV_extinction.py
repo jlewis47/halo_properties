@@ -323,7 +323,7 @@ def compute_AV_ext(out_nb,ldx,path,sim_name):
 
                         halo_mags_ext_AVlaw_wu[ind]=-2.5*np.log10(np.nansum(halo_fluxes*10**(ext_A1600_star/-2.5)))
                         
-                        print(ext_Av_star,ext_star,halo_mags_ext_AVlaw[ind]-halo_mags[ind])
+
 
 
                         #as in devriendt+2010
@@ -429,7 +429,7 @@ def compute_AV_ext(out_nb,ldx,path,sim_name):
 
                         halo_mags_ext_AVlaw_wu[ind]=-2.5*np.log10(np.nansum(halo_fluxes*10**(ext_A1600_star/-2.5)))
                         
-                        print(ext_Av_star,ext_star,halo_mags_ext_AVlaw[ind]-halo_mags[ind])
+                        print(ext_Av_star,ext_star,halo_mags_ext_AVlaw_wu[ind]-halo_mags[ind],halo_mags_ext_AVlaw_devriendt[ind]-halo_mags[ind])
 
 
 
