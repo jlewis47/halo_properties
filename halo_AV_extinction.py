@@ -281,6 +281,7 @@ def compute_AV_ext(out_nb,ldx,path,sim_name):
 
 
                     metals_LoS=np.zeros(len(cur_stars),dtype=np.float32)
+                    metals_LoS_devriendt=np.zeros(len(cur_stars),dtype=np.float32)
 
 
 
@@ -290,6 +291,7 @@ def compute_AV_ext(out_nb,ldx,path,sim_name):
 
                     emissivity_box = np.zeros_like(sm_rho,dtype=np.float64)
                     metal_LoS_box = np.zeros_like(sm_rho,dtype=np.float64)
+                    metal_LoS_box_devriendt = np.zeros_like(sm_rho,dtype=np.float64)
                     DTM_LoS_box = np.zeros_like(sm_rho,dtype=np.float64)                    
 
 
@@ -311,7 +313,8 @@ def compute_AV_ext(out_nb,ldx,path,sim_name):
 
                             sm_ctr = np.int32(star[1:4]*(ldx)-[lower_bounds[ind,0],lower_bounds[ind,1],lower_bounds[ind,2]])+0.5
 
-                            metals_LoS[star_nb]=star_path_cheap(sm_ctr,sm_metals*sm_rho/Pmass/1e3,2*halo[-1])*px_to_m*100.0 #cm^-2
+                            metals_LoS[star_nb]=star_path_cheap(sm_ctr,sm_metals*sm_rho,2*halo[-1])*px_to_m*100.0/Pmass/1e3 #cm^-2
+                            metals_LoS_devriendt[star_nb]=star_path_cheap(sm_ctr,(sm_metals/0.02)**1.3*sm_rho,2*halo[-1])*px_to_m*100.0/Pmass/1e3/2.1e21
                             DTM_LoS[star_nb]=star_path_cheap_mean(sm_ctr,sm_dust/sm_metals/sm_rho,2*halo[-1])
 
                         DTM_LoS[np.isinf(DTM_LoS)]=0.0
@@ -327,7 +330,7 @@ def compute_AV_ext(out_nb,ldx,path,sim_name):
 
 
                         #as in devriendt+2010
-                        tau_dust=UV(1600,3.1)*metals_LoS
+                        tau_dust=UV(1600,3.1)*metals_LoS_devriendt
                         halo_mags_ext_AVlaw_devriendt[ind]=-2.5*np.log10(np.nansum(halo_fluxes*np.exp(-tau_dust)))
 
                         
@@ -394,7 +397,8 @@ def compute_AV_ext(out_nb,ldx,path,sim_name):
                             
                             #metal_LoS_box[z_cell,y_cell,x_cell]=star_path_cheap(sm_ctr,sm_metals*sm_rho/Pmass/1e3,2*halo[-1])*px_to_m*100.0 #cm^-2
 
-                            metal_LoS_box[z_cell,y_cell,x_cell]=star_path_cheap(sm_ctr,(sm_metals/0.02)**1.3*sm_rho,2*halo[-1])*px_to_m*100.0/2.1e21/Pmass/1e3 #cm^-2 #ala devriendt+2010
+                            metal_LoS_box_devriendt[z_cell,y_cell,x_cell]=star_path_cheap(sm_ctr,(sm_metals/0.02)**1.3*sm_rho,2*halo[-1])*px_to_m*100.0/2.1e21/Pmass/1e3 #cm^-2 #ala devriendt+2010
+                            metal_LoS_box[z_cell,y_cell,x_cell]=star_path_cheap(sm_ctr,sm_metals*sm_rho,2*halo[-1])*px_to_m*100.0/Pmass/1e3 #cm^-2
 
                             
                             DTM_LoS_box[z_cell,y_cell,x_cell]=star_path_cheap_mean(sm_ctr,sm_dust/sm_metals/sm_rho,2*halo[-1]) #cm^-2
@@ -402,8 +406,9 @@ def compute_AV_ext(out_nb,ldx,path,sim_name):
                         
                         #now we can use our indices again to get the proper tau/trans for every star : SO MUCH MUCH MUCH MUCH FASTER !
 
+                        metals_LoS_devriendt=metal_LoS_box_devriendt[star_sm_posz,star_sm_posy,star_sm_posx]
                         metals_LoS=metal_LoS_box[star_sm_posz,star_sm_posy,star_sm_posx]
-
+                    
 
                         
 
@@ -416,7 +421,7 @@ def compute_AV_ext(out_nb,ldx,path,sim_name):
 
 
                         #as in devriendt+2010
-                        tau_dust=UV(1600,3.1)*metals_LoS
+                        tau_dust=UV(1600,3.1)*metals_LoS_devriendt
                         halo_mags_ext_AVlaw_devriendt[ind]=-2.5*np.log10(np.nansum(halo_fluxes*np.exp(-tau_dust)))
 
                         #as in Wu+2020
@@ -425,11 +430,11 @@ def compute_AV_ext(out_nb,ldx,path,sim_name):
                         ext_Av_star=watson11_Av_law(metals_LoS/0.02)*DTM_LoS/0.44 # 0.44 is canonical MW value
                         #should the metallicity be solar?
                         ext_A1600_star=ext_Av_star*klambda_cardetti(0.16)/klambda_cardetti(0.551)
- 
+
+
 
                         halo_mags_ext_AVlaw_wu[ind]=-2.5*np.log10(np.nansum(halo_fluxes*10**(ext_A1600_star/-2.5)))
                         
-                        print(ext_Av_star,ext_star,halo_mags_ext_AVlaw_wu[ind]-halo_mags[ind],halo_mags_ext_AVlaw_devriendt[ind]-halo_mags[ind])
 
 
 
@@ -442,7 +447,7 @@ def compute_AV_ext(out_nb,ldx,path,sim_name):
         print('**************************************************')
         print("%.1f"%(1.0/a-1.0))
         print('Extinctions : ')
-        ext_all=halo_mags_ext_AVlaw-halo_mags
+        ext_all=halo_mags_ext_AVlaw_wu-halo_mags
         ext_all[np.isinf(ext_all)]=0
         print(np.nanmax(ext_all))
         print(np.nanmean(ext_all))

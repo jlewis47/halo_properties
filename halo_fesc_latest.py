@@ -328,7 +328,7 @@ def compute_fesc(out_nb,ldx,path,sim_name):
                         
                         #star per star
 
-                        #dust_trans=np.ones_like(halo_fluxes,dtype=np.float32)
+                        dust_taus=np.zeros(len(cur_stars),dtype=np.float32)
 
                         for star_nb,star in enumerate(cur_stars):
 

@@ -249,5 +249,27 @@ def star_path_cheap(pos,dust,rlim):
     Zs=np.arange(zstt,min(zstt+rlim,len(dust)),1,dtype=np.int16)
     Ys=np.ones_like(Zs,dtype=np.int16)*int(ystt)
     Xs=np.ones_like(Zs,dtype=np.int16)*int(xstt)
+
+
     
     return(np.sum(dust[Zs,Ys,Xs]))
+
+
+def star_path_cheap_mean(pos,dust,rlim):
+    
+    """
+    doesn't do trig and just takes a straight line
+    takes small box around halo not all box
+
+    pos in cells
+    """
+
+    xstt,ystt,zstt=pos #in cartesian ref centred at 0,0,0 of box
+    
+    #out of box target in stt ref
+    
+    Zs=np.arange(zstt,min(zstt+rlim,len(dust)),1,dtype=np.int16)
+    Ys=np.ones_like(Zs,dtype=np.int16)*int(ystt)
+    Xs=np.ones_like(Zs,dtype=np.int16)*int(xstt)
+    
+    return(np.mean(dust[Zs,Ys,Xs]))

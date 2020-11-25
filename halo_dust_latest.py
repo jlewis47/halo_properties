@@ -248,7 +248,7 @@ def compute_dust(out_nb,ldx,path,sim_name):
                     # print(np.max(stellar_box_mass),sm_metals[np.max(stellar_box_mass)==stellar_box_mass])
                     # print(np.max(sm_metals),stellar_box_mass[np.max(sm_metals)==sm_metals])
 
-                    print(stellar_box_mass,sm_metals,sm_rho)
+                    #print(stellar_box_mass,sm_metals,sm_rho)
                     
                     stellar_box_mass=stellar_box_mass/np.sum(stellar_box_mass) #weights ...
                     
