@@ -639,14 +639,15 @@ def sum_over_rays_bias(field,ctr,r200,rad_res,X_primes,Y_primes,Z_primes):
 
     scal=((x_matches-ctr[0])*x_matches+(y_matches-ctr[1])*y_matches+(z_matches-ctr[2])*z_matches)/((np.linalg.norm([x_matches,y_matches,z_matches],axis=0)*np.linalg.norm([x_matches-ctr[0],y_matches-ctr[1],z_matches-ctr[2]],axis=0)))
     
-    #scal[np.isnan(scal)]=1
-    np.nan_to_num(scal,nan=1,posinf=1,neginf=1)
+    scal[np.isnan(scal)]=1
+    scal[np.isinf(scal)]=1    
+    #np.nan_to_num(scal,nan=1,posinf=1,neginf=1)
     
     rays=np.exp(-np.sum(sampled,axis=1)*rad_res*scal)
     
     weights=(Rs[inds,argmin]**-2)/np.sum(Rs[inds,argmin]**-2)
 
-    print(np.sum(np.isinf(scal)),np.sum(np.isinf(rays)),np.sum(np.isinf(weights)),(np.sum(sampled,axis=1)*rad_res*scal)[np.isinf(rays)],(scal)[np.isinf(rays)],flush=True)
+    #print(np.sum(np.isinf(scal)),np.sum(np.isinf(rays)),np.sum(np.isinf(weights)),(np.sum(sampled,axis=1)*rad_res*scal)[np.isinf(rays)],(scal)[np.isinf(rays)],flush=True)
     
     return(np.sum(rays*weights))
 
