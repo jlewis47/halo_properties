@@ -9,7 +9,7 @@ import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as pat
-from read_radgpu import o_rad_cube_big
+#from read_radgpu import o_rad_cube_big
 from read_stars import read_stars
 from scipy import spatial
 import time
@@ -26,8 +26,11 @@ from output_paths import *
 
 
 
-def compute_dust(out_nb,ldx,path,sim_name):
+def compute_dust(out_nb,ldx,path,sim_name,use_fof=False):
 
+
+        fof_suffix=''
+        if use_fof:fof_suffix='_fof'        
         
         info_path=os.path.join(path,'output_00'+out_nb)
         data_pth_fullres=path
@@ -54,7 +57,7 @@ def compute_dust(out_nb,ldx,path,sim_name):
 
 
         print('Getting Phew and stars')
-        idxs,star_idxs,phew_tot_star_nb,phew_star_nb,phew_tab,stars,lone_stars = read_assoc(out_nb,sim_name)
+        idxs,star_idxs,phew_tot_star_nb,phew_star_nb,phew_tab,stars,lone_stars = read_assoc(out_nb,sim_name,use_fof)
 
 
 
@@ -306,7 +309,7 @@ def compute_dust(out_nb,ldx,path,sim_name):
                                     
         assert len(dict_keys)==len(np.transpose(file_bytes)), "mismatch between number of keys and number of data entries"
 
-        with open(os.path.join(out,'gas_dust_out_'+out_nb+'_0'),'wb') as newFile:
+        with open(os.path.join(out,'gas_dust_out_'+out_nb+'_0'+fof_suffix),'wb') as newFile:
             np.save(newFile,np.int32(len(idx)))
             np.save(newFile,np.int32(len(dict_keys)))
             np.save(newFile,np.float64(a))

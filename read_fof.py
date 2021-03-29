@@ -1,9 +1,7 @@
 import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 import os
-from read_stars import o_stars
+from read_stars import read_stars
+
 
 #data_pth = '/data/ngillet/titan/snap_Lorenzo/B4_256_CoDa/output_00022/'
 

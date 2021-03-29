@@ -27,10 +27,10 @@ import argparse
 import os
 from functions_latest import *
 from output_paths import *
+from read_fof import o_fof
 
 
-
-def assoc_stars_to_haloes(out_nb,ldx,path,sim_name):
+def assoc_stars_to_haloes(out_nb,ldx,path,sim_name,use_fof=False):
 
         #phew_path='/data2/jlewis/dusts/output_00'+out_nb
         #star_path='/data2/jlewis/dusts/'
@@ -41,7 +41,11 @@ def assoc_stars_to_haloes(out_nb,ldx,path,sim_name):
         star_path=path
         phew_path=os.path.join(path,'output_00'+out_nb)
 
-
+        fof_suffix=''
+        if use_fof:
+                fof_path=os.path.join(phew_path,'fofres/halos_ll=0.2')
+                fof_suffix='_fof'
+                
         Np_tot=ldx**3
 
         '''Get scale factor and co'''
@@ -57,7 +61,7 @@ def assoc_stars_to_haloes(out_nb,ldx,path,sim_name):
 
 
         out = os.path.join(analy_path,sim_name)
-        assoc_out=os.path.join(assoc_path,sim_name,'assoc_halos_%s' %out_nb)
+        assoc_out=os.path.join(assoc_path,sim_name,('assoc_halos_%s'%out_nb)+fof_suffix)
 
 
 
@@ -66,7 +70,7 @@ def assoc_stars_to_haloes(out_nb,ldx,path,sim_name):
             os.makedirs(assoc_out)
 
         #if no out folder, make it
-        if 'assoc_halos_%s'%out_nb not in os.listdir(os.path.join(assoc_path,sim_name)):
+        if ('assoc_halos_%s'%out_nb)+fof_suffix not in os.listdir(os.path.join(assoc_path,sim_name)):
             os.mkdir(assoc_out)
 
 
@@ -92,11 +96,15 @@ def assoc_stars_to_haloes(out_nb,ldx,path,sim_name):
             #return(np.all(np.all([ctrs[:]<=test_pos-radius,ctrs[:]>=test_pos+radius],axis=0),axis=1))
 
         #phews
-        print('Reading phews')
-        phews=read_phew(phew_path)
-        #convert to same format as phews id,mass,x,y,z; mass is in particle masses
-        phews=phews[:,[0,6,2,3,4]]
-        phews[:,1]=phews[:,1]*ldx**3*Mp 
+        if not use_fof:
+                print('Reading phews')
+                phews=read_phew(phew_path)
+                #convert to same format as phews id,mass,x,y,z; mass is in particle masses
+                phews=phews[:,[0,6,2,3,4]]
+                phews[:,1]=phews[:,1]*ldx**3*Mp
+        else:
+                print('Reading fofs')
+                phews=o_fof(fof_path)
 
 
 
@@ -126,13 +134,13 @@ def assoc_stars_to_haloes(out_nb,ldx,path,sim_name):
 
         #Association and output
         print('Association starting')
-        out_halos = open(os.path.join(assoc_out,'assoc_halos_%s' %out_nb),'wb')
-        out_halosST_tot = open(os.path.join(assoc_out,'assoc_halosST_tot_%s' %out_nb),'wb')
-        out_halosST = open(os.path.join(assoc_out,'assoc_halosST_%s' %out_nb),'wb')
-        out_halosID = open(os.path.join(assoc_out,'assoc_halosID_%s' %out_nb),'wb')
-        out_stars = open(os.path.join(assoc_out,'assoc_stars_%s' %out_nb),'wb')
-        out_halosST_IDs = open(os.path.join(assoc_out,'assoc_starsIDs_%s' %out_nb),'wb')
-        out_lone_stars = open(os.path.join(assoc_out,'assoc_lone_stars_%s' %out_nb),'wb')
+        out_halos = open(os.path.join(assoc_out,('assoc_halos_%s' %out_nb)+fof_suffix),'wb')
+        out_halosST_tot = open(os.path.join(assoc_out,('assoc_halosST_tot_%s' %out_nb)+fof_suffix),'wb')
+        out_halosST = open(os.path.join(assoc_out,('assoc_halosST_%s' %out_nb)+fof_suffix),'wb')
+        out_halosID = open(os.path.join(assoc_out,('assoc_halosID_%s' %out_nb)+fof_suffix),'wb')
+        out_stars = open(os.path.join(assoc_out,('assoc_stars_%s' %out_nb)+fof_suffix),'wb')
+        out_halosST_IDs = open(os.path.join(assoc_out,('assoc_starsIDs_%s' %out_nb)+fof_suffix),'wb')
+        out_lone_stars = open(os.path.join(assoc_out,('assoc_lone_stars_%s' %out_nb)+fof_suffix),'wb')
 
         out_halos.write(size)
 
@@ -286,7 +294,7 @@ def assoc_stars_to_haloes(out_nb,ldx,path,sim_name):
 
         print(len(not_lone_star_ids),len(lone_star_ids))
 
-        out= open(os.path.join(assoc_path,sim_name,'assoc_dust_%s_star_nb' %out_nb),'wb')
+        out= open(os.path.join(assoc_path,sim_name,('assoc_dust_%s_star_nb' %out_nb)+fof_suffix),'wb')
         out.write(np.int64(tot_nb_stars))
         out.close()
 

@@ -1,5 +1,5 @@
 '''
-
+TODO:Add individual stellar particle fescs as in other version
 '''
 
 
@@ -8,7 +8,7 @@ import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as pat
-from read_radgpu import o_rad_cube_big
+#from read_radgpu import o_rad_cube_big
 from read_stars import read_stars
 from scipy import spatial
 import time
@@ -26,12 +26,15 @@ from output_paths import *
 
 
 
-def compute_fesc(out_nb,ldx,path,sim_name):
+def compute_fesc(out_nb,ldx,path,sim_name,overwrite=False,use_fof=False):
 
 
+        fof_suffix=''
+        if use_fof:fof_suffix='_fof'        
         
         info_path=os.path.join(path,'output_00'+out_nb)
-        data_pth_fullres=os.path.join(path,'data_cubes','output_00'+out_nb)
+        #data_pth_fullres=os.path.join(path,'data_cubes','output_00'+out_nb)
+        data_pth_fullres=os.path.join(path,'output_00'+out_nb)
         phew_path=os.path.join(path,'output_00'+out_nb)
         data_pth_assoc=os.path.join(assoc_path,sim_name,'assoc'+out_nb)
 
@@ -80,7 +83,7 @@ def compute_fesc(out_nb,ldx,path,sim_name):
         grid = np.mgrid[0:upper,0:upper,0:upper]/float(upper-1)
 
         print('Getting Phew and stars')
-        idxs,star_idxs,phew_tot_star_nb,phew_star_nb,phew_tab,stars,lone_stars = read_assoc(out_nb,sim_name)
+        idxs,star_idxs,phew_tot_star_nb,phew_star_nb,phew_tab,stars,lone_stars = read_assoc(out_nb,sim_name,use_fof)
 
 
 
@@ -126,18 +129,33 @@ def compute_fesc(out_nb,ldx,path,sim_name):
         nbs_tot=np.zeros((len(xbins)-1,len(ybins)-1))
 
 
-
+        big_side=int(sub_side*overstep)
         #pre-allocate boxes for data cubes
-        big_rho=np.zeros((sub_side*overstep,sub_side*overstep,sub_side*overstep),dtype=np.float32)        
-        big_dust=np.zeros((sub_side*overstep,sub_side*overstep,sub_side*overstep),dtype=np.float32)
-        big_metals=np.zeros((sub_side*overstep,sub_side*overstep,sub_side*overstep),dtype=np.float32)
-        big_xion=np.zeros((sub_side*overstep,sub_side*overstep,sub_side*overstep),dtype=np.float32)        
+        big_rho=np.zeros((big_side,big_side,big_side),dtype=np.float32)        
+        big_dust=np.zeros((big_side,big_side,big_side),dtype=np.float32)
+        big_metals=np.zeros((big_side,big_side,big_side),dtype=np.float32)
+        big_xion=np.zeros((big_side,big_side,big_side),dtype=np.float32)        
+
+        if overwrite :
+                print('Overwriting existing output files')
+        else:
+                print('Skipping existing files')
         
         for x_subnb in range(subs_per_side):
                 for y_subnb in range(subs_per_side):
                         for z_subnb in range(subs_per_side):                
 
                                 subcube_nb=x_subnb+y_subnb*subs_per_side+z_subnb*subs_per_side**2.
+
+                                out_file=os.path.join(out,'fesc_dust_out_'+out_nb+'_%i'%subcube_nb)
+
+                                out_exists=os.path.exists(out_file)
+
+
+                                if out_exists and not overwrite :
+
+                                        print('Skipping subcube #%i since it already exists'%subcube_nb)
+                                        continue
                                 
                                 print('Reading subcube #%s' %(subcube_nb))
                         
@@ -534,7 +552,7 @@ def compute_fesc(out_nb,ldx,path,sim_name):
 
                                                     big_box_sm_ctr=np.asarray([sm_xgrid[x_cell],sm_ygrid[y_cell],sm_zgrid[z_cell]])
 
-                                                    dust_taus[z_cell,y_cell,x_cell]=star_path(big_box_sm_ctr,dist_obs,big_dust,dust_1600_opacity_SMC,2*halo[-1],px_to_m*100,ldx)*dust_fact
+                                                    dust_taus[x_cell,y_cell,z_cell]=star_path(big_box_sm_ctr,dist_obs,big_dust,dust_1600_opacity_SMC,2*halo[-1],px_to_m*100,ldx)*dust_fact #yes this is correct x and z are switched here ...
 
 
                                                 #now we can use our indices again to get the proper tau/trans for every star : SO MUCH MUCH MUCH MUCH FASTER !
@@ -608,7 +626,7 @@ def compute_fesc(out_nb,ldx,path,sim_name):
                                 assert len(dict_keys)==len(np.transpose(file_bytes)), "mismatch between number of keys and number of data entries"
 
                                 #Write our output ... everything before _out_ is read by the read_out function as the key parameter
-                                with open(os.path.join(out,'fesc_dust_out_'+out_nb+'_%i'%subcube_nb),'wb') as newFile:
+                                with open(out_file+fof_suffix,'wb') as newFile:
                                     np.save(newFile,np.int32(len(idx)))
                                     np.save(newFile,np.int32(len(dict_keys)))
                                     np.save(newFile,np.float64(a))

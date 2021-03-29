@@ -1,6 +1,6 @@
 import numpy as np
 from read_fullbox_big import *
-from read_radgpu_big import *
+#from read_radgpu_big import *
 import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
@@ -42,104 +42,104 @@ def get_neighbour_cubes(subcube_nb,n_subcubes):
     return(nbs_to_get)
 
 
-def get_overstep_RT_cubed(subcube_nb,data_path_rad,OOB,n_subcubes=512,size=512,overstep=3,sort=2):
+# def get_overstep_RT_cubed(subcube_nb,data_path_rad,OOB,n_subcubes=512,size=512,overstep=3,sort=2):
 
-    if sort==2:
-        box=np.zeros((3,size*overstep,size*overstep,size*overstep),dtype=np.float32) 
-    elif sort==1:
-        box=np.zeros((size*overstep,size*overstep,size*overstep),dtype=np.float32)         
+#     if sort==2:
+#         box=np.zeros((3,size*overstep,size*overstep,size*overstep),dtype=np.float32) 
+#     elif sort==1:
+#         box=np.zeros((size*overstep,size*overstep,size*overstep),dtype=np.float32)         
 
-    nbs_to_get=get_neighbour_cubes(subcube_nb,n_subcubes)
+#     nbs_to_get=get_neighbour_cubes(subcube_nb,n_subcubes)
 
-    delta=int((overstep-1)*0.5*size) #size of overstep in cells
-    #so for ex on xvector we have 0:delta then delta:size then size:delta from
-    #3 different subcubes where the central one is subcube_nb
+#     delta=int((overstep-1)*0.5*size) #size of overstep in cells
+#     #so for ex on xvector we have 0:delta then delta:size then size:delta from
+#     #3 different subcubes where the central one is subcube_nb
     
-    under,over=OOB
+#     under,over=OOB
 
-    #so can use with only one entry in OOB
-    if np.shape(np.shape(under))!=(2,):
-        under=np.array([under])
-        over=np.array([over])
+#     #so can use with only one entry in OOB
+#     if np.shape(np.shape(under))!=(2,):
+#         under=np.array([under])
+#         over=np.array([over])
 
 
         
-    zbnds=under[:,0],np.ones(len(under))==1,over[:,0]
-    ybnds=under[:,1],np.ones(len(under))==1,over[:,1]
-    xbnds=under[:,2],np.ones(len(under))==1,over[:,2]
+#     zbnds=under[:,0],np.ones(len(under))==1,over[:,0]
+#     ybnds=under[:,1],np.ones(len(under))==1,over[:,1]
+#     xbnds=under[:,2],np.ones(len(under))==1,over[:,2]
 
 
-    #print(zbnds,ybnds,xbnds)
+#     #print(zbnds,ybnds,xbnds)
     
-    for ix,x in enumerate(nbs_to_get.swapaxes(0,1)):
-        for iy,y in enumerate(x):
-            for iz,z in enumerate(y):
-    #so can use with only one entry in OOB
+#     for ix,x in enumerate(nbs_to_get.swapaxes(0,1)):
+#         for iy,y in enumerate(x):
+#             for iz,z in enumerate(y):
+#     #so can use with only one entry in OOB
 
-                #print(xbnds[ix],ybnds[iy],zbnds[iz])
-                #print(np.all([xbnds[ix],ybnds[iy],zbnds[iz]],axis=0))
+#                 #print(xbnds[ix],ybnds[iy],zbnds[iz])
+#                 #print(np.all([xbnds[ix],ybnds[iy],zbnds[iz]],axis=0))
                 
-                if np.any(np.all([xbnds[ix],ybnds[iy],zbnds[iz]],axis=0)):
+#                 if np.any(np.all([xbnds[ix],ybnds[iy],zbnds[iz]],axis=0)):
 
 
-                    if ix==0:
-                        xlow,xhigh=0,delta #for big cube of sides size+2*delta
-                        load_xlow,load_xhigh=size-delta,size #for cube just opened
-                    elif ix==1:
-                        xlow,xhigh=delta,size+delta
-                        load_xlow,load_xhigh=0,size #for cube just opened                 
-                    else:
-                        xlow,xhigh=size+delta,size+2*delta
-                        load_xlow,load_xhigh=0,delta #for cube just opened                        
+#                     if ix==0:
+#                         xlow,xhigh=0,delta #for big cube of sides size+2*delta
+#                         load_xlow,load_xhigh=size-delta,size #for cube just opened
+#                     elif ix==1:
+#                         xlow,xhigh=delta,size+delta
+#                         load_xlow,load_xhigh=0,size #for cube just opened                 
+#                     else:
+#                         xlow,xhigh=size+delta,size+2*delta
+#                         load_xlow,load_xhigh=0,delta #for cube just opened                        
 
 
-                    if iy==0:
-                        ylow,yhigh=0,delta #for big cube of sides size+2*delta
-                        load_ylow,load_yhigh=size-delta,size #for cube just opened
-                    elif iy==1:
-                        ylow,yhigh=delta,size+delta
-                        load_ylow,load_yhigh=0,size #for cube just opened                 
-                    else:
-                        ylow,yhigh=size+delta,size+2*delta
-                        load_ylow,load_yhigh=0,delta #for cube just opened                        
+#                     if iy==0:
+#                         ylow,yhigh=0,delta #for big cube of sides size+2*delta
+#                         load_ylow,load_yhigh=size-delta,size #for cube just opened
+#                     elif iy==1:
+#                         ylow,yhigh=delta,size+delta
+#                         load_ylow,load_yhigh=0,size #for cube just opened                 
+#                     else:
+#                         ylow,yhigh=size+delta,size+2*delta
+#                         load_ylow,load_yhigh=0,delta #for cube just opened                        
 
-                    if iz==0:
-                        zlow,zhigh=0,delta #for big cube of sides size+2*delta
-                        load_zlow,load_zhigh=size-delta,size #for cube just opened
-                    elif iz==1:
-                        zlow,zhigh=delta,size+delta
-                        load_zlow,load_zhigh=0,size #for cube just opened                 
-                    else:
-                        zlow,zhigh=size+delta,size+2*delta
-                        load_zlow,load_zhigh=0,delta #for cube just opened                        
+#                     if iz==0:
+#                         zlow,zhigh=0,delta #for big cube of sides size+2*delta
+#                         load_zlow,load_zhigh=size-delta,size #for cube just opened
+#                     elif iz==1:
+#                         zlow,zhigh=delta,size+delta
+#                         load_zlow,load_zhigh=0,size #for cube just opened                 
+#                     else:
+#                         zlow,zhigh=size+delta,size+2*delta
+#                         load_zlow,load_zhigh=0,delta #for cube just opened                        
                         
                         
-                    if sort==2:
+#                     if sort==2:
 
-                            print('RT loaded %i'%z)                
-                            try:
+#                             print('RT loaded %i'%z)                
+#                             try:
                                 
-                                #box[:,ix*size:(ix+1)*size,iy*size:(iy+1)*size,iz*size:(iz+1)*size]=o_rad_cube_big(data_path_rad,2,z)
-                                box[:,xlow:xhigh,ylow:yhigh,zlow:zhigh]=o_rad_cube_big(data_path_rad,2,z)[load_zlow:load_zhigh,load_ylow:load_yhigh,load_xlow:load_xhigh]
+#                                 #box[:,ix*size:(ix+1)*size,iy*size:(iy+1)*size,iz*size:(iz+1)*size]=o_rad_cube_big(data_path_rad,2,z)
+#                                 box[:,xlow:xhigh,ylow:yhigh,zlow:zhigh]=o_rad_cube_big(data_path_rad,2,z)[load_zlow:load_zhigh,load_ylow:load_yhigh,load_xlow:load_xhigh]
 
 
-                                #print([xlow,xhigh,ylow,yhigh,zlow,zhigh],[load_zlow,load_zhigh,load_ylow,load_yhigh,load_xlow,load_xhigh])
-                                #print([ix*size,(ix+1)*size,iy*size,(iy+1)*size,iz*size,(iz+1)*size])
-                            except IndexError:
-                                box[:,xlow:xhigh,ylow:yhigh,zlow:zhigh]=-1
-                                continue
+#                                 #print([xlow,xhigh,ylow,yhigh,zlow,zhigh],[load_zlow,load_zhigh,load_ylow,load_yhigh,load_xlow,load_xhigh])
+#                                 #print([ix*size,(ix+1)*size,iy*size,(iy+1)*size,iz*size,(iz+1)*size])
+#                             except IndexError:
+#                                 box[:,xlow:xhigh,ylow:yhigh,zlow:zhigh]=-1
+#                                 continue
 
                             
-                    elif sort==1:
+#                     elif sort==1:
 
-                            print('RT loaded %i'%z)                
-                            try:
-                               box[xlow:xhigh,ylow:yhigh,zlow:zhigh]=o_rad_cube_big(data_path_rad,2,z)[load_xlow:load_xhigh,load_ylow:load_yhigh,load_zlow:load_zhigh]
-                            except IndexError:
-                                box[xlow:xhigh,ylow:yhigh,zlow:zhigh]=-1
-                                continue
+#                             print('RT loaded %i'%z)                
+#                             try:
+#                                box[xlow:xhigh,ylow:yhigh,zlow:zhigh]=o_rad_cube_big(data_path_rad,2,z)[load_xlow:load_xhigh,load_ylow:load_yhigh,load_zlow:load_zhigh]
+#                             except IndexError:
+#                                 box[xlow:xhigh,ylow:yhigh,zlow:zhigh]=-1
+#                                 continue
                         
-    return(box)
+#     return(box)
 
 
 

@@ -26,12 +26,13 @@ from output_paths import *
 
 
 
-def compute_dust(out_nb,ldx,path,sim_name):
+def compute_dust(out_nb,ldx,path,sim_name,overwrite=False):
 
 
         
         info_path=os.path.join(path,'output_00'+out_nb)
-        data_pth_fullres=os.path.join(path,'data_cubes','output_00'+out_nb)
+        #data_pth_fullres=os.path.join(path,'data_cubes','output_00'+out_nb)
+        data_pth_fullres=os.path.join(path,'output_00'+out_nb)
         phew_path=os.path.join(path,'output_00'+out_nb)
         data_pth_assoc=os.path.join(assoc_path,sim_name,'assoc'+out_nb)
 
@@ -90,7 +91,6 @@ def compute_dust(out_nb,ldx,path,sim_name):
 
 
         #Conversion factors
-        tau_fact = px_to_m*sigma_UV*1e6*0.76 #important musnt count the helium...
         rho_fact=unit_d #g/cm**3
         dust_fact=unit_d #g/cm^3
         vvrho_fact=1e6*1e3*1e-2*unit_l/unit_t/1e3 #m/s #H/m**2/s
@@ -123,11 +123,16 @@ def compute_dust(out_nb,ldx,path,sim_name):
 
 
         #pre-allocate boxes for data cubes
-        big_rho=np.zeros((sub_side*overstep,sub_side*overstep,sub_side*overstep),dtype=np.float32)        
-        big_dust=np.zeros((sub_side*overstep,sub_side*overstep,sub_side*overstep),dtype=np.float32)
-        big_metals=np.zeros((sub_side*overstep,sub_side*overstep,sub_side*overstep),dtype=np.float32)
-        big_xion=np.zeros((sub_side*overstep,sub_side*overstep,sub_side*overstep),dtype=np.float32)        
+        big_side=int(sub_side*overstep)
+        big_rho=np.zeros((big_side,big_side,big_side),dtype=np.float32)        
+        big_dust=np.zeros((big_side,big_side,big_side),dtype=np.float32)
+        big_metals=np.zeros((big_side,big_side,big_side),dtype=np.float32)
+        big_xion=np.zeros((big_side,big_side,big_side),dtype=np.float32)        
         
+        if overwrite :
+                print('Overwriting existing output files')
+        else:
+                print('Skipping existing files')
         
         
         for x_subnb in range(subs_per_side):
@@ -135,6 +140,15 @@ def compute_dust(out_nb,ldx,path,sim_name):
                         for z_subnb in range(subs_per_side):                
 
                                 subcube_nb=x_subnb+y_subnb*subs_per_side+z_subnb*subs_per_side**2.
+
+                                out_file=os.path.join(out,'gas_dust_out_'+out_nb+'_%i'%subcube_nb)
+
+                                out_exists=os.path.exists(out_file)
+
+                                if out_exists and not overwrite :
+
+                                        print('Skipping subcube #%i since it already exists'%subcube_nb)
+                                        continue
                                 
                                 print('Reading subcube #%s' %(1+subcube_nb))
 
@@ -343,7 +357,7 @@ def compute_dust(out_nb,ldx,path,sim_name):
 
                                 assert len(dict_keys)==len(np.transpose(file_bytes)), "mismatch between number of keys and number of data entries"
 
-                                with open(os.path.join(out,'gas_dust_out_'+out_nb+'_%i'%subcube_nb),'wb') as newFile:
+                                with open(out_file,'wb') as newFile:
                                     np.save(newFile,np.int32(len(idx)))
                                     np.save(newFile,np.int32(len(dict_keys)))
                                     np.save(newFile,np.float64(a))
