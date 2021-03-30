@@ -176,58 +176,60 @@ def get_pos(arr):
         
 
         
-def read_arr(out_nb,key_word,tstep,path,info_path,overwrite=False):
+# def read_arr(out_nb,key_word,tstep,path,info_path,overwrite=False):
 
-    def load_dict(name,path,keyword,out_nb):
-        with open(os.path.join(path,name),'rb') as src :    
-            N=np.load(src)
-            Ncol=np.load(src)
+#     def load_dict(name,path,keyword,out_nb):
+#         with open(os.path.join(path,name),'rb') as src :    
+#             N=np.load(src)
+#             Ncol=np.load(src)
 
-            tab=np.load(src)
+#             tab=np.load(src)
 
-        return(tab)
+#         return(tab)
 
-    def load_simple(name,path,keyword,out_nb):
+#     def load_simple(name,path,keyword,out_nb):
         
-        with open(os.path.join(path,name),'rb') as src :    
-            N=np.load(src)
-            tab=np.load(src)
+#         with open(os.path.join(path,name),'rb') as src :    
+#             N=np.load(src)
+#             tab=np.load(src)
 
-        return(tab)
+#         return(tab)
 
 
     
-    to_load_dict_names=['tab']
-    to_load_else_names=['forgets_SFR','forgets_mult_det','forgets']
+#     to_load_dict_names=['tab']
+#     to_load_else_names=['forgets_SFR','forgets_mult_det','forgets']
 
 
     
-    to_load_dict_names=['filtrd_{0:s}_{1:s}_{2:s}'.format(name,key_word,out_nb) for name in to_load_dict_names]
-    to_load_else_names=['filtrd_{0:s}_{1:s}_{2:s}'.format(name,key_word,out_nb) for name in to_load_else_names] 
+#     to_load_dict_names=['filtrd_{0:s}_{1:s}_{2:s}'.format(name,key_word,out_nb) for name in to_load_dict_names]
+#     to_load_else_names=['filtrd_{0:s}_{1:s}_{2:s}'.format(name,key_word,out_nb) for name in to_load_else_names] 
 
-    to_load_dict=[d for d in os.listdir(path) if np.any(np.in1d(d,to_load_dict_names))]
-    to_load_else=[d for d in os.listdir(path) if np.any(np.in1d(d,to_load_else_names))]
+#     to_load_dict=[d for d in os.listdir(path) if np.any(np.in1d(d,to_load_dict_names))]
+#     to_load_else=[d for d in os.listdir(path) if np.any(np.in1d(d,to_load_else_names))]
 
-    if (len(to_load_dict)!=1) or overwrite: #only for _latest case
-        forgets_SFR,forgets_mult_det,tab,forgets=write_arr(out_nb,key_word,tstep,path,info_path)
-        dicts=[tab]
-        elses=[forgets_SFR,forgets_mult_det,forgets]
+#     if (len(to_load_dict)!=1) or overwrite: #only for _latest case
+#         forgets_SFR,forgets_mult_det,tab,forgets=write_arr(out_nb,key_word,tstep,path,info_path)
+#         dicts=[tab]
+#         elses=[forgets_SFR,forgets_mult_det,forgets]
 
 
-    else:
+#     else:
 
-        dicts=[load_dict(tl,path,key_word,out_nb) for tl in to_load_dict]
-        elses=[load_simple(tl,path,key_word,out_nb) for tl in to_load_else]
+#         dicts=[load_dict(tl,path,key_word,out_nb) for tl in to_load_dict]
+#         elses=[load_simple(tl,path,key_word,out_nb) for tl in to_load_else]
 
         
-    return(dicts,elses)
+#     return(dicts,elses)
 
 
-def read_outs(out_nb,key_word,path,lim=0):
+def read_outs(out_nb,key_word,path,lim=0,use_fof=False):
 
-
-        dats = np.asarray([tgt for tgt in os.listdir(path) if key_word+'_out_'+out_nb+'_' in tgt if os.path.isfile(os.path.join(path,tgt))])
-        
+        if use_fof:
+            dats = np.asarray([tgt for tgt in os.listdir(path) if key_word+'_out_fof_'+out_nb+'_' in tgt if os.path.isfile(os.path.join(path,tgt))])
+        else:
+            dats = np.asarray([tgt for tgt in os.listdir(path) if key_word+'_out_'+out_nb+'_' in tgt if 'fof' not in tgt if os.path.isfile(os.path.join(path,tgt))])            
+            
         stripper = out_nb[-1]
 
         dats_arg=np.argsort([ int(dat_name[-3:].replace(stripper+'_','').strip('_')) for dat_name  in dats])
@@ -366,68 +368,75 @@ def sph_2_cart(r,phi,the):
 
     return(x,y,z)
 
-def get_mag_tab():
+# def get_mag_tab():
 
-    """
-    Read mag to stellar mass tab
-    """
+#     """
+#     Read mag to stellar mass tab
+#     """
 
-    path="/data2/jlewis/BPASS_MAB1600/"
+#     path="/data2/jlewis/BPASS_MAB1600/"
 
-    srcs=[src for src in os.listdir(path) if 'Kroupa' in src]
+#     srcs=[src for src in os.listdir(path) if 'Kroupa' in src]
     
-    mag_tab=[]
-    Zbins=[]
+#     mag_tab=[]
+#     Zbins=[]
 
 
-    for src in srcs :
+#     for src in srcs :
 
-        mag_tab.append(np.genfromtxt(os.path.join(path,src),delimiter=','))
-        Zbins.append(float(src.split('=')[-1].split('_')[0]))
+#         mag_tab.append(np.genfromtxt(os.path.join(path,src),delimiter=','))
+#         Zbins.append(float(src.split('=')[-1].split('_')[0]))
     
-    #print(mag_tab)
+#     #print(mag_tab)
     
-    Zsort=np.argsort(Zbins)                                                                          
-    mag_tab=np.asarray(mag_tab)[Zsort]                                                               
-    Zbins=np.asarray(Zbins)[Zsort]   
-    
-
-    Agebins = np.asarray(mag_tab[0])[:,0]
-    mag_tab=np.reshape(np.vstack(mag_tab)[:,1],(len(Zbins),len(Agebins)))
+#     Zsort=np.argsort(Zbins)                                                                          
+#     mag_tab=np.asarray(mag_tab)[Zsort]                                                               
+#     Zbins=np.asarray(Zbins)[Zsort]   
     
 
+#     Agebins = np.asarray(mag_tab[0])[:,0]
+#     mag_tab=np.reshape(np.vstack(mag_tab)[:,1],(len(Zbins),len(Agebins)))
+    
 
 
-    return(mag_tab,Zbins,Agebins)
+
+#     return(mag_tab,Zbins,Agebins)
 
 
-def get_mag_tab_BPASSV221():
+# def get_mag_tab_BPASSV221():
 
-        reading=[]
-        with open("/home/jlewis/METAL-RAMSES-CUDATON/aton/src_files/Emissivity_MAB1600_BPASSv2.2.1_kroupa_binary_MMax=100.txt",'r') as src:
+#         reading=[]
+#         with open("/linkhome/rech/genoba01/uoj51ok/ramses_CoDaIII/aton/src_files/",'r') as src:
 
-                for line in src:
-                    if '#' not in str(line):
-                        tmp=line.split(',')
-                        tmp[-1]=tmp[-1].strip('\n')
-                        #print(tmp)
-                        reading.append(np.float64(tmp))
+#                 for line in src:
+#                     if '#' not in str(line):
+#                         tmp=line.split(',')
+#                         tmp[-1]=tmp[-1].strip('\n')
+#                         #print(tmp)
+#                         reading.append(np.float64(tmp))
 
                 
 
-        age_bins=reading[2]
-        metal_bins=reading[3]
+#         age_bins=reading[2]
+#         metal_bins=reading[3]
 
-        xis=np.vstack(reading[3+1:3+13+1])
-        mags=np.vstack(reading[3+1+13:3+13+1+13+1])
+#         xis=np.vstack(reading[3+1:3+13+1])
+#         mags=np.vstack(reading[3+1+13:3+13+1+13+1])
 
-        return(mags,xis,metal_bins,age_bins)
+#         return(mags,xis,metal_bins,age_bins)
+
+def get_mag_tab():
+
+    
+    mags,xis,contbetalow,contbetahigh,beta,metal_bins,age_bins=get_mag_tab_BPASSV221_betas()
+
+    return(mags,xis,metal_bins,age_bins)
 
 
 def get_mag_tab_BPASSV221_betas():
 
     reading=[] 
-    with open("BPASSV221/Emissivity_MAB1600_BPASSv2.2.1_kroupa_binary_MMax=100_betas.txt",'r') as src:
+    with open("/linkhome/rech/genoba01/uoj51ok/ramses_CoDaIII/aton/src_files/cstSFR_5Myr_BPASSv2.2.1_kroupa_binary_MMax=100_emissivites_mags_betas.txt",'r') as src:
 
         for line in src:
             if '#' not in str(line):
@@ -909,6 +918,31 @@ def sum_over_rays_nexp(field,ctr,r200,rad_res,X_primes,Y_primes,Z_primes):
     return(rays)
 
 
+def over_rays(field,ctr,r200,X_primes,Y_primes,Z_primes):
+
+    """
+    sample rays centred at ctr using given resolution
+    field is a box to sample
+
+    """
+
+    size=np.shape(field)[0]
+
+    ctr=np.asarray(ctr)-0.5*size
+    delta_R=np.copy(ctr)
+    Xs,Ys,Zs=[X_primes,Y_primes,Z_primes]+delta_R[:,np.newaxis,np.newaxis]
+    
+    Rs=np.linalg.norm([Xs,Ys,Zs],axis=0)
+
+    #used for getting data ... Need to be between 0 and size !!!
+    Xs_snap,Ys_snap,Zs_snap=np.int32([Xs+0.5*size,Ys+0.5*size,Zs+0.5*size])    
+    
+    IB=Rs<=r200 #if points in r200 ...
+
+    sampled=np.zeros_like(Xs)
+    sampled[IB]=field[Xs_snap[IB],Ys_snap[IB],Zs_snap[IB]]
+    
+    return(sampled)
     
 
 
@@ -1066,56 +1100,56 @@ def get_semissivity(stars,side,tstep,ctr):
            yng_mass)
 
 
-def write_figure(desired_name,figure_to_write):
+# def write_figure(desired_name,figure_to_write):
 
-    '''
-    Each prog has its folder with dated folders containing output
-    If cur launch of prog is dif than latest archived version, copy over new archived version
-    '''
+#     '''
+#     Each prog has its folder with dated folders containing output
+#     If cur launch of prog is dif than latest archived version, copy over new archived version
+#     '''
     
-    archive_path = "/data2/jlewis/plot_archive"
-    prog_name = sys.argv[0]
-    #catch non . calls
-    prog_name = prog_name.split('/')[-1]
+#     archive_path = "/data2/jlewis/plot_archive"
+#     prog_name = sys.argv[0]
+#     #catch non . calls
+#     prog_name = prog_name.split('/')[-1]
 
-    arch_prog_path = os.path.join(archive_path,prog_name)
+#     arch_prog_path = os.path.join(archive_path,prog_name)
 
-    today_date = date.today().isoformat()
+#     today_date = date.today().isoformat()
     
-    arch_prog_path_today = os.path.join(arch_prog_path,today_date)
+#     arch_prog_path_today = os.path.join(arch_prog_path,today_date)
     
-    if not os.path.isdir(arch_prog_path_today) : os.makedirs(arch_prog_path_today)
+#     if not os.path.isdir(arch_prog_path_today) : os.makedirs(arch_prog_path_today)
 
-    run_dir = os.path.dirname(os.path.realpath(__file__))
-    exec_version = os.path.join(run_dir,prog_name)
+#     run_dir = os.path.dirname(os.path.realpath(__file__))
+#     exec_version = os.path.join(run_dir,prog_name)
 
     
-    #get latest
-    arch_versions = [name for name in os.listdir(arch_prog_path) if prog_name in name]
+#     #get latest
+#     arch_versions = [name for name in os.listdir(arch_prog_path) if prog_name in name]
 
-    if len(arch_versions)>0 : 
+#     if len(arch_versions)>0 : 
 
 
         
-        arch_version_dates_ints = [map(int,name.split('_')[0].split('-')) for name in arch_versions]
-        arch_version_dates = [date(date_int[0],date_int[1],date_int[2]) for date_int in arch_version_dates_ints]
+#         arch_version_dates_ints = [map(int,name.split('_')[0].split('-')) for name in arch_versions]
+#         arch_version_dates = [date(date_int[0],date_int[1],date_int[2]) for date_int in arch_version_dates_ints]
 
 
-        i=0
-        imax=0
+#         i=0
+#         imax=0
 
-        for i in range(len(arch_version_dates)):
-            if arch_version_dates[i]>arch_version_dates[imax] : imax = i
+#         for i in range(len(arch_version_dates)):
+#             if arch_version_dates[i]>arch_version_dates[imax] : imax = i
 
 
 
-        latest_arch_version = os.path.join(arch_prog_path,arch_versions[imax])
+#         latest_arch_version = os.path.join(arch_prog_path,arch_versions[imax])
 
-        if not filecmp.cmp(latest_arch_version,exec_version) : copyfile(exec_version,os.path.join(arch_prog_path,today_date+'_'+prog_name))
+#         if not filecmp.cmp(latest_arch_version,exec_version) : copyfile(exec_version,os.path.join(arch_prog_path,today_date+'_'+prog_name))
 
-    else: copyfile(exec_version,os.path.join(arch_prog_path,today_date+'_'+prog_name))
+#     else: copyfile(exec_version,os.path.join(arch_prog_path,today_date+'_'+prog_name))
     
-    figure_to_write.savefig(os.path.join(arch_prog_path_today,desired_name+'.png'),bbox_inches='tight',format='png')
+#     figure_to_write.savefig(os.path.join(arch_prog_path_today,desired_name+'.png'),bbox_inches='tight',format='png')
     
 def setup_plotting(scale_up=1.5):
 

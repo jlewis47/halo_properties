@@ -28,7 +28,7 @@ from output_paths import *
 def compute_fesc(out_nb,ldx,path,sim_name,use_fof=False):
 
         fof_suffix=''
-        if use_fof:fof_suffix='_fof'
+        if use_fof:fof_suffix='fof'
 
         
         info_path=os.path.join(path,'output_00'+out_nb)
@@ -62,7 +62,7 @@ def compute_fesc(out_nb,ldx,path,sim_name,use_fof=False):
         upper=27
         grid = np.mgrid[0:upper,0:upper,0:upper]/float(upper-1)
 
-        print('Getting Phew and stars')
+        print('Getting halos and associated stars')
         idxs,star_idxs,phew_tot_star_nb,phew_star_nb,phew_tab,stars,lone_stars = read_assoc(out_nb,sim_name,use_fof)
 
         indv_star_fesc=np.zeros(len(stars))
@@ -538,7 +538,7 @@ def compute_fesc(out_nb,ldx,path,sim_name,use_fof=False):
         assert len(dict_keys)==len(np.transpose(file_bytes)), "mismatch between number of keys and number of data entries"
 
         #Write our output ... everything before _out_ is read by the read_out function as the key parameter
-        with open(os.path.join(out,'fesc_dust_out_'+out_nb+'_0'+fof_suffix),'wb') as newFile:
+        with open(os.path.join(out,'fesc_dust_out_%s_'%fof_suffix+out_nb+'_0'),'wb') as newFile:
             np.save(newFile,np.int32(len(idx)))
             np.save(newFile,np.int32(len(dict_keys)))
             np.save(newFile,np.float64(a))
@@ -547,7 +547,7 @@ def compute_fesc(out_nb,ldx,path,sim_name,use_fof=False):
 
 
 
-        with open(os.path.join(out,'associated_stellar_fesc_'+out_nb+'_0'+fof_suffix),'wb') as newFile:
+        with open(os.path.join(out,'associated_stellar_fesc_%s_'%fof_suffix+out_nb+'_0'),'wb') as newFile:
                 np.save(newFile,np.int32(len(indv_star_fesc)))
                 np.save(newFile,np.float64(indv_star_fesc))
                 np.save(newFile,np.float64(indv_star_nH))

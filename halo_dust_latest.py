@@ -30,7 +30,7 @@ def compute_dust(out_nb,ldx,path,sim_name,use_fof=False):
 
 
         fof_suffix=''
-        if use_fof:fof_suffix='_fof'        
+        if use_fof:fof_suffix='fof'        
         
         info_path=os.path.join(path,'output_00'+out_nb)
         data_pth_fullres=path
@@ -309,7 +309,7 @@ def compute_dust(out_nb,ldx,path,sim_name,use_fof=False):
                                     
         assert len(dict_keys)==len(np.transpose(file_bytes)), "mismatch between number of keys and number of data entries"
 
-        with open(os.path.join(out,'gas_dust_out_'+out_nb+'_0'+fof_suffix),'wb') as newFile:
+        with open(os.path.join(out,'gas_dust_%s_out_'%fof_suffix+out_nb+'_0'),'wb') as newFile:
             np.save(newFile,np.int32(len(idx)))
             np.save(newFile,np.int32(len(dict_keys)))
             np.save(newFile,np.float64(a))

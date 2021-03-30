@@ -30,7 +30,7 @@ def compute_fesc(out_nb,ldx,path,sim_name,overwrite=False,use_fof=False):
 
 
         fof_suffix=''
-        if use_fof:fof_suffix='_fof'        
+        if use_fof:fof_suffix='fof'        
         
         info_path=os.path.join(path,'output_00'+out_nb)
         #data_pth_fullres=os.path.join(path,'data_cubes','output_00'+out_nb)
@@ -82,7 +82,7 @@ def compute_fesc(out_nb,ldx,path,sim_name,overwrite=False,use_fof=False):
         upper=27
         grid = np.mgrid[0:upper,0:upper,0:upper]/float(upper-1)
 
-        print('Getting Phew and stars')
+        print('Getting halos and associated stars')
         idxs,star_idxs,phew_tot_star_nb,phew_star_nb,phew_tab,stars,lone_stars = read_assoc(out_nb,sim_name,use_fof)
 
 
@@ -147,7 +147,7 @@ def compute_fesc(out_nb,ldx,path,sim_name,overwrite=False,use_fof=False):
 
                                 subcube_nb=x_subnb+y_subnb*subs_per_side+z_subnb*subs_per_side**2.
 
-                                out_file=os.path.join(out,'fesc_dust_out_'+out_nb+'_%i'%subcube_nb)
+                                out_file=os.path.join(out,'fesc_dust_%s_out_'%fof_suffix+out_nb+'_%i'%subcube_nb)
 
                                 out_exists=os.path.exists(out_file)
 
@@ -626,7 +626,7 @@ def compute_fesc(out_nb,ldx,path,sim_name,overwrite=False,use_fof=False):
                                 assert len(dict_keys)==len(np.transpose(file_bytes)), "mismatch between number of keys and number of data entries"
 
                                 #Write our output ... everything before _out_ is read by the read_out function as the key parameter
-                                with open(out_file+fof_suffix,'wb') as newFile:
+                                with open(out_file,'wb') as newFile:
                                     np.save(newFile,np.int32(len(idx)))
                                     np.save(newFile,np.int32(len(dict_keys)))
                                     np.save(newFile,np.float64(a))

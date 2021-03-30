@@ -105,7 +105,7 @@ def assoc_stars_to_haloes(out_nb,ldx,path,sim_name,use_fof=False):
         else:
                 print('Reading fofs')
                 phews=o_fof(fof_path)
-
+                phews[:,1]*=Mp
 
 
 

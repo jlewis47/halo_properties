@@ -141,7 +141,7 @@ def compute_dust(out_nb,ldx,path,sim_name,overwrite=False):
 
                                 subcube_nb=x_subnb+y_subnb*subs_per_side+z_subnb*subs_per_side**2.
 
-                                out_file=os.path.join(out,'gas_dust_out_'+out_nb+'_%i'%subcube_nb)
+                                out_file=os.path.join(out,'gas_dust%s_out_'%fof_suffix+out_nb+'_%i'%subcube_nb)
 
                                 out_exists=os.path.exists(out_file)
 
@@ -316,9 +316,9 @@ def compute_dust(out_nb,ldx,path,sim_name,overwrite=False):
 
 
                                             
-                                            if halo[0]>5e9:
+                                            #if halo[0]>5e9:
 
-                                                    print(map(np.log10,[dust_mass[ind],np.sum(cur_stars[:,0]),metal_mass[ind],np.sum(sm_nHI)*(px_to_m*100)**3*1e-3/Msol*rho_fact]))
+                                                    #print(map(np.log10,[dust_mass[ind],np.sum(cur_stars[:,0]),metal_mass[ind],np.sum(sm_nHI)*(px_to_m*100)**3*1e-3/Msol*rho_fact]))
 
 
 

@@ -127,7 +127,7 @@ def compute_stellar_Tr(out_nb,ldx,path,sim_name,use_fof=False):
         assoc_TrLintr_H=Tr_H_gas[star_sm_posz,star_sm_posy,star_sm_posx]
         assoc_TrLintr_dust=Tr_dust_LyC[star_sm_posz,star_sm_posy,star_sm_posx]        
 
-        with open(os.path.join(out,'associated_stellar_Tr_'+out_nb+'_0'+fof_suffix),'wb') as newFile:
+        with open(os.path.join(out,'associated_stellar_Tr%s_'%fof_suffix+out_nb+'_0'),'wb') as newFile:
                 np.save(newFile,np.int32(len(assoc_star_inds)))
                 np.save(newFile,np.float64(assoc_TrLintr_H))
                 np.save(newFile,np.float64(assoc_TrLintr_dust))
@@ -141,7 +141,7 @@ def compute_stellar_Tr(out_nb,ldx,path,sim_name,use_fof=False):
         lone_TrLintr_H=Tr_H_gas[star_sm_posz,star_sm_posy,star_sm_posx]
         lone_TrLintr_dust=Tr_dust_LyC[star_sm_posz,star_sm_posy,star_sm_posx]        
         
-        with open(os.path.join(out,'lone_stellar_Tr_'+out_nb+'_0'+fof_suffix),'wb') as newFile:
+        with open(os.path.join(out,'lone_stellar_Tr%s_'%fof_suffix+out_nb+'_0'),'wb') as newFile:
                 np.save(newFile,np.int32(len(lone_star_inds)))
                 np.save(newFile,np.float64(lone_TrLintr_H))
                 np.save(newFile,np.float64(lone_TrLintr_dust))
