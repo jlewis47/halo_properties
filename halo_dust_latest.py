@@ -44,6 +44,12 @@ def compute_dust(out_nb,ldx,path,sim_name,use_fof=False,rtwo_fact=1,rel_fof_path
         if len(suffix)>1 and suffix[0]=='_':suffix=suffix[1:]
 
 
+        info_path=os.path.join(path,'output_00'+out_nb)
+        data_pth_fullres=path
+        phew_path=os.path.join(path,'output_00'+out_nb)
+        data_pth_assoc=os.path.join(assoc_path,sim_name,'assoc'+out_nb)
+
+        
         out = os.path.join(analy_path,sim_name)
 
         #Get scale factor and co

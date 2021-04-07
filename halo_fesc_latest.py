@@ -47,7 +47,7 @@ def compute_fesc(out_nb,ldx,path,sim_name,use_fof=False,rtwo_fact=1,rel_fof_path
         phew_path=os.path.join(path,'output_00'+out_nb)
         data_pth_assoc=os.path.join(assoc_path,sim_name,'assoc'+out_nb)
 
-        plt.rcParams.update({'font.size': 18})   
+        #plt.rcParams.update({'font.size': 18})   
 
 
 
