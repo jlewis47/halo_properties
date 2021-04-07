@@ -26,9 +26,21 @@ from output_paths import *
 
 
 
-def compute_dust(out_nb,ldx,path,sim_name,overwrite=False):
+def compute_dust(out_nb,ldx,path,sim_name,overwrite=False,use_fof=False,rtwo_fact=1,rel_fof_path=None):
+
+        fof_suffix=''
+        if use_fof:
+            if not rel_fof_path:
+                fof_suffix='_fof'
+            else:
+                fof_suffix='_'+rel_fof_path.split('/')[-1]
 
 
+        rtwo_suffix=''
+        if rtwo_fact!=1:rtwo_suffix+='_%ixr200'%rtwo_fact
+
+        suffix=fof_suffix+rtwo_suffix
+        if len(suffix)>1 and suffix[0]=='_':suffix=suffix[1:]
         
         info_path=os.path.join(path,'output_00'+out_nb)
         #data_pth_fullres=os.path.join(path,'data_cubes','output_00'+out_nb)
@@ -75,7 +87,7 @@ def compute_dust(out_nb,ldx,path,sim_name,overwrite=False):
         grid = np.mgrid[0:upper,0:upper,0:upper]/float(upper-1)
 
         print('Getting Phew and stars')
-        idxs,star_idxs,phew_tot_star_nb,phew_star_nb,phew_tab,stars,lone_stars = read_assoc(out_nb,sim_name)
+        idxs,star_idxs,phew_tot_star_nb,phew_star_nb,phew_tab,stars,lone_stars = read_assoc(out_nb,sim_name,rtwo_fact,rel_fof_path)
 
 
 
@@ -141,7 +153,7 @@ def compute_dust(out_nb,ldx,path,sim_name,overwrite=False):
 
                                 subcube_nb=x_subnb+y_subnb*subs_per_side+z_subnb*subs_per_side**2.
 
-                                out_file=os.path.join(out,'gas_dust%s_out_'%fof_suffix+out_nb+'_%i'%subcube_nb)
+                                out_file=os.path.join(out,'gas_dust_out_%s_'%suffix+out_nb+'_%i'%subcube_nb)
 
                                 out_exists=os.path.exists(out_file)
 

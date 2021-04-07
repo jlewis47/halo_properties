@@ -19,11 +19,23 @@ from output_paths import *
 
 
 
-def compute_stellar_Tr(out_nb,ldx,path,sim_name,use_fof=False):
+def compute_stellar_Tr(out_nb,ldx,path,sim_name,use_fof=False,rtwo_fact=1,rel_fof_path=None):
 
 
         fof_suffix=''
-        if use_fof:fof_suffix='_fof'                
+        if use_fof:
+            if not rel_fof_path:
+                fof_suffix='_fof'
+            else:
+                fof_suffix='_'+rel_fof_path.split('/')[-1]
+
+
+        rtwo_suffix=''
+        if rtwo_fact!=1:rtwo_suffix+='_%ixr200'%rtwo_fact
+
+        suffix=fof_suffix+rtwo_suffix
+        if len(suffix)>1 and suffix[0]=='_':suffix=suffix[1:]
+
         
         info_path=os.path.join(path,'output_00'+out_nb)
         data_pth_fullres=path
@@ -56,7 +68,7 @@ def compute_stellar_Tr(out_nb,ldx,path,sim_name,use_fof=False):
         grid = np.mgrid[0:upper,0:upper,0:upper]/float(upper-1)
 
         print('Getting Phew and stars')
-        idxs,star_idxs,phew_tot_star_nb,phew_star_nb,phew_tab,stars,lone_stars = read_assoc(out_nb,sim_name,use_fof)
+        idxs,star_idxs,phew_tot_star_nb,phew_star_nb,phew_tab,stars,lone_stars = read_assoc(out_nb,sim_name,use_fof,rtwo_fact,rel_fof_path)
 
         #Conversion factors
         tau_fact = px_to_m*sigma_UV*1e6*0.76 #important musnt count the helium...
@@ -127,7 +139,7 @@ def compute_stellar_Tr(out_nb,ldx,path,sim_name,use_fof=False):
         assoc_TrLintr_H=Tr_H_gas[star_sm_posz,star_sm_posy,star_sm_posx]
         assoc_TrLintr_dust=Tr_dust_LyC[star_sm_posz,star_sm_posy,star_sm_posx]        
 
-        with open(os.path.join(out,'associated_stellar_Tr%s_'%fof_suffix+out_nb+'_0'),'wb') as newFile:
+        with open(os.path.join(out,'associated_stellar_Tr%s_'%suffix+out_nb+'_0'),'wb') as newFile:
                 np.save(newFile,np.int32(len(assoc_star_inds)))
                 np.save(newFile,np.float64(assoc_TrLintr_H))
                 np.save(newFile,np.float64(assoc_TrLintr_dust))
@@ -141,7 +153,7 @@ def compute_stellar_Tr(out_nb,ldx,path,sim_name,use_fof=False):
         lone_TrLintr_H=Tr_H_gas[star_sm_posz,star_sm_posy,star_sm_posx]
         lone_TrLintr_dust=Tr_dust_LyC[star_sm_posz,star_sm_posy,star_sm_posx]        
         
-        with open(os.path.join(out,'lone_stellar_Tr%s_'%fof_suffix+out_nb+'_0'),'wb') as newFile:
+        with open(os.path.join(out,'lone_stellar_Tr%s_'%suffix+out_nb+'_0'),'wb') as newFile:
                 np.save(newFile,np.int32(len(lone_star_inds)))
                 np.save(newFile,np.float64(lone_TrLintr_H))
                 np.save(newFile,np.float64(lone_TrLintr_dust))

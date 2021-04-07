@@ -25,11 +25,22 @@ from output_paths import *
 
 
 
-def compute_fesc(out_nb,ldx,path,sim_name,use_fof=False):
+def compute_fesc(out_nb,ldx,path,sim_name,use_fof=False,rtwo_fact=1,rel_fof_path=None):
 
         fof_suffix=''
-        if use_fof:fof_suffix='fof'
+        if use_fof:
+            if not rel_fof_path:
+                fof_suffix='_fof'
+            else:
+                fof_suffix='_'+rel_fof_path.split('/')[-1]
 
+
+        rtwo_suffix=''
+        if rtwo_fact!=1:rtwo_suffix+='_%ixr200'%rtwo_fact
+
+        suffix=fof_suffix+rtwo_suffix
+        if len(suffix)>1 and suffix[0]=='_':suffix=suffix[1:]
+        
         
         info_path=os.path.join(path,'output_00'+out_nb)
         data_pth_fullres=path
@@ -63,7 +74,7 @@ def compute_fesc(out_nb,ldx,path,sim_name,use_fof=False):
         grid = np.mgrid[0:upper,0:upper,0:upper]/float(upper-1)
 
         print('Getting halos and associated stars')
-        idxs,star_idxs,phew_tot_star_nb,phew_star_nb,phew_tab,stars,lone_stars = read_assoc(out_nb,sim_name,use_fof)
+        idxs,star_idxs,phew_tot_star_nb,phew_star_nb,phew_tab,stars,lone_stars = read_assoc(out_nb,sim_name,use_fof,rtwo_fact,rel_fof_path)
 
         indv_star_fesc=np.zeros(len(stars))
         indv_star_nH=np.zeros(len(stars))
@@ -538,7 +549,7 @@ def compute_fesc(out_nb,ldx,path,sim_name,use_fof=False):
         assert len(dict_keys)==len(np.transpose(file_bytes)), "mismatch between number of keys and number of data entries"
 
         #Write our output ... everything before _out_ is read by the read_out function as the key parameter
-        with open(os.path.join(out,'fesc_dust_out_%s_'%fof_suffix+out_nb+'_0'),'wb') as newFile:
+        with open(os.path.join(out,'fesc_dust_out_%s_'%suffix+out_nb+'_0'),'wb') as newFile:
             np.save(newFile,np.int32(len(idx)))
             np.save(newFile,np.int32(len(dict_keys)))
             np.save(newFile,np.float64(a))
@@ -547,7 +558,7 @@ def compute_fesc(out_nb,ldx,path,sim_name,use_fof=False):
 
 
 
-        with open(os.path.join(out,'associated_stellar_fesc_%s_'%fof_suffix+out_nb+'_0'),'wb') as newFile:
+        with open(os.path.join(out,'associated_stellar_fesc_%s_'%suffix+out_nb+'_0'),'wb') as newFile:
                 np.save(newFile,np.int32(len(indv_star_fesc)))
                 np.save(newFile,np.float64(indv_star_fesc))
                 np.save(newFile,np.float64(indv_star_nH))

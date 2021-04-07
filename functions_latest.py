@@ -223,12 +223,29 @@ def get_pos(arr):
 #     return(dicts,elses)
 
 
-def read_outs(out_nb,key_word,path,lim=0,use_fof=False):
+def read_outs(out_nb,key_word,path,lim=0,use_fof=False,rtwo_fact=1,fof_rel_path=None):
 
+
+
+        fof_suffix=''
         if use_fof:
-            dats = np.asarray([tgt for tgt in os.listdir(path) if key_word+'_out_fof_'+out_nb+'_' in tgt if os.path.isfile(os.path.join(path,tgt))])
-        else:
-            dats = np.asarray([tgt for tgt in os.listdir(path) if key_word+'_out_'+out_nb+'_' in tgt if 'fof' not in tgt if os.path.isfile(os.path.join(path,tgt))])            
+            if not rel_fof_path:
+                fof_suffix='_fof'
+            else:
+                fof_suffix='_'+rel_fof_path.split('/')[-1]
+
+
+        rtwo_suffix=''
+        if rtwo_fact!=1:rtwo_suffix+='_%ixr200'%rtwo_fact
+
+        suffix=fof_suffix+rtwo_suffix
+        if len(suffix)>1 and suffix[0]=='_':suffix=suffix[1:]
+
+    
+        #if use_fof:
+            #dats = np.asarray([tgt for tgt in os.listdir(path) if key_word+'_out_fof_'+out_nb+'_' in tgt if os.path.isfile(os.path.join(path,tgt))])
+
+        dats = np.asarray([tgt for tgt in os.listdir(path) if key_word+'_out_'+suffix+'_'+out_nb+'_' in tgt if 'fof' not in tgt if os.path.isfile(os.path.join(path,tgt))])            
             
         stripper = out_nb[-1]
 
