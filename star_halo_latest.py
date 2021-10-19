@@ -19,7 +19,7 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as pat
 from read_phew import read_phew
-from read_stars import read_stars
+from read_all_stars import read_starsi
 from scipy import spatial
 import time
 import string
@@ -119,9 +119,9 @@ def assoc_stars_to_haloes(out_nb,ldx,path,sim_name,use_fof=False,rtwo_fact=1,rel
 
 
         #Stars
-        stars=read_stars(star_path,out_nb)
+        stars=read_all_stars(star_path)
 
-        stars=np.transpose([stars['msol'],stars['x'],stars['y'],stars['z'],stars['Age'],stars['Z']])
+        stars=np.transpose([stars['mass'],stars['x'],stars['y'],stars['z'],stars['age'],stars['Z/0.02']])
 
         #print(np.shape(stars))
 
