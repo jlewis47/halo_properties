@@ -1,0 +1,229 @@
+Running on 32 tasks
+Skipping existing files
+Redshift is 15.0
+DM part mass in msun : 5.089030e+04
+Getting halos and associated stars
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_512
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_1280
+Allocated data arrays
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_256
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_768
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_0
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_2176
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_2432
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_2688
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_2944
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_2048
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_2304
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_3456
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_3712
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_3584
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_3840
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_2816
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_3072
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_3328
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_2560
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_3968
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_1152
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_1920
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_3200
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_1792
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_1024
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_1408
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_128
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_384
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_640
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_896
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_1536
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200/halo_stats_1664
+Running on 32 tasks
+Skipping existing files
+Redshift is 15.0
+DM part mass in msun : 5.089030e+04
+Getting halos and associated stars
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_256
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_2432
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_2304
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_3840
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_3584
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_512
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_640
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_768
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_1280
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_1792
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_2560
+Allocated data arrays
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_2048
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_2176
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_3456
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_1536
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_3328
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_0
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_2944
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_3072
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_1152
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_3712
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_2688
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_128
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_384
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_2816
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_896
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_1024
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_1920
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_1408
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_3200
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_3968
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100/halo_stats_1664
+Running on 32 tasks
+Skipping existing files
+Redshift is 15.0
+DM part mass in msun : 5.089030e+04
+Getting halos and associated stars
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_1792
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_640
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_768
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_1280
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_2944
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_3584
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_256
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_512
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_1536
+Allocated data arrays
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_2048
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_2176
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_2432
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_2688
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_3072
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_3456
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_3840
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_128
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_1152
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_0
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_2304
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_3712
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_2816
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_3328
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_384
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_896
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_1024
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_1920
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_2560
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_3968
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_1664
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_3200
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150/halo_stats_1408
+Running on 32 tasks
+Skipping existing files
+Redshift is 15.0
+DM part mass in msun : 5.089030e+04
+Getting halos and associated stars
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_512
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_1536
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_3840
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_1280
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_3456
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_768
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_1792
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_2176
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_2432
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_2688
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_3072
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_3584
+Allocated data arrays
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_2048
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_2944
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_1152
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_0
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_2304
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_1024
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_3328
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_128
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_640
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_896
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_384
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_2816
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_3712
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_256
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_1920
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_2560
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_1408
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_3200
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_3968
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p200_2xr200/halo_stats_1664
+Running on 32 tasks
+Skipping existing files
+Redshift is 15.0
+DM part mass in msun : 5.089030e+04
+Getting halos and associated stars
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_3456
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_768
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_2944
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_1920
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_2816
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_512
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_3584
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_3072
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_1280
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_2176
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_2432
+Allocated data arrays
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_256
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_3712
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_1536
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_3840
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_2048
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_2688
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_0
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_1792
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_1152
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_128
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_384
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_2304
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_640
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_896
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_1024
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_3328
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_2560
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_3200
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_3968
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_1408
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p100_2xr200/halo_stats_1664
+Running on 32 tasks
+Skipping existing files
+Redshift is 15.0
+DM part mass in msun : 5.089030e+04
+Getting halos and associated stars
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_512
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_1280
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_1792
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_3584
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_2176
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_2688
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_3072
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_3456
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_256
+Allocated data arrays
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_768
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_1536
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_3840
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_0
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_1152
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_2432
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_2944
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_2048
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_3712
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_2304
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_384
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_640
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_128
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_896
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_3328
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_1024
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_1920
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_2816
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_2560
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_1408
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_3968
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_3200
+Writing /gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_14_ll_0p150_2xr200/halo_stats_1664
+job done
