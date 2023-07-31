@@ -592,12 +592,36 @@ def new_get_overstep_hydro_cubed(
                                 (load_zlow, load_zhigh),
                             ),
                         )
+                        # if debug and 'rho' in name:
+                        #     print(load_xlow, load_xhigh, 
+                        #     load_ylow, load_yhigh, 
+                        #     load_zlow, load_zhigh)
 
+
+                        #     print(xlow, xhigh,
+                        #     ylow, yhigh,
+                        #     zlow, zhigh)
+
+                            # input('enter to proceed')
                     # cur_box=np.ones((size,size,size))*n_subcube
                     except IndexError:
                         print("Missing box assuming this is known ... Filling with 0s")
                         cur_box = np.zeros((size, size, size))
                         continue
+
+                    if debug and 'rho' in name:
+                        #diag plot
+                        #plot slices through centre in every direction
+                        l=int(box.shape[0]*0.5)
+                        fig,ax = plt.subplots(1,3)
+                        ax[0].imshow(np.log10(box[l,:,:]))
+                        ax[1].imshow(np.log10(box[:,l,:]))
+                        ax[2].imshow(np.log10(box[:,:,l]))
+
+                        fig.savefig("test_read.png")
+
+
+
 
                     # nbs+=1
 

@@ -48,11 +48,13 @@ def o_data_memmap(data_pth,slices):
         nz = np.fromfile(ff, dtype=np.int32, count=1)[0]
         bal = np.fromfile(ff, dtype=np.int32, count=1)[0]
 
+    
+
     init_offset = 5 * 4
     tot_size = nx * ny * nz
 
     if tot_size * 4 > buf_size:
-        raise Excepttion("multiple fortran buffer not supported")
+        raise Exception("multiple fortran buffer not supported")
     else:
         get_size = tot_size
 

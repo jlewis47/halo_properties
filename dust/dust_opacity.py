@@ -257,7 +257,7 @@ def shoot_star_path_cheap(pos,dust,rlim):
 
 
     
-    return(np.sum(dust[Zs,Ys,Xs]))
+    return(np.sum(dust[:,Zs[0],Ys[0],Xs[0]]))
 
 def shoot_star_path_cheap_multid(pos,dust,rlim):
     
@@ -280,7 +280,7 @@ def shoot_star_path_cheap_multid(pos,dust,rlim):
 
     # print(Zs)
     # print(np.shape(dust))
-    # print(np.shape(dust[:,Zs,Ys,Xs]))
+    # print(dust[0,Zs,Ys,Xs])
     
     return(np.sum(dust[:,Zs,Ys,Xs],axis=1))
 

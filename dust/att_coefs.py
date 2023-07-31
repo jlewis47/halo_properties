@@ -21,13 +21,13 @@ class att_coefs:
             self.Kappa1600 = sixteen
 
         
-        def guess_wvlngth(wvlgnth):
+    def guess_wvlngth(self, wvlgnth):
 
-            popts,pcov = cvf(linr, [1500, 2500], [self.Kappa1500, self.Kappa2500])
+        popts,pcov = cvf(linr, [1500, 2500], [self.Kappa1500, self.Kappa2500])
 
-            print("sterr is %e"%(np.sqrt(np.trace(pcov**2))))
+        print("sterr is %e"%(np.sqrt(np.trace(pcov**2))))
 
-            return(linr(wvlgnth, popts[0], popts[1]))
+        return(linr(wvlgnth, popts[0], popts[1]))
 
 def get_dust_att_files():
 

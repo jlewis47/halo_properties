@@ -3,7 +3,7 @@
 Read halo and star files and make associations
 Saved as binary file that repeats for N halos and another that contains M stars
 Associated stars and non associated stars are saved to separate binary files
-Two files track each halo star number and 1st star file posittion
+Two files track each halo star number and 1st star file position
 A final file saves halo IDs
 ------
 
@@ -13,6 +13,8 @@ It also tracks stars that don't end up associated, that are saved to separate 'L
 """
 
 
+from halo_properties.params.params import *
+
 import numpy as np
 import matplotlib as mpl
 
@@ -20,19 +22,21 @@ mpl.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.patches as pat
 from read_phew import read_phew
-from tionread_stars import read_rank_star_files
+
+from halo_properties.files.read_stars import read_rank_star_files
 from scipy import spatial
 import time
 import string
 import argparse
 import os
-from utils.functions_latest import *
-from utils.utils import *
+from halo_properties.utils.functions_latest import *
+from halo_properties.utils.utils import *
+from halo_properties.association.read_fof import o_fof
 
 # from read_fof import o_fof
 import h5py
-from utils.output_paths import *
-from files.wrap_boxes import *
+from halo_properties.utils.output_paths import *
+from halo_properties.files.wrap_boxes import *
 from scipy.stats import binned_statistic_dd
 import h5py
 from mpi4py import MPI
@@ -193,14 +197,12 @@ def find_nearby_stars_wrapper(
 def assoc_stars_to_haloes(
     out_nb,
     ldx,
-    path,
-    sim_name,
     use_fof=True,
     rtwo_fact=1,
-    fof_path=None,
     npart_thresh=50,
     assoc_mthd="",
     overwrite=False,
+    hdf5=True,
 ):
 
     check_assoc_keys(assoc_mthd)
@@ -209,16 +211,26 @@ def assoc_stars_to_haloes(
     # star_path='/data2/jlewis/dusts/'
     # info_path='/data2/jlewis/dusts/output_00'+out_nb
 
-    output_str = "output_%06i" % out_nb
+    if sixdigits:
+        output_str = "output_%06i" % out_nb
+    else:
+        output_str = "output_%05i" % out_nb
 
-    info_path = os.path.join(path, output_str, "group_000001")
-    star_path = os.path.join(path, "reduced", "stars", output_str)
+    info_path = os.path.join(sim_path, output_str)
+    if sixdigits:
+        info_path = os.path.join(info_path, "group_000001")
+
+    loc_star_path = os.path.join(star_path, output_str)
     # phew_path=os.path.join(path,output_str)
+    if 'll' in fof_path:
+        fof_suffix = get_fof_suffix(fof_path)
+    else:
+        fof_suffix = ll_to_fof_suffix(0.2)
 
-    fof_suffix = get_fof_suffix(fof_path)
     rtwo_suffix = get_r200_suffix(rtwo_fact)
     suffix = get_suffix(fof_suffix, rtwo_suffix)
 
+    
     Np_tot = ldx**3
 
     """Get scale factor and co"""
@@ -279,16 +291,25 @@ def assoc_stars_to_haloes(
 
     halos = []
 
-    with h5py.File(os.path.join(fof_path, output_str, "haloes_masst.h5"), "r") as src:
+    print(hdf5)
 
-        keys = src["Data"].keys()
+    if hdf5:
+        halos={}
+        with h5py.File(os.path.join(fof_path, output_str, "haloes_masst.h5"), "r") as src:
 
-        keys = [k for k in keys if k != "file_number"]
+            keys = src["Data"].keys()
 
-        for key in keys:
-            halos.append(src["Data"][key][()])
+            for key in keys:
+                if key!="file_number":
+                    halos[key]=src["Data"][key][()]
+                else:
+                    halo_fnbs=src["Data"][key][()]
 
-    halos = np.asarray(halos).T
+        halos = np.asarray([halos[k] for k in halos.keys()]).T
+
+    else:
+
+        halos,halo_fnbs=o_fof(os.path.join(fof_path, output_str, 'fofres/halos_ll=0.2'))
 
     # print(np.log10(np.max(halos[:,2])*Mp),get_r200(np.max(halos[:,2])))
     # print(np.log10(np.min(halos[:,2])*Mp),get_r200(np.min(halos[:,2])))
@@ -310,7 +331,7 @@ def assoc_stars_to_haloes(
     halo_halo_ids = []
 
     # Stars
-    time_myr, stars, star_ids = read_rank_star_files(star_path, rank, Nproc)
+    time_myr, stars, star_ids = read_rank_star_files(loc_star_path, rank, Nproc)
 
     if rank == 0:
         print("read stars")
@@ -339,9 +360,11 @@ def assoc_stars_to_haloes(
 
     stt = time.time()
 
-    # Associattion and output
+    # Association and output
 
     r_pxs = get_r200(halos[:, 1], om_m) * rtwo_fact
+
+    # print(np.log10(np.min(halos[:, 1]) * Mp), get_r200(np.min(halos[:, 1]), om_b))
 
     # new_halo_tab=np.c_[halos[:,1:],r_pxs]
 
@@ -359,7 +382,7 @@ def assoc_stars_to_haloes(
 
     if rank == 0:
         print("There are %i stars to match to %i haloes" % (len(stars), l_halos))
-        print("Associattion starting")
+        print("Association starting")
 
     for halo_nb, halo in enumerate(halos[:]):
 
@@ -423,7 +446,7 @@ def assoc_stars_to_haloes(
 
     if rank == 0:
 
-        print("Associattion Finished")
+        print("Association Finished")
 
         # we need to merge the work of the different processes by using our list of star ids and corresponding halo ids
 
@@ -442,31 +465,34 @@ def assoc_stars_to_haloes(
         with h5py.File((out_file), "w") as out_halos:
 
             out_halos.create_dataset(
-                "ID", data=halos[:, 0], dtype=np.int64, compresstion="lzf"
+                "ID", data=np.int64(halos[:, 0]), dtype=np.int64, compression="lzf"
             )
             out_halos.create_dataset(
-                "mass", data=halos[:, 1], dtype=np.float32, compresstion="lzf"
+                "fnb", data=halo_fnbs, dtype=np.int32, compression="lzf"
             )
             out_halos.create_dataset(
-                "coords", data=halos[:, 2:5], dtype=np.float32, compresstion="lzf"
+                "mass", data=halos[:, 1], dtype=np.float32, compression="lzf"
             )
             out_halos.create_dataset(
-                "rpx", data=r_pxs, dtype=np.float32, compresstion="lzf"
+                "coords", data=halos[:, 2:5], dtype=np.float32, compression="lzf"
             )
             out_halos.create_dataset(
-                "coords_new", data=new_ctrs[:, :], dtype=np.float32, compresstion="lzf"
+                "rpx", data=r_pxs, dtype=np.float32, compression="lzf"
+            )
+            out_halos.create_dataset(
+                "coords_new", data=new_ctrs[:, :], dtype=np.float32, compression="lzf"
             )
             out_halos.create_dataset(
                 "stellar mass",
                 data=halo_stellar_mass,
                 dtype=np.float32,
-                compresstion="lzf",
+                compression="lzf",
             )
             out_halos.create_dataset(
-                "stellar count", data=halo_star_nb, dtype=np.int32, compresstion="lzf"
+                "stellar count", data=halo_star_nb, dtype=np.int32, compression="lzf"
             )
             out_halos.create_dataset(
-                "halo star ID", data=halo_star_ids, dtype=np.int64, compresstion="lzf"
+                "halo star ID", data=np.int64(halo_star_ids), dtype=np.int64, compression="lzf"
             )
 
             print("Done")
@@ -479,7 +505,7 @@ Main body
 
 if __name__ == "__main__":
 
-    Arg_parser = argparse.ArgumentParser("Associate stars and halos in full simulattion")
+    Arg_parser = argparse.ArgumentParser("Associate stars and halos in full simulation")
 
     Arg_parser.add_argument(
         "nb",
@@ -488,16 +514,7 @@ if __name__ == "__main__":
         help='snap number string, give as "XXX" so that 00001 is "001" and 00111 is "111"',
     )
     Arg_parser.add_argument("ldx", metavar="ldx", type=int, help="box size in cells")
-    Arg_parser.add_argument("path", metavar="path", type=str, help="path to sim")
-    Arg_parser.add_argument(
-        "simname",
-        metavar="simname",
-        type=str,
-        help="sim name (will be used to create dirs)",
-    )
-    Arg_parser.add_argument(
-        "fofpath", metavar="fofpath", type=str, help="folder for fof masst hdf5 files"
-    )
+
     Arg_parser.add_argument(
         "--rtwo_fact",
         metavar="rtwo_fact",
@@ -521,8 +538,14 @@ if __name__ == "__main__":
     )
     Arg_parser.add_argument(
         "--overwrite",
-        acttion="store_true",
+        action="store_true",
         help="overwrite existing files?",
+        default=False,
+    )
+    Arg_parser.add_argument(
+        "--no_hdf5",
+        action="store_true",
+        help="fof in binary format?",
         default=False,
     )
 
@@ -530,9 +553,6 @@ if __name__ == "__main__":
 
     out_nb = args.nb
     ldx = args.ldx
-    path = args.path
-    sim_name = args.simname
-    fof_path = args.fofpath
     rtwo_fact = args.rtwo_fact
     npart_thresh = args.npart_thresh
     assoc_mthd = args.assoc_mthd
@@ -540,11 +560,9 @@ if __name__ == "__main__":
     assoc_stars_to_haloes(
         out_nb,
         ldx,
-        path,
-        sim_name,
-        fof_path=fof_path,
         npart_thresh=npart_thresh,
         rtwo_fact=rtwo_fact,
         assoc_mthd=assoc_mthd,
         overwrite=args.overwrite,
+        hdf5=args.no_hdf5==False,
     )

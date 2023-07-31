@@ -8,8 +8,6 @@ import matplotlib as mpl
 mpl.use("Agg")
 import matplotlib.pyplot as plt
 
-from scipy.stats import binned_statistic, binned_statistic_2d
-
 # import matplotlib.patches as pat
 # from read_radgpu import o_rad_cube_big
 # from read_stars import read_all_star_files
@@ -21,12 +19,12 @@ from scipy.stats import binned_statistic, binned_statistic_2d
 # import string
 import argparse
 import os
-from halo_properties.association.read_assoc_latest import read_assoc
-from halo_properties.files.read_stars import read_specific_stars
-from halo_properties.files.read_fullbox_big import *
-from halo_properties.utils.utils import ll_to_fof_suffix, get_r200_suffix, get_suffix
-from halo_properties.utils.functions_latest import *
-from halo_properties.src.bpass_fcts import (
+from ..association.read_assoc_latest import read_assoc
+from ..files.read_stars import read_specific_stars
+from ..files.read_fullbox_big import *
+from ..utils.utils import ll_to_fof_suffix, get_r200_suffix, get_suffix
+from ..utils.functions_latest import *
+from ..src.bpass_fcts import (
     get_mag_tab_BPASSV221_betas,
     get_mag_interp_fct,
     get_xis_interp_fct,
@@ -35,21 +33,20 @@ from halo_properties.src.bpass_fcts import (
     bin_star_info,
     comp_betas,
 )
-from halo_properties.src.ray_fcts import sph_2_cart, cart_2_sph, sum_over_rays_bias, sum_over_rays_bias_nopython, sum_over_rays_bias_multid
-from halo_properties.dust.dust_opacity import shoot_star_path_cheap, shoot_star_path, shoot_star_path_cheap_multid
+from ..src.ray_fcts import sph_2_cart, cart_2_sph, sum_over_rays_bias, sum_over_rays_bias_nopython, sum_over_rays_bias_multid
+from ..dust.dust_opacity import shoot_star_path_cheap, shoot_star_path, shoot_star_path_cheap_multid
 
 import healpy as hp
 
 # from dust_opacity import *
-from halo_properties.files.wrap_boxes import *
-from halo_properties.utils.output_paths import *
+from ..files.wrap_boxes import *
+from ..utils.output_paths import *
 from mpi4py import MPI
-from halo_properties.utils.units import get_unit_facts, convert_temp
-from halo_properties.utils.utils import divide_task  # , sum_arrays_to_rank0
-from halo_properties.params.params import *
+from ..utils.units import get_unit_facts, convert_temp
+from ..utils.utils import divide_task  # , sum_arrays_to_rank0
+from ..params.params import *
 # from time import sleep
-from halo_properties.dust.att_coefs import att_coefs, att_coef_draine_file, get_dust_att_files
-
+from ..dust.att_coefs import att_coefs, att_coef_draine_file, get_dust_att_files
 
 # from numba import jit
 
@@ -303,7 +300,7 @@ def write_fields(
 
 
 def compute_fesc(
-    out_nb, overwrite=False, rtwo_fact=1, fesc_rad=1.0, ll=0.2, assoc_mthd="", test=False, dilate=8, mbin=1, mbin_width=1
+    out_nb, overwrite=False, rtwo_fact=1, fesc_rad=1.0, ll=0.2, assoc_mthd="", test=False, dilate=8
 ):
 
 
@@ -348,16 +345,9 @@ def compute_fesc(
 
     comm.Barrier()
 
-    if sixdigits:
-        output_str = "output_%06i" % out_nb
-    else:
-        output_str = "output_%05i" % out_nb
+    output_str = "output_%06i" % out_nb
 
-    if sixdigits:
-        info_path = os.path.join(sim_path, output_str, "group_000001")
-    else:
-        info_path = os.path.join(sim_path, output_str)
-
+    info_path = os.path.join(sim_path, output_str, "group_000001")
     snap_box_path = os.path.join(box_path, output_str)
 
     plt.rcParams.update({"font.size": 18})
@@ -373,8 +363,6 @@ def compute_fesc(
 
         n_subcubes = None
 
-    # print(data_files, n_subcubes)
-
     n_subcubes = comm.bcast(n_subcubes, root=0)
 
     # print(rank, n_subcubes)
@@ -386,11 +374,8 @@ def compute_fesc(
     # print(n_subcubes)
     subs_per_side = int(np.round(n_subcubes ** (1.0 / 3)))
     # print(subs_per_side)
-
-
     sub_side = int(float(ldx) / subs_per_side)
     # print(sub_side)
-    # print(subs_per_side, sub_side)
 
     # Get scale factor and co
     """Get scale factor and co"""
@@ -514,9 +499,6 @@ def compute_fesc(
     #     dtype=np.float32,
     #     mode="w+",
     # )
-
-
-
     big_rho = np.zeros((big_side, big_side, big_side), dtype=np.float32)
     big_rhod = np.zeros((big_side, big_side, big_side), dtype=np.float32)
     big_metals = np.zeros((big_side, big_side, big_side), dtype=np.float32)
@@ -525,34 +507,26 @@ def compute_fesc(
 
     fmin, fmax, f_per_proc = divide_task(n_subcubes, Nproc, rank)
 
-    if test:
-        #print(rank, fmin, fmax)
-        test_halo_masses=[]
-        test_halo_trs=[]
-        test_halo_lintrs=[]
+    # print(rank, fmin, fmax)
 
-    for x_subnb in range(subs_per_side):
+    for z_subnb in range(subs_per_side):
         for y_subnb in range(subs_per_side):
-            for z_subnb in range(subs_per_side):
+            for x_subnb in range(subs_per_side):
 
                 subcube_nb = np.ravel_multi_index(
                     (x_subnb, y_subnb, z_subnb),
                     (subs_per_side, subs_per_side, subs_per_side),
                 )
 
-                # print(subcube_nb)
-
-                if (test and mbin==1) and (subcube_nb != 11):
+                if test and subcube_nb >= Nproc:
                     continue
 
-                if (subcube_nb < fmin) or (subcube_nb >= fmax):
+                if subcube_nb < fmin or subcube_nb >= fmax:
                     continue
 
                 out_file = os.path.join(analy_out, "halo_stats_%i" % subcube_nb)
 
-                if rank==0 and test:print(f"subcube #{subcube_nb:d}")
-
-                
+                # print(rank, subcube_nb)
 
                 out_exists = os.path.exists(out_file)
 
@@ -566,7 +540,7 @@ def compute_fesc(
 
                 sub_halo_tab, halo_star_ids, sub_halo_tot_star_nb = read_assoc(
                     out_nb,
-                    sim_name,
+                    "CoDaIII",
                     ldx,
                     sub_side,
                     rtwo_fact=rtwo_fact,
@@ -574,12 +548,6 @@ def compute_fesc(
                     assoc_mthd=assoc_mthd,
                     subnb=subcube_nb,
                 )
-
-                if mbin!=1 and mbin_width!=1:
-                    #keep haloes in bin
-                    filt = ((mbin - mbin_width)<(sub_halo_tab["mass"] * Mp))*((sub_halo_tab["mass"] * Mp)<(mbin + mbin_width))
-                    sub_halo_tab = sub_halo_tab[filt]
-                    sub_halo_tot_star_nb = sub_halo_tot_star_nb[filt]                
 
                 # print(len(sub_halo_tab), len(sub_halo_tot_star_nb))
 
@@ -660,9 +628,6 @@ def compute_fesc(
 
                 # dust and gas ray tracing
                 halo_ray_Tr = np.zeros(
-                    (len(att_sets), np.shape(sub_halo_tab)[0]), dtype=np.float64
-                )
-                halo_ray_Tr_cell = np.zeros(
                     (len(att_sets), np.shape(sub_halo_tab)[0]), dtype=np.float64
                 )
                 halo_mags = np.zeros(
@@ -847,7 +812,7 @@ def compute_fesc(
 
                 for ind, halo in enumerate(sub_halo_tab):
 
-                    # if test: print('    Halo #%i'%ind)
+                    # print('    Halo #%i'%ind)
 
                     r_px = halo["rpx"]
 
@@ -896,7 +861,7 @@ def compute_fesc(
 
                         sm_rho_fesc = sm_rho
                         sm_rhod_fesc = sm_rhod
-                        sm_xHI_fesc = sm_xHI
+                        sm_xHI_fesc =sm_xHI
 
 
 
@@ -980,17 +945,10 @@ def compute_fesc(
                     sm_taus = np.zeros(((len(att_sets),) + np.shape(sm_xHI_fesc)))
 
                     for iset, att_set in enumerate(att_sets):
-                    
                         sm_taus[iset] = ((sm_xHI_fesc * sm_rho_fesc) * (rho_fact * tau_fact)) + (
                             (sm_rhod_fesc * att_set.Kappa912) * (rhod_fact * px_to_m * 100.0)
-                        )
+                        )  # includes partial dx
                     sm_taus_dust = sm_taus[:] - sm_taus[0]
-
-                    # if test and halo['mass']*Mp > 1e10:
-                    #     print(np.max(sm_rho_fesc)*unit_d, np.max(sm_rhod_fesc)*unit_d)
-                    #     print(px_to_m)
-                    #     print([np.max(sm_taus_dust_att) for sm_taus_dust_att in sm_taus_dust])
-                    # print(sm_taus.shape)
 
                     # arg=np.unravel_index([np.argmax(sm_taus_dust[1,:])], sm_rho.shape)
                     # m=(sub_halo_tab["mass"][ind] * Mp)
@@ -1003,14 +961,11 @@ def compute_fesc(
                     # If there aren't any stars : no need to calculate emissivities or star formattion stuff
                     if sub_halo_star_nb[ind] > 0:
 
-                        # print(np.log10(halo["mass"]*Mp), r_px)
-
                         # Get stars for halo  from list of associated stars
                         cur_star_ids = halo_star_ids[
                             sub_halo_tot_star_nb[ind]
                             - sub_halo_star_nb[ind] : sub_halo_tot_star_nb[ind]
                         ]
-
 
                         rs = np.arange(0, 2 * r_px * fesc_rad, rad_res)  # so we do edge cases properly
 
@@ -1023,7 +978,7 @@ def compute_fesc(
                         # print(sub_halo_tot_star_nb[ind] - sub_halo_star_nb[ind], sub_halo_tot_star_nb[ind])
 
                         cur_stars = read_specific_stars(
-                            os.path.join(star_path, output_str), cur_star_ids, keys=["mass", "age", "Z/0.02", "x", "y", "z"]
+                            os.path.join(star_path, output_str), cur_star_ids
                         )
 
                         halo_stellar_mass[ind] = np.sum(cur_stars["mass"]) / (
@@ -1214,8 +1169,6 @@ def compute_fesc(
 
                         # print(cells_w_stars, len(cur_stars['mass']))
 
-                        # if test and halo["mass"]*Mp<1E10:continue
-
                         for icell, (
                             cell_w_stars,
                             x_cell,
@@ -1226,46 +1179,7 @@ def compute_fesc(
                             sm_ctr = np.asarray([z_cell, y_cell, x_cell]) + 0.5
 
                             # print(sm_taus[iset])
-                            # print(np.shape(sm_taus), np.shape(sm_rho_fesc), np.shape(sm_rho))
-
-
-                            # for iset in range(len(att_sets)):
-                            #     halo_ray_Tr[iset, ind] += (
-                            #         sum_over_rays_bias(
-                            #             sm_taus[iset],
-                            #             sm_ctr,
-                            #             r_px * fesc_rad, #go further if fesc_rad > 1
-                            #             rad_res,
-                            #             Xs,
-                            #             Ys, 
-                            #             Zs,
-                            #             debug=False,
-                            #         )
-                            #     ) * cell_w_stars
-
-                            # halo_ray_Tr[ind]+=(sum_over_rays_bias(sm_tau,sm_ctr,r_px,rad_res,Xs,Ys,Zs))*cur_star_emissivity[star_nb]
-                            # halo_ray_Tr_dust_SMC[ind]+=(sum_over_rays_bias(sm_tau_dust_LyC_SMC,sm_ctr,r_px,rad_res,Xs,Ys,Zs))*cur_star_emissivity[star_nb]
-                            # halo_ray_Tr_dust_LMC[ind]+=(sum_over_rays_bias(sm_tau_dust_LyC_SMC,sm_ctr,r_px,rad_res,Xs,Ys,Zs))*cur_star_emissivity[star_nb]
-                            # halo_ray_Tr_dust_MW[ind]+=(sum_over_rays_bias(sm_tau_dust_LyC_SMC,sm_ctr,r_px,rad_res,Xs,Ys,Zs))*cur_star_emissivity[star_nb]                            
-
-
-                            # if test: print(halo_ray_Tr[:, ind])
-
-                            # for iset in range(len(att_sets)):
-                            #     halo_ray_Tr[iset, ind] += (
-                            #         sum_over_rays_bias_nopython(
-                            #             sm_taus[iset],
-                            #             sm_ctr,
-                            #             r_px * fesc_rad, #go further if fesc_rad > 1
-                            #             rad_res,
-                            #             rs,
-                            #             phis,
-                            #             thes,
-                            #             debug=False,
-                            #         )
-                            #     ) * cell_w_stars
-
-                            # print(halo_ray_Tr[:, ind])
+                            print(np.shape(sm_taus), np.shape(sm_rho_fesc), np.shape(sm_rho))
 
                             halo_ray_Tr[:, ind] += (
                                 sum_over_rays_bias_multid(
@@ -1280,7 +1194,6 @@ def compute_fesc(
                                 )
                             ) * cell_w_stars
 
-                            halo_ray_Tr_cell[:, ind] += np.exp(-sm_taus[:, x_cell, y_cell, z_cell]) * cell_w_stars
 
                             dust_taus[
                                 :, x_cell, y_cell, z_cell
@@ -1293,15 +1206,11 @@ def compute_fesc(
                             :, star_sm_posz, star_sm_posy, star_sm_posx
                         ]
 
-                        # if test and halo["mass"]*Mp>=1E10:
-                        #     print(halo_ray_Tr[:,ind])
-                        #     print(np.max(star_taus[:,:], axis=1))
-
                         for iset, att_set in enumerate(att_sets):
 
                             if att_set.Kappa912 > 0.0:
                                 star_trans = np.exp(
-                                    star_taus[iset]
+                                    -star_taus[iset]
                                     * att_set.Kappa1600
                                     / att_set.Kappa912
                                 )
@@ -1313,7 +1222,7 @@ def compute_fesc(
                             )
 
                             halo_betas[iset, ind] = comp_betas(
-                                cur_stars["mass"] / (1 - eta_sn),
+                                cur_stars["mass"],
                                 high_conts,
                                 low_conts,
                                 star_taus[iset],
@@ -1321,7 +1230,7 @@ def compute_fesc(
                             )
 
                     # if test and halo["mstar"] > 0:
-                    if test and halo["mass"] * Mp > 1.0e10:
+                    if test and halo["mass"] * Mp > 1.0e11:
                         print("found a big halo")
                         print("%E" % (halo["mass"] * Mp))
                         print("gas mass=%E msun" % halo_gmass[ind])
@@ -1331,7 +1240,6 @@ def compute_fesc(
                         print("mags", halo_mags[:, ind])
                         print("betas", halo_betas[:, ind])
                         print(np.max(dust_taus, axis=(1, 2, 3)))
-                        print(halo_ray_Tr[0, ind], halo_ray_Tr_cell[0,ind])
                         # if halo_ray_Tr[0, ind] < 1.0:
                         #     fesc_debug_avg += halo_ray_Tr[0, ind]
                         #     debug_counts += 1.0
@@ -1382,90 +1290,9 @@ def compute_fesc(
 
                 else:
 
-                    print('Test run')
+                    print('Test run, out_file: %s'%out_file)
 
-                    
-
-                    #test fesc by plotting the fesc as a function of the stellar_rho
-
-                    # halo_ray_Tr[0][halo_ray_Tr[0]<1e-10] = 1e-10
-                    test_halo_trs.append(halo_ray_Tr[0])
-                    test_halo_lintrs.append(halo_Lintrs[:,0])
-                    test_halo_masses.append(sub_halo_tab["mass"]*Mp)
-
-
-                    write_fields(
-                    Mp,
-                    att_sets,
-                    sub_halo_tab,
-                    "./test_data_%i.hdf5"%subcube_nb,
-                    sub_idxs,
-                    pos,
-                    halo_ray_Tr,
-                    halo_mags,
-                    halo_betas,
-                    halo_SFRs,
-                    halo_Lintrs,
-                    halo_stellar_mass,
-                    halo_youngest,
-                    halo_oldest,
-                    halo_stAgeWmass,
-                    halo_stZ_wStMass,
-                    halo_gmass,
-                    halo_2e4k_gmass,
-                    halo_max_rhog,
-                    halo_xhi_wV,
-                    halo_xhi_wMg,
-                    halo_xhi_wStMass,
-                    halo_gtemp_max,
-                    halo_gtemp_wMg,
-                    halo_gtemp_wStMass,
-                    halo_Zmass,
-                    halo_Zmass_wStMass,
-                    # halo_avgZ,
-                    halo_Md,
-                    halo_Md_wStMass,
-                    # halo_avgMd,
-                    )
-
-
-                    # return(halo_ray_Tr, halo_mags, sub_halo_tab, halo_gmass, sub_halo_tab["mass"] * Mp)
-
-    if test:
-
-        fig,axs=plt.subplots(1,1, figsize=(10,10), sharey=True)
-        
-        test_halo_masses = np.concatenate(test_halo_masses)
-        test_halo_trs = np.concatenate(test_halo_trs)
-        test_halo_lintrs = np.concatenate(test_halo_lintrs)
-
-        
-        #2D histogram of halo fescs vs halo mass
-        img,binsx,binsy,counts = binned_statistic_2d(test_halo_masses, test_halo_trs, test_halo_trs, 'count', bins=[np.logspace(7,12,30), np.logspace(-5,0,30)])
-        axs.imshow(img.T, extent=np.log10([binsx.min(), binsx.max(), binsy.min(), binsy.max()]), origin='lower', aspect='auto', cmap='viridis', 
-        norm=mpl.colors.LogNorm(vmin=0, vmax=np.nanmax(img)))
-
-        print(img.max(), img.min(), np.nanmax(img), np.nanmin(img))
-
-        #plot mean in bins
-        rho_bins = np.logspace(-28, -24, 8)
-        mean,bins,counts = binned_statistic(test_halo_masses, test_halo_trs*test_halo_lintrs, statistic=np.nansum, bins=binsx)
-        sum,bins,counts = binned_statistic(test_halo_masses, test_halo_lintrs, statistic=np.nansum, bins=binsx)
-        mean = mean / sum
-
-        print(list(zip(np.log10(bins[:-1]),mean/sum)))
-
-        axs.plot(np.log10(bins[:-1] + 0.5 * np.diff(bins)), np.log10(mean), 'r--', label='mean')
-
-        
-        axs.set_xlabel(r'$M_{\mathrm{halo}}, \, M_{\odot}$')
-        axs.set_ylabel(r'$f_{esc}$')
-        # axs.set_xscale('log')
-        # axs.set_yscale('log')
-        axs.set_ylim(-5,0)
-        axs.set_xlim(7,12)
-
-        fig.savefig('test_fesc_halo.png')
+                    return(halo_ray_Tr, halo_mags, sub_halo_tab, halo_gmass, sub_halo_tab["mass"] * Mp)
 
 """
 Main body
@@ -1525,21 +1352,6 @@ if __name__ == "__main__":
         default=8
     )
 
-    Arg_parser.add_argument(
-        "--mbin",
-        metavar="mbin",
-        type=float,
-        help="halo mass bin centre",
-        default=1
-    )
-    Arg_parser.add_argument(
-        "--mbin_width",
-        metavar="mbin_width",
-        type=float,
-        help="halo mass bin centre",
-        default=1
-    )
-
     args = Arg_parser.parse_args()
 
     out_nb = args.nb
@@ -1549,8 +1361,6 @@ if __name__ == "__main__":
     overwrite = args.overwrite
     dilate = args.dilate
     fesc_rad = args.fesc_rad
-    mbin = args.mbin
-    mbin_width = args.mbin_width
 
     compute_fesc(
         out_nb,
@@ -1560,7 +1370,5 @@ if __name__ == "__main__":
         ll=ll,
         overwrite=overwrite,
         test=args.test,
-        dilate=dilate,
-        mbin=mbin,
-        mbin_width=mbin_width,
+        dilate=dilate
     )

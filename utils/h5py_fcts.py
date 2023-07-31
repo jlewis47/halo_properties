@@ -10,6 +10,7 @@ def gather_h5py_files(path, keys):
     data_len = 0
 
     types=[]
+    cols=[]
     with h5py.File(files[0], "r") as src:
         
         if keys==None:
@@ -17,13 +18,29 @@ def gather_h5py_files(path, keys):
         
         for k in keys:
             types.append(src[k].dtype.name)
+            shape = np.shape(src[k])
+            if len(shape)>1:
+                cols.append(shape[1])
+            else:
+                cols.append(1)
+            
         data_len += src[k].len()
     
-    for f in files[1:]:
-        with h5py.File(f, "r") as src:
-            data_len += src[keys[0]].len()
+    # print(cols,types)
 
-    dtype = [(k,typ) for typ,k in zip(types, keys)]
+    for f in files[1:]:
+        try:
+            with h5py.File(f, "r") as src:
+                data_len += src[keys[0]].len()
+        except OSError:
+            print(f'pb with file {f:s}... skipping')
+            files.remove(f)
+            continue
+
+    dtype = [(k,typ,col) for k,typ,col in zip(keys, types, cols)]
+    # print(dtype)
+
+
 
     datas = np.empty(data_len, dtype=dtype)
 
@@ -33,7 +50,10 @@ def gather_h5py_files(path, keys):
             for ik,k in enumerate(keys):
                 loc_data = src[k][()]
                 loc_l = len(loc_data)
-                datas[k][tot_l:tot_l+loc_l] = loc_data
+                if cols[ik]>1:  
+                    datas[k][tot_l:tot_l+loc_l,:] = loc_data
+                else:
+                    datas[k][tot_l:tot_l+loc_l] = loc_data
             tot_l+=loc_l
             
 

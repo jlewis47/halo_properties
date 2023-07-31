@@ -299,11 +299,11 @@ def sum_over_rays_bias(
 
         plt.scatter(ctr[0] + 0.5 * size, ctr[1] + 0.5 * size, c="r")
         plt.scatter(
-            Xs.compress(IB) + 0.5 * size, Ys.compress(IB) + 0.5 * size, c="white", alpha=0.5, s=0.2
+            Xs[IB] + 0.5 * size, Ys[IB] + 0.5 * size, c="white", alpha=0.5, s=0.2
         )
         plt.scatter(
-            Xs_snap.compress(IB * non_null) + 0.5,
-            Ys_snap.compress(IB * non_null) + 0.5,
+            Xs_snap[IB * non_null] + 0.5,
+            Ys_snap[IB * non_null] + 0.5,
             c="r",
             alpha=0.5,
             s=0.4,
@@ -481,6 +481,9 @@ def sum_over_rays_bias(
 
     """
 
+
+    
+
     size = np.shape(field)[0]
 
     ctr = np.asarray(ctr) - 0.5 * size
@@ -506,6 +509,8 @@ def sum_over_rays_bias(
     # print(IB, np.shape(field), np.shape(Xs))
 
     sampled = np.zeros_like(Xs)
+    # print(field, field.max())
+    # print(Zs_snap[IB], Ys_snap[IB], Xs_snap[IB])
     sampled[IB] = field[Zs_snap[IB], Ys_snap[IB], Xs_snap[IB]]
 
     # if paths
@@ -536,11 +541,13 @@ def sum_over_rays_bias(
         )
     )
 
+
     scal[np.isnan(scal)] = 1
     scal[np.isinf(scal)] = 1
     # np.nan_to_num(scal,nan=1,posinf=1,neginf=1)
 
     rays = np.exp(-np.sum(sampled, axis=1) * rad_res * scal)
+    # print(sampled[:,0])
 
     weights = (Rs[inds, argmin] ** -2) / np.sum(Rs[inds, argmin] ** -2)
 
@@ -554,12 +561,12 @@ def sum_over_rays_bias(
         plt.grid(True)
         # print(field[int(ctr[2]+0.5*size),:,:])
         # print(-np.sum(sampled,axis=1)*rad_res*scal)
-        # plt.imshow(np.log10(field[int(ctr[2]+0.5*size),:,:]*rad_res),origin='lower',extent=[0,size,0,size])
-        plt.imshow(
-            np.log10(np.sum(field[:, :, :] * rad_res, axis=0)),
-            origin="lower",
-            extent=[0, size, 0, size],
-        )
+        plt.imshow(np.log10(field[int(ctr[2]+0.5*size),:,:]*rad_res),origin='lower',extent=[0,size,0,size])
+        # plt.imshow(
+        #     np.log10(np.sum(field[:, :, :] * rad_res, axis=0)),
+        #     origin="lower",
+        #     extent=[0, size, 0, size],
+        # )
 
         plt.colorbar()
 
@@ -578,11 +585,11 @@ def sum_over_rays_bias(
 
         plt.scatter(ctr[0] + 0.5 * size, ctr[1] + 0.5 * size, c="r")
         plt.scatter(
-            Xs.compress(IB) + 0.5 * size, Ys.compress(IB) + 0.5 * size, c="white", alpha=0.5, s=0.2
+            Xs[IB] + 0.5 * size, Ys[IB] + 0.5 * size, c="white", alpha=0.5, s=0.2
         )
         plt.scatter(
-            Xs_snap.compress(IB * non_null) + 0.5,
-            Ys_snap.compress(IB * non_null) + 0.5,
+            Xs_snap[IB * non_null] + 0.5,
+            Ys_snap[IB * non_null] + 0.5,
             c="r",
             alpha=0.5,
             s=0.4,
@@ -596,7 +603,7 @@ def sum_over_rays_bias(
         plt.close()
 
         #    plt.scatter(Xs[OOB],Ys[OOB],c="red",alpha=0.5,marker="x")
-    plt.show()
+        plt.show()
 
     return np.sum(rays * weights)
     
@@ -662,7 +669,7 @@ def sum_over_rays_bias_nopython(
                 yeval = y0 + stt[1] - r200
                 zeval = z0 + stt[2] - r200
 
-                weight = reval
+                weight = (x0**2 + y0**2 + z0**2)**0.5
                 if ir==0 or centre_start:
                     scal=1
                 else:
@@ -687,17 +694,20 @@ def sum_over_rays_bias_nopython(
 
                 if reval>r200 : break
             
-                ray_ints[ip, it] += field[int(zsamp//1), int(ysamp//1), int(xsamp//1)]
+                
+
+                ray_ints[ip, it] += field[int(xsamp//1), int(ysamp//1), int(zsamp//1)]
                 # print(ray_ints[ip,it])
 
 
             weight_sum += weight**-2
-            ray_ints[ip, it] *= weight * scal
-
+            ray_ints[ip, it] = np.exp(-ray_ints[ip, it] * rad_res) * weight**-2 * scal
+            # print(ray_ints[ip,it], np.exp(-ray_ints[ip, it] * rad_res) , weight**-2 , scal)
+            # print(np.sum(ray_ints)/weight_sum)
 
     for ip in range(lps):
         for it in range(lts):
-                result = result + ray_ints[ip, it] / weight_sum * rad_res
+                result = result + ray_ints[ip, it] / weight_sum 
     # print(ray_ints)
 
     return result / (lps * lts)

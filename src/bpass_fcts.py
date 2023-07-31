@@ -113,8 +113,6 @@ def get_lum(stars,lum,age_lim):
     if age_lim>0:
         underage_stars = stars["age"]<age_lim
 
-    
-
     return(np.sum(np.float64(lum[underage_stars])))    
     # return(np.sum(np.float64(emissivity[underage_stars] * stars["mass"][underage_stars] / (1 - eta_sn))))    
 
@@ -130,16 +128,34 @@ def bin_star_info(halo_SFRs, halo_Lintrs, cur_stars, cur_star_lum, bins):
 
     return(halo_SFRs, halo_Lintrs)
 
+
+
 def comp_betas(Mst, high_flux, low_flux, tau_dust912, coef_att):
 
     if coef_att.Kappa912>0.0:
-        betas = (np.log10(np.sum(Mst / (1 - eta_sn) * high_flux * np.exp(-tau_dust912 * coef_att.Kappa2500 / coef_att.Kappa912))
-        / np.sum(Mst / (1 - eta_sn) * low_flux * np.exp(-tau_dust912 * coef_att.Kappa1500 / coef_att.Kappa912)))
+        betas = (np.log10(np.sum(Mst * high_flux * np.exp(-tau_dust912 * coef_att.Kappa2500 / coef_att.Kappa912))
+        / np.sum(Mst * low_flux * np.exp(-tau_dust912 * coef_att.Kappa1500 / coef_att.Kappa912)))
         / np.log10(2500. / 1500.))
     else:
-        betas = (np.log10(np.sum(Mst / (1 - eta_sn) * high_flux)
-        / np.sum(Mst / (1 - eta_sn) * low_flux ))
+        betas = (np.log10(np.sum(Mst * high_flux)
+        / np.sum(Mst * low_flux ))
         / np.log10(2500. / 1500.))
 
     return(betas)
 
+
+def comp_betas_indv(Mst, high_flux, low_flux, tau_dust912, coef_att):
+
+    """Don't sum so get one beta for each star
+    """
+
+    if coef_att.Kappa912>0.0:
+        betas = (np.log10((Mst * high_flux * np.exp(-tau_dust912 * coef_att.Kappa2500 / coef_att.Kappa912))
+        /(Mst * low_flux * np.exp(-tau_dust912 * coef_att.Kappa1500 / coef_att.Kappa912)))
+        / np.log10(2500. / 1500.))
+    else:
+        betas = (np.log10((Mst * high_flux)
+        /(Mst * low_flux ))
+        / np.log10(2500. / 1500.))
+
+    return(betas)

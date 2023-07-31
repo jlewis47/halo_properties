@@ -231,11 +231,15 @@ def read_specific_stars(path, pairs, keys=None, formatted=True):
     # fnbs_change = np.where(np.diff(unique_fnbs) > 0)[0]
     unique_fnbs, counts_fnbs = np.unique(fnbs, return_counts=True)
 
+    # print(len(stars), unique_fnbs.max(), counts_fnbs[np.argmax(unique_fnbs)])
+
+
     # loop over files
     # for ifnb, fnb_chng in enumerate(fnbs_change):
     for ifnb, (fnb, f_stars) in enumerate(zip(unique_fnbs, counts_fnbs)):
 
         time_myr, datas, joe_ids = read_star_file(p.join(path, "stars_%i" % fnb))
+        # print(len(datas), len(lnbs[fnb==fnbs]), lnbs[fnb==fnbs].max())
 
         if formatted:
             stars[keys][star_counter : star_counter + f_stars] = datas[keys][

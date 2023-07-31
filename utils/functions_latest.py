@@ -35,8 +35,13 @@ def get_Mp(om_m,om_b,H0,Lco,Np_tot):
 
 def get_infos(info_path,out_nb,whole_side) :
 
+        if sixdigits:
+            name = 'info_%06i'%out_nb
+        else:
+            name = 'info_%05i'%out_nb
+
         #Get scale factor and co
-        info = np.genfromtxt(os.path.join(info_path,('info_%06i'%out_nb)+'.txt'), skip_header = 8, max_rows = 10, usecols = 2)
+        info = np.genfromtxt(os.path.join(info_path,name+'.txt'), skip_header = 8, max_rows = 10, usecols = 2)
         t=info[0]
         a=info[1]
         H0=info[2]

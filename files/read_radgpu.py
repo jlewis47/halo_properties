@@ -2,7 +2,7 @@
 
 import numpy as np
 import os
-from scipy.tionimport FortranFile
+from scipy.io import FortranFile
 
 def o_rad(data_pth,arg_type=3):#,nb):
 
@@ -120,4 +120,35 @@ def o_rad_cube(data_pth,arg_type,ldx,subdims=[64,64,64]):
        else:
             return(nrg_tot,fl_tot)
 
+
+def get_phote_cube(output, cube_nb, rad_path, rad_size, tgt_ldx, ldx):
+
+    tgt_size = [tgt_ldx]*3
+    size = [ldx]*3
+
+    size_ratios = np.int32(np.asarray(tgt_size) / np.asarray(rad_size))
+    
+    size_ratios_full = np.int32(np.asarray(size) / np.asarray(rad_size))
+
+    tot_rad_nb = np.prod(size_ratios_full)
+
+    phote = np.zeros((tgt_ldx,tgt_ldx,tgt_ldx), dtype=np.float64)
+    x0,y0,z0 = np.unravel_index(cube_nb, np.int32(np.asarray(size) / np.asarray(tgt_size)))
+
+    for iz in range(size_ratios[0]):
+        for iy in range(size_ratios[1]):
+            for ix in range(size_ratios[2]):
+
+                rad_nb=np.ravel_multi_index((iz+z0*size_ratios[0],iy+y0*size_ratios[1],ix+x0*size_ratios[2]), size_ratios_full) + 1
+                #print(iz,iy,ix,rad_nb)
+
+                grp_nb = np.ceil(rad_nb / (tot_rad_nb / 16))
+                grp_str = "group_%06i"%(grp_nb)
+
+
+                phote[iz * rad_size[0]:(iz+1) * rad_size[0],
+            iy * rad_size[1]:(iy+1) * rad_size[1],
+            ix * rad_size[2]:(ix+1) * rad_size[2]] = o_rad(os.path.join(rad_path, grp_str,"radgpu_%06i.out%06i"%(output, rad_nb)), arg_type=1)[1:-1,1:-1,1:-1]
+
+    return(phote)
 
