@@ -27,8 +27,8 @@ dilate=4 #sums and means resample the grid 2**dilate times to get <rtwo_fact * r
 
 #for snap in $1; do 
 snap=$1
-mpiexec -np $SLURM_NTASKS --bind-to core --report-bindings  python -u run_stel_pties.py $snap --assoc_mthd="stellar_peak" --ll=0.2 --rtwo_fact=1.0 --mbin=1e11 --mbin_width=1e10 --overwrite
-# mpiexec -np $SLURM_NTASKS --bind-to core --report-bindings  python -u run_stel_pties.py $snap --assoc_mthd="stellar_peak" --ll=0.2 --rtwo_fact=1.0 --mbin=1e10 --mbin_width=1e9 --overwrite
-# mpiexec -np $SLURM_NTASKS --bind-to core --report-bindings  python -u run_stel_pties.py $snap --assoc_mthd="stellar_peak" --ll=0.2 --rtwo_fact=1.0 --mbin=5e9 --mbin_width=5e8 --overwrite
+# mpiexec -np $SLURM_NTASKS --bind-to core --report-bindings  python -u run_stel_pties.py $snap --assoc_mthd="stellar_peak" --ll=0.2 --rtwo_fact=1.0 --mbin=1e11 --mbin_width=1e10 --overwrite
+mpiexec -np $SLURM_NTASKS --bind-to core --report-bindings  python -u run_stel_pties.py $snap --assoc_mthd="stellar_peak" --ll=0.2 --rtwo_fact=1.0 --mbin=1e10 --mbin_width=1e9 --overwrite
+mpiexec -np $SLURM_NTASKS --bind-to core --report-bindings  python -u run_stel_pties.py $snap --assoc_mthd="stellar_peak" --ll=0.2 --rtwo_fact=1.0 --mbin=5e9 --mbin_width=5e8 --overwrite
 
 echo 'job done'

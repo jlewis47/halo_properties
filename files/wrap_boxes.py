@@ -1,6 +1,8 @@
-from tkinter import N
+# from tkinter import N
 import numpy as np
-from halo_properties.files.read_fullbox_big import *
+import os
+from halo_properties.files.read_fullbox_big import o_data_memmap
+from halo_properties.params.params import *
 
 # from read_radgpu_big import *
 import matplotlib as mpl
@@ -14,7 +16,6 @@ Functtions for dealing with pertionic boundaries
 
 
 def gen_pos_vects(ldx):
-
     ran = [-ldx, 0, ldx]
     pos_vects = np.asarray([[i, j, k] for k in ran for j in ran for i in ran])
 
@@ -87,7 +88,6 @@ def get_27_tree_nearest(pos, tree, pos_vects):
 
 
 def get_ctr(poss, pos_vects, weights=None):
-
     ctr = np.average(poss, weights=weights, axis=0)
 
     all_dists = get_27(ctr, poss, pos_vects)
@@ -99,7 +99,6 @@ def get_ctr(poss, pos_vects, weights=None):
 
 
 def get_ctr_mult(poss, pos_vects, weights=None):
-
     ctr = np.average(poss, weights=weights, axis=0)
 
     all_dists = get_mult_27(ctr, poss, pos_vects)
@@ -110,8 +109,7 @@ def get_ctr_mult(poss, pos_vects, weights=None):
     return ctr
 
 
-def get_ctr_mult_cheap(halo_ctr, poss, ldx, weights):
-
+def get_ctr_mult_cheap(halo_ctr, poss, weights):
     diff = halo_ctr - poss
     sign = np.sign(diff)
 
@@ -125,7 +123,6 @@ def get_ctr_mult_cheap(halo_ctr, poss, ldx, weights):
 
 
 def get_neighbour_cubes(subcube_nb, n_subcubes):
-
     nrow = int(
         round(n_subcubes ** (1.0 / 3))
     )  # number of subcubes in a row for each cartesian directtion
@@ -264,188 +261,165 @@ def get_neighbour_cubes(subcube_nb, n_subcubes):
 #     return(box)
 
 
-def get_overstep_hydro_cubed(
-    box,
-    subcube_nb,
-    data_path,
-    name,
-    OOB,
-    n_subcubes=512,
-    size=512,
-    overstep=3,
-    debug=False,
-):
+# def get_overstep_hydro_cubed(
+#     box,
+#     subcube_nb,
+#     data_path,
+#     name,
+#     OOB,
+#     n_subcubes=512,
+#     size=512,
+#     overstep=3,
+#     debug=False,
+# ):
+#     # we get this from the function call so python handles memory stuff a big
+#     # box=np.zeros((size*overstep,size*overstep,size*overstep),dtype=np.float32)
 
-    # we get this from the function call so python handles memory stuff a big
-    # box=np.zeros((size*overstep,size*overstep,size*overstep),dtype=np.float32)
+#     nbs_to_get = get_neighbour_cubes(subcube_nb, n_subcubes)
 
-    nbs_to_get = get_neighbour_cubes(subcube_nb, n_subcubes)
+#     # nrows=round(n_subcubes**(1./3))
+#     # ncols=round(n_subcubes**(2./3))
 
-    # nrows=round(n_subcubes**(1./3))
-    # ncols=round(n_subcubes**(2./3))
+#     delta = int((overstep - 1) * 0.5 * size)  # size of overstep in cells
+#     # so for ex on xvector we have 0:delta then delta:size then size:delta from
+#     # 3 different subcubes where the central one is subcube_nb
 
-    delta = int((overstep - 1) * 0.5 * size)  # size of overstep in cells
-    # so for ex on xvector we have 0:delta then delta:size then size:delta from
-    # 3 different subcubes where the central one is subcube_nb
+#     under, over = OOB
 
-    under, over = OOB
+#     # so can use with only one entry in OOB
+#     if np.shape(np.shape(under)) != (2,):
+#         under = np.array([under])
+#         over = np.array([over])
 
-    # so can use with only one entry in OOB
-    if np.shape(np.shape(under)) != (2,):
-        under = np.array([under])
-        over = np.array([over])
+#     # print(nbs_to_get.swapaxes(0,1))
 
-    # print(nbs_to_get.swapaxes(0,1))
+#     zbnds = under[:, 0], np.ones(len(under)) == 1, over[:, 0]
+#     ybnds = under[:, 1], np.ones(len(under)) == 1, over[:, 1]
+#     xbnds = under[:, 2], np.ones(len(under)) == 1, over[:, 2]
 
-    zbnds = under[:, 0], np.ones(len(under)) == 1, over[:, 0]
-    ybnds = under[:, 1], np.ones(len(under)) == 1, over[:, 1]
-    xbnds = under[:, 2], np.ones(len(under)) == 1, over[:, 2]
+#     # first we find the subcubes we need by checking all xbnds,ybnds,zbnds
+#     subs_required = []
 
-    # first we find the subcubes we need by checking all xbnds,ybnds,zbnds
-    subs_required = []
+#     for ix, x in enumerate(nbs_to_get.swapaxes(0, 1)):
+#         for iy, y in enumerate(x):
+#             for iz, z in enumerate(y):
+#                 # print(xbnds[ix],ybnds[iy],zbnds[iz])
+#                 # print(np.all([xbnds[ix],ybnds[iy],zbnds[iz]],axis=0))
 
-    for ix, x in enumerate(nbs_to_get.swapaxes(0, 1)):
-        for iy, y in enumerate(x):
-            for iz, z in enumerate(y):
+#                 if np.any(np.all([xbnds[ix], ybnds[iy], zbnds[iz]], axis=0)):
+#                     subs_required.append(z)
 
-                # print(xbnds[ix],ybnds[iy],zbnds[iz])
-                # print(np.all([xbnds[ix],ybnds[iy],zbnds[iz]],axis=0))
+#     # print(subs_required)
+#     # for every unique subcube number that we require we load the subcube
+#     # then we iterate over central and surrounding data cube using the currently loaded subcube when necessary
 
-                if np.any(np.all([xbnds[ix], ybnds[iy], zbnds[iz]], axis=0)):
-                    subs_required.append(z)
+#     nbs = 0
 
-    # print(subs_required)
-    # for every unique subcube number that we require we load the subcube
-    # then we iterate over central and surrounding data cube using the currently loaded subcube when necessary
+#     for n_subcube in np.unique(subs_required):
+#         data_name = os.path.join(data_path, "%s_%05i" % (name, n_subcube))
 
-    nbs = 0
+#         if debug:
+#             print("loaded %s_%i" % (name, n_subcube))
+#         try:
+#             cur_box = o_data_memmap(data_name)
+#             # cur_box=np.ones((size,size,size))*n_subcube
+#         except IndexError:
+#             print("Missing box assuming this is known ... Filling with 0s")
+#             cur_box = np.zeros((size, size, size))
+#             continue
 
-    for n_subcube in np.unique(subs_required):
+#         for ix, x in enumerate(nbs_to_get.swapaxes(0, 1)):
+#             for iy, y in enumerate(x):
+#                 for iz, z in enumerate(y):
+#                     # so can use with only one entry in OOB
 
-        data_name = os.path.join(data_path, "%s_%05i" % (name, n_subcube))
+#                     if z != n_subcube:
+#                         continue
 
-        if debug:
-            print("loaded %s_%i" % (name, n_subcube))
-        try:
-            cur_box = o_data(data_name)
-            # cur_box=np.ones((size,size,size))*n_subcube
-        except IndexError:
-            print("Missing box assuming this is known ... Filling with 0s")
-            cur_box = np.zeros((size, size, size))
-            continue
+#                     # print(xbnds[ix],ybnds[iy],zbnds[iz])
+#                     # print(np.all([xbnds[ix],ybnds[iy],zbnds[iz]],axis=0))
 
-        for ix, x in enumerate(nbs_to_get.swapaxes(0, 1)):
-            for iy, y in enumerate(x):
-                for iz, z in enumerate(y):
-                    # so can use with only one entry in OOB
+#                     if np.any(np.all([xbnds[ix], ybnds[iy], zbnds[iz]], axis=0)):
+#                         if ix == 0:
+#                             xlow, xhigh = 0, delta  # for big cube of sides size+2*delta
+#                             load_xlow, load_xhigh = (
+#                                 size - delta,
+#                                 size,
+#                             )  # for cube just opened
+#                         elif ix == 1:
+#                             xlow, xhigh = delta, size + delta
+#                             load_xlow, load_xhigh = 0, size  # for cube just opened
+#                         else:
+#                             xlow, xhigh = size + delta, size + 2 * delta
+#                             load_xlow, load_xhigh = 0, delta  # for cube just opened
 
-                    if z != n_subcube:
-                        continue
+#                         if iy == 0:
+#                             ylow, yhigh = 0, delta  # for big cube of sides size+2*delta
+#                             load_ylow, load_yhigh = (
+#                                 size - delta,
+#                                 size,
+#                             )  # for cube just opened
+#                         elif iy == 1:
+#                             ylow, yhigh = delta, size + delta
+#                             load_ylow, load_yhigh = 0, size  # for cube just opened
+#                         else:
+#                             ylow, yhigh = size + delta, size + 2 * delta
+#                             load_ylow, load_yhigh = 0, delta  # for cube just opened
 
-                    # print(xbnds[ix],ybnds[iy],zbnds[iz])
-                    # print(np.all([xbnds[ix],ybnds[iy],zbnds[iz]],axis=0))
+#                         if iz == 0:
+#                             zlow, zhigh = 0, delta  # for big cube of sides size+2*delta
+#                             load_zlow, load_zhigh = (
+#                                 size - delta,
+#                                 size,
+#                             )  # for cube just opened
+#                         elif iz == 1:
+#                             zlow, zhigh = delta, size + delta
+#                             load_zlow, load_zhigh = 0, size  # for cube just opened
+#                         else:
+#                             zlow, zhigh = size + delta, size + 2 * delta
+#                             load_zlow, load_zhigh = 0, delta  # for cube just opened
 
-                    if np.any(np.all([xbnds[ix], ybnds[iy], zbnds[iz]], axis=0)):
+#                         # print(xlow,xhigh,ylow,yhigh,zlow,zhigh)
+#                         # print(load_xlow,load_xhigh,load_ylow,load_yhigh,load_zlow,load_zhigh)
 
-                        if ix == 0:
-                            xlow, xhigh = 0, delta  # for big cube of sides size+2*delta
-                            load_xlow, load_xhigh = (
-                                size - delta,
-                                size,
-                            )  # for cube just opened
-                        elif ix == 1:
-                            xlow, xhigh = delta, size + delta
-                            load_xlow, load_xhigh = 0, size  # for cube just opened
-                        else:
-                            xlow, xhigh = size + delta, size + 2 * delta
-                            load_xlow, load_xhigh = 0, delta  # for cube just opened
+#                         # print(z,ix,iy,iz)
 
-                        if iy == 0:
-                            ylow, yhigh = 0, delta  # for big cube of sides size+2*delta
-                            load_ylow, load_yhigh = (
-                                size - delta,
-                                size,
-                            )  # for cube just opened
-                        elif iy == 1:
-                            ylow, yhigh = delta, size + delta
-                            load_ylow, load_yhigh = 0, size  # for cube just opened
-                        else:
-                            ylow, yhigh = size + delta, size + 2 * delta
-                            load_ylow, load_yhigh = 0, delta  # for cube just opened
+#                         # print(ix,iy,iz, n_subcube, nbs)
 
-                        if iz == 0:
-                            zlow, zhigh = 0, delta  # for big cube of sides size+2*delta
-                            load_zlow, load_zhigh = (
-                                size - delta,
-                                size,
-                            )  # for cube just opened
-                        elif iz == 1:
-                            zlow, zhigh = delta, size + delta
-                            load_zlow, load_zhigh = 0, size  # for cube just opened
-                        else:
-                            zlow, zhigh = size + delta, size + 2 * delta
-                            load_zlow, load_zhigh = 0, delta  # for cube just opened
+#                         box[xlow:xhigh, ylow:yhigh, zlow:zhigh] = cur_box[
+#                             load_xlow:load_xhigh,
+#                             load_ylow:load_yhigh,
+#                             load_zlow:load_zhigh,
+#                         ]
 
-                        # print(xlow,xhigh,ylow,yhigh,zlow,zhigh)
-                        # print(load_xlow,load_xhigh,load_ylow,load_yhigh,load_zlow,load_zhigh)
+#                         nbs += 1
 
-                        # print(z,ix,iy,iz)
+#     # fig=plt.figure()
+#     # ax=fig.add_subplot(111)
 
-                        # print(ix,iy,iz, n_subcube, nbs)
+#     # img=ax.imshow(np.log10(box[510,:,:]).T,origin='lower',vmin=-3,vmax=10)
+#     # ax.set_xlabel('y')
+#     # ax.set_ylabel('x')
+#     # plt.colorbar(img)
+#     # fig.savefig('test_%i_xy'%subcube_nb)
 
-                        box[xlow:xhigh, ylow:yhigh, zlow:zhigh] = cur_box[
-                            load_xlow:load_xhigh,
-                            load_ylow:load_yhigh,
-                            load_zlow:load_zhigh,
-                        ]
+#     # img=ax.imshow(np.log10(box[:,:,510]).T,origin='lower',vmin=-3,vmax=10)
+#     # ax.set_xlabel('z')
+#     # ax.set_ylabel('y')
 
-                        nbs += 1
+#     # fig.savefig('test_%i_yz'%subcube_nb)
 
-    # fig=plt.figure()
-    # ax=fig.add_subplot(111)
+#     # img=ax.imshow(np.log10(box[:,510,:]).T,origin='lower',vmin=-3,vmax=10)
+#     # ax.set_xlabel('z')
+#     # ax.set_ylabel('x')
 
-    # img=ax.imshow(np.log10(box[510,:,:]).T,origin='lower',vmin=-3,vmax=10)
-    # ax.set_xlabel('y')
-    # ax.set_ylabel('x')
-    # plt.colorbar(img)
-    # fig.savefig('test_%i_xy'%subcube_nb)
+#     # fig.savefig('test_%i_xz'%subcube_nb)
 
-    # img=ax.imshow(np.log10(box[:,:,510]).T,origin='lower',vmin=-3,vmax=10)
-    # ax.set_xlabel('z')
-    # ax.set_ylabel('y')
-
-    # fig.savefig('test_%i_yz'%subcube_nb)
-
-    # img=ax.imshow(np.log10(box[:,510,:]).T,origin='lower',vmin=-3,vmax=10)
-    # ax.set_xlabel('z')
-    # ax.set_ylabel('x')
-
-    # fig.savefig('test_%i_xz'%subcube_nb)
-
-    return box
-
-
-def new_wrap_box(subnb, nb_subcubes):
-
-    n_per_row = int(np.round(np.cbrt(nb_subcubes)))
-    n_per_plane = int(np.round(np.cbrt(nb_subcubes) ** 2.0))
-
-    # 27 surrounding boxes
-    dims = 3
-    sub_ids = np.zeros((dims, dims, dims), dtype=np.int16)
-
-    for ix in range(dims):
-        for iy in range(dims):
-            for iz in range(dims):
-
-                sub_ids[iz, iy, ix] = new_wrap_single(subnb, nb_subcubes, ix, iy, iz)
-
-    return sub_ids
+#     return box
 
 
 def new_wrap_single(subnb, nb_subcubes, ix, iy, iz):
     def prep_mod(coord, ind, size):  # handle edges
-
         mod = (ind - 1) + coord
         if mod < 0:
             mod += size
@@ -462,11 +436,27 @@ def new_wrap_single(subnb, nb_subcubes, ix, iy, iz):
     mody = prep_mod(y, iy, n_per_row)
     modz = prep_mod(z, iz, n_per_row)
 
-    # print(subnb,modz, mody, modx)
+    print(subnb, modz, mody, modx)
 
     nb = np.ravel_multi_index((modx, mody, modz), (n_per_row, n_per_row, n_per_row))
 
     return nb
+
+
+def new_wrap_box(subnb, nb_subcubes):
+    # n_per_row = int(np.round(np.cbrt(nb_subcubes)))
+    # n_per_plane = int(np.round(np.cbrt(nb_subcubes) ** 2.0))
+
+    # 27 surrounding boxes
+    dims = 3
+    sub_ids = np.zeros((dims, dims, dims), dtype=np.int16)
+
+    for ix in range(dims):
+        for iy in range(dims):
+            for iz in range(dims):
+                sub_ids[iz, iy, ix] = new_wrap_single(subnb, nb_subcubes, ix, iy, iz)
+
+    return sub_ids
 
 
 def new_get_overstep_hydro_cubed(
@@ -480,7 +470,6 @@ def new_get_overstep_hydro_cubed(
     overstep=3,
     debug=False,
 ):
-
     delta = int((overstep - 1) * 0.5 * size)  # size of overstep in cells
     # so for ex on xvector we have 0:delta then delta:size then size:delta from
     # 3 different subcubes where the central one is subcube_nb
@@ -503,12 +492,10 @@ def new_get_overstep_hydro_cubed(
     for ix in range(dims):
         for iy in range(dims):
             for iz in range(dims):
-
                 # print(xbnds[ix],ybnds[iy],zbnds[iz])
                 # print(np.all([xbnds[ix],ybnds[iy],zbnds[iz]],axis=0))
 
                 if np.any(np.all([xbnds[ix], ybnds[iy], zbnds[iz]], axis=0)):
-
                     nb_to_get = new_wrap_single(subcube_nb, n_subcubes, iz, iy, ix)
 
                     # print(nb_to_get, subcube_nb, n_subcubes, iz, iy, ix)
@@ -593,36 +580,172 @@ def new_get_overstep_hydro_cubed(
                             ),
                         )
                         # if debug and 'rho' in name:
-                        #     print(load_xlow, load_xhigh, 
-                        #     load_ylow, load_yhigh, 
+                        #     print(load_xlow, load_xhigh,
+                        #     load_ylow, load_yhigh,
                         #     load_zlow, load_zhigh)
-
 
                         #     print(xlow, xhigh,
                         #     ylow, yhigh,
                         #     zlow, zhigh)
 
-                            # input('enter to proceed')
+                        # input('enter to proceed')
                     # cur_box=np.ones((size,size,size))*n_subcube
                     except IndexError:
                         print("Missing box assuming this is known ... Filling with 0s")
                         cur_box = np.zeros((size, size, size))
                         continue
 
-                    if debug and 'rho' in name:
-                        #diag plot
-                        #plot slices through centre in every direction
-                        l=int(box.shape[0]*0.5)
-                        fig,ax = plt.subplots(1,3)
-                        ax[0].imshow(np.log10(box[l,:,:]))
-                        ax[1].imshow(np.log10(box[:,l,:]))
-                        ax[2].imshow(np.log10(box[:,:,l]))
+                    if debug and "rho" in name:
+                        # diag plot
+                        # plot slices through centre in every direction
+                        l = int(box.shape[0] * 0.5)
+                        fig, ax = plt.subplots(1, 3)
+                        ax[0].imshow(np.log10(box[l, :, :]))
+                        ax[1].imshow(np.log10(box[:, l, :]))
+                        ax[2].imshow(np.log10(box[:, :, l]))
 
                         fig.savefig("test_read.png")
-
-
-
 
                     # nbs+=1
 
     # return box
+
+
+def read_cutout(data_pth, fields, ctr, size, ldx=8192, subsize=512):
+    ctr = np.asarray(ctr)
+    ctr_subs = np.int32(ctr // (subsize))
+    ctr_in_sub = np.int32(ctr % (subsize))
+    n_subcubes = int(ldx**3 // subsize**3)
+    n_subs_per_side = int(np.cbrt(n_subcubes))
+
+    # find central subsize sized box to load
+    ctr_subnb = np.ravel_multi_index(
+        ctr_subs, (n_subs_per_side, n_subs_per_side, n_subs_per_side)
+    )
+
+    lo_lims = ctr_in_sub - size // 2
+    hi_lims = ctr_in_sub + size // 2
+
+    oversteps = np.array([lo_lims - 0, hi_lims - subsize])
+
+    oversteps_bool = [oversteps[0] < 0, oversteps[1] > 0]
+
+    assert not np.any(
+        np.all(oversteps_bool, axis=0)
+    ), "ctr, size, and subsize mean that overstepping single subcube in at least two diretions... not supported use other functions"
+
+    print(ctr_subnb)
+    print(ctr_in_sub)
+    print(lo_lims, hi_lims)
+    print(oversteps)
+    print(oversteps_bool)
+
+    zbnds = oversteps_bool[0][0], np.full(1, True), oversteps_bool[1][0]
+    ybnds = oversteps_bool[0][1], np.full(1, True), oversteps_bool[1][1]
+    xbnds = oversteps_bool[0][2], np.full(1, True), oversteps_bool[1][2]
+
+    cutout = np.zeros((len(fields), size, size, size), dtype="f4")
+
+    dims = 3
+
+    for ifield, field in enumerate(fields):
+        for ix in range(dims):
+            for iy in range(dims):
+                for iz in range(dims):
+                    # print(xbnds[ix], ybnds[iy], zbnds[iz])
+                    # print(np.all([xbnds[ix], ybnds[iy], zbnds[iz]], axis=0))
+
+                    if np.any(np.all([xbnds[ix], ybnds[iy], zbnds[iz]], axis=0)):
+                        nb_to_get = new_wrap_single(ctr_subnb, n_subcubes, iz, iy, ix)
+
+                        # print(nb_to_get, ctr_subnb, n_subcubes, iz, iy, ix)
+
+                        data_name = os.path.join(
+                            data_pth, "%s_%05i" % (field, nb_to_get)
+                        )
+
+                        if ix == 0:
+                            xlow, xhigh = 0, abs(oversteps[0][2])
+                            load_xlow, load_xhigh = (
+                                subsize - abs(oversteps[0][2]),
+                                subsize,
+                            )
+                        elif ix == 1:
+                            xlow, xhigh = abs(min(oversteps[0][2], 0)), abs(
+                                min(size, size - oversteps[1][2])
+                            )
+                            w = xhigh - xlow
+                            load_xlow = max(0, lo_lims[2])
+                            load_xhigh = load_xlow + w
+                        else:
+                            xlow, xhigh = 0, size - abs(oversteps[1][2])
+                            load_xlow, load_xhigh = 0, abs(oversteps[1][2])
+
+                        if iy == 0:
+                            ylow, yhigh = 0, abs(oversteps[0][1])
+                            load_ylow, load_yhigh = (
+                                subsize - abs(oversteps[0][1]),
+                                subsize,
+                            )
+                        elif iy == 1:
+                            ylow, yhigh = abs(min(oversteps[0][1], 0)), abs(
+                                min(size, size - oversteps[1][1])
+                            )
+                            w = yhigh - ylow
+                            load_ylow = max(0, lo_lims[1])
+                            load_yhigh = load_ylow + w
+                        else:
+                            ylow, yhigh = 0, size - abs(oversteps[1][1])
+                            load_ylow, load_yhigh = 0, abs(oversteps[1][1])
+
+                        if iz == 0:
+                            zlow, zhigh = 0, abs(oversteps[0][0])
+                            load_zlow, load_zhigh = (
+                                subsize - abs(oversteps[0][0]),
+                                subsize,
+                            )
+
+                        elif iz == 1:
+                            zlow, zhigh = abs(min(oversteps[0][0], 0)), abs(
+                                min(size, size - oversteps[1][0])
+                            )
+                            w = zhigh - zlow
+                            load_zlow = max(0, lo_lims[0])
+                            load_zhigh = load_zlow + w
+                        else:
+                            zlow, zhigh = 0, size - abs(oversteps[1][0])
+                            load_zlow, load_zhigh = 0, abs(oversteps[1][0])
+
+                        try:
+                            print(ix, iy, iz)
+                            print(xlow, xhigh, ylow, yhigh, zlow, zhigh)
+                            print(
+                                load_xlow,
+                                load_xhigh,
+                                load_ylow,
+                                load_yhigh,
+                                load_zlow,
+                                load_zhigh,
+                            )
+
+                            cutout[
+                                ifield, xlow:xhigh, ylow:yhigh, zlow:zhigh
+                            ] = o_data_memmap(
+                                data_name,
+                                (
+                                    (load_xlow, load_xhigh),
+                                    (load_ylow, load_yhigh),
+                                    (load_zlow, load_zhigh),
+                                ),
+                            )
+
+                        except IndexError:
+                            print(
+                                "Missing box assuming this is known ... Filling with 0s"
+                            )
+                            cutout[ifield, :, :, :] = np.zeros(
+                                (subsize, subsize, subsize)
+                            )
+                            continue
+
+    return cutout

@@ -196,3 +196,1793 @@ mpiexec noticed that process rank 17 with PID 1580114 on node andes33 exited on 
   scal = (
 /ccs/home/jlewis/halo_properties/src/ray_fcts.py:389: RuntimeWarning: invalid value encountered in true_divide
   scal = (
+Traceback (most recent call last):
+Traceback (most recent call last):
+[andes33:1682172:0:1682172] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682189:0:1682189] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682203:0:1682203] Caught signal 7 (Bus error: nonexistent physical address)
+  File "run_halo_fesc.py", line 65, in <module>
+  File "run_halo_fesc.py", line 65, in <module>
+Traceback (most recent call last):
+  File "run_halo_fesc.py", line 65, in <module>
+[andes33:1682167:0:1682167] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682165:0:1682165] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682201:0:1682201] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682175:0:1682175] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682197:0:1682197] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682195:0:1682195] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682179:0:1682179] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682191:0:1682191] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682199:0:1682199] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682171:0:1682171] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682196:0:1682196] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682166:0:1682166] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682190:0:1682190] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682194:0:1682194] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682193:0:1682193] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682202:0:1682202] Caught signal 7 (Bus error: nonexistent physical address)
+    compute_fesc(
+  File "/ccs/home/jlewis/halo_properties/halo_stats/halo_fesc_latest_big_boxes.py", line 726, in compute_fesc
+    compute_fesc(
+  File "/ccs/home/jlewis/halo_properties/halo_stats/halo_fesc_latest_big_boxes.py", line 726, in compute_fesc
+    compute_fesc(
+  File "/ccs/home/jlewis/halo_properties/halo_stats/halo_fesc_latest_big_boxes.py", line 726, in compute_fesc
+[andes33:1682192:0:1682192] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682174:0:1682174] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682187:0:1682187] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682188:0:1682188] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682169:0:1682169] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682198:0:1682198] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682177:0:1682177] Caught signal 7 (Bus error: nonexistent physical address)
+[andes33:1682168:0:1682168] Caught signal 7 (Bus error: nonexistent physical address)
+Traceback (most recent call last):
+  File "run_halo_fesc.py", line 65, in <module>
+[andes33:1682178:0:1682178] Caught signal 7 (Bus error: nonexistent physical address)
+    compute_fesc(
+  File "/ccs/home/jlewis/halo_properties/halo_stats/halo_fesc_latest_big_boxes.py", line 726, in compute_fesc
+    new_get_overstep_hydro_cubed(
+  File "/ccs/home/jlewis/halo_properties/files/wrap_boxes.py", line 587, in new_get_overstep_hydro_cubed
+    new_get_overstep_hydro_cubed(
+  File "/ccs/home/jlewis/halo_properties/files/wrap_boxes.py", line 587, in new_get_overstep_hydro_cubed
+    new_get_overstep_hydro_cubed(
+  File "/ccs/home/jlewis/halo_properties/files/wrap_boxes.py", line 587, in new_get_overstep_hydro_cubed
+    new_get_overstep_hydro_cubed(
+  File "/ccs/home/jlewis/halo_properties/files/wrap_boxes.py", line 587, in new_get_overstep_hydro_cubed
+    box[xlow:xhigh, ylow:yhigh, zlow:zhigh] = o_data_memmap(
+  File "/ccs/home/jlewis/halo_properties/files/read_fullbox_big.py", line 63, in o_data_memmap
+    box[xlow:xhigh, ylow:yhigh, zlow:zhigh] = o_data_memmap(
+  File "/ccs/home/jlewis/halo_properties/files/read_fullbox_big.py", line 43, in o_data_memmap
+    box[xlow:xhigh, ylow:yhigh, zlow:zhigh] = o_data_memmap(
+  File "/ccs/home/jlewis/halo_properties/files/read_fullbox_big.py", line 63, in o_data_memmap
+    box[xlow:xhigh, ylow:yhigh, zlow:zhigh] = o_data_memmap(
+  File "/ccs/home/jlewis/halo_properties/files/read_fullbox_big.py", line 63, in o_data_memmap
+    return np.memmap(
+  File "/ccs/proj/ast031/jlewis/conda_envs/andes/mpi4py/lib/python3.8/site-packages/numpy/core/memmap.py", line 228, in __new__
+    return np.memmap(
+  File "/ccs/proj/ast031/jlewis/conda_envs/andes/mpi4py/lib/python3.8/site-packages/numpy/core/memmap.py", line 228, in __new__
+    with open(data_pth, "rb", buf_size) as ff:
+OSError    return np.memmap(
+  File "/ccs/proj/ast031/jlewis/conda_envs/andes/mpi4py/lib/python3.8/site-packages/numpy/core/memmap.py", line 228, in __new__
+: [Errno 116] Stale file handle: '/gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/reduced/fullbox/output_000042/rho_01236'
+    f_ctx = open(os_fspath(filename), ('r' if mode == 'c' else mode)+'b')
+OSError: [Errno 116] Stale file handle: '/gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/reduced/fullbox/output_000042/rho_03732'
+    f_ctx = open(os_fspath(filename), ('r' if mode == 'c' else mode)+'b')
+OSError: [Errno 116] Stale file handle: '/gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/reduced/fullbox/output_000042/rho_00947'
+    f_ctx = open(os_fspath(filename), ('r' if mode == 'c' else mode)+'b')
+OSError: [Errno 116] Stale file handle: '/gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/reduced/fullbox/output_000042/rho_01382'
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+==== backtrace (tid:1682178) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfe85 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+==== backtrace (tid:1682196) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfe98 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+==== backtrace (tid:1682167) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfd5c __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+==== backtrace (tid:1682179) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfe98 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+==== backtrace (tid:1682202) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfd5c __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+==== backtrace (tid:1682187) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfe98 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+==== backtrace (tid:1682172) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfd49 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+==== backtrace (tid:1682199) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfd49 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+==== backtrace (tid:1682191) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfe98 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+==== backtrace (tid:1682194) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfe85 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+BFD: Dwarf Error: Can't find .debug_ranges section.
+==== backtrace (tid:1682177) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfe98 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+==== backtrace (tid:1682188) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfe98 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+==== backtrace (tid:1682190) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfe98 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+==== backtrace (tid:1682174) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfe98 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+==== backtrace (tid:1682169) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfe98 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+==== backtrace (tid:1682192) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfe98 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+==== backtrace (tid:1682201) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfe98 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+BFD: Dwarf Error: Can't find .debug_ranges section.
+==== backtrace (tid:1682203) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfe98 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+==== backtrace (tid:1682195) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfe98 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+BFD: Dwarf Error: Can't find .debug_ranges section.
+==== backtrace (tid:1682168) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfd49 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+BFD: Dwarf Error: Can't find .debug_ranges section.
+==== backtrace (tid:1682197) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfd5c __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+==== backtrace (tid:1682198) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfe98 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+==== backtrace (tid:1682166) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfe98 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+BFD: Dwarf Error: Can't find .debug_ranges section.
+==== backtrace (tid:1682189) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfd5c __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+BFD: Dwarf Error: Can't find .debug_ranges section.
+==== backtrace (tid:1682171) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfd5c __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+==== backtrace (tid:1682193) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfe98 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+BFD: Dwarf Error: Can't find .debug_ranges section.
+==== backtrace (tid:1682165) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfd49 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+BFD: Dwarf Error: Can't find .debug_ranges section.
+==== backtrace (tid:1682175) ====
+ 0 0x0000000000012ce0 __funlockfile()  :0
+ 1 0x00000000000cfe98 __memmove_avx_unaligned_erms()  :0
+ 2 0x00000000001040a3 _contig_to_contig()  lowlevel_strided_loops.c:0
+ 3 0x000000000008d423 raw_array_assign_array()  :0
+ 4 0x000000000008dd16 PyArray_AssignArray()  :0
+ 5 0x000000000005d8b7 PyArray_CopyObject()  :0
+ 6 0x000000000012d1ca array_assign_subscript()  mapping.c:0
+ 7 0x00000000004c8495 _PyEval_EvalFrameDefault()  ???:0
+ 8 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+ 9 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+10 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+11 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+12 0x00000000004da1cc _PyFunction_Vectorcall()  ???:0
+13 0x00000000004c879f _PyEval_EvalFrameDefault()  ???:0
+14 0x00000000004c5e95 _PyEval_EvalCodeWithName()  ???:0
+15 0x00000000004c5c99 PyEval_EvalCodeEx()  ???:0
+16 0x00000000005691ab PyEval_EvalCode()  ???:0
+17 0x0000000000588a71 run_eval_code_obj()  :0
+18 0x000000000058268f run_mod()  :0
+19 0x000000000058bf82 pyrun_file()  :0
+20 0x000000000058afa2 PyRun_SimpleFileExFlags()  ???:0
+21 0x000000000057ff1c Py_RunMain()  ???:0
+22 0x000000000055ced9 Py_BytesMain()  ???:0
+23 0x000000000003acf3 __libc_start_main()  ???:0
+24 0x000000000055cd8e _start()  ???:0
+=================================
+--------------------------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpiexec noticed that process rank 2 with PID 1682168 on node andes33 exited on signal 7 (Bus error).
+--------------------------------------------------------------------------
+/var/spool/slurm/job1639594/slurm_script: line 38: echo: write error: Stale file handle

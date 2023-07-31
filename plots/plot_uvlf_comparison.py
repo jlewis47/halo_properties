@@ -135,7 +135,7 @@ lines += obs_lines
 
 ax.legend(lines, labels, framealpha=0.0)
 
-fig_name = f'./figs/uvlf_comparison_{out_nb:d}'
+fig_name = f'./figs/uvlf_comparison_{redshift:.1f}_{out_nb:d}'
 if ext:fig_name+='_ext'
 
 fig.savefig(fig_name)

@@ -14,14 +14,14 @@ Arg_parser.add_argument(
     metavar="rtwo_fact",
     type=float,
     help="1.0 -> associate stellar particles within 1xR200 for all haloes",
-    default=1
+    default=1,
 )
 Arg_parser.add_argument(
     "--fesc_rad",
     metavar="fesc_rad",
     type=float,
     help="1.0 -> use association radius as integration limit for fesc computation",
-    default=1
+    default=1,
 )
 Arg_parser.add_argument(
     "--ll", metavar="ll", type=float, help="linking length for fof", default=0.2
@@ -31,25 +31,31 @@ Arg_parser.add_argument(
     metavar="assoc_mthd",
     type=str,
     help="method for linking stars to fof",
-    default=""
+    default="",
 )
 Arg_parser.add_argument(
     "--overwrite",
     action="store_true",
     help="When used, code overwrites all found data",
-    default=False
+    default=False,
 )
 Arg_parser.add_argument(
     "--test",
     action="store_true",
     help="When used, code runs on one subcube and doesn't write",
-    default=False
+    default=False,
 )
 Arg_parser.add_argument(
     "--dilate",
     type=int,
     help="number of times to resample grid when performing sums within r_px",
-    default=8
+    default=8,
+)
+Arg_parser.add_argument(
+    "--mp",
+    help="Use MP's watershed segmented fof haloes",
+    action="store_true",
+    default=False,
 )
 
 args = Arg_parser.parse_args()
@@ -62,6 +68,7 @@ overwrite = args.overwrite
 dilate = args.dilate
 fesc_rad = args.fesc_rad
 
+
 compute_fesc(
     out_nb,
     rtwo_fact=rtwo_fact,
@@ -70,5 +77,6 @@ compute_fesc(
     ll=ll,
     overwrite=overwrite,
     test=args.test,
-    dilate=dilate
+    dilate=dilate,
+    mp=args.mp,
 )

@@ -16,22 +16,25 @@ It also tracks stars that don't end up associated, that are saved to separate 'L
 from halo_properties.params.params import *
 
 import numpy as np
-import matplotlib as mpl
 
-mpl.use("Agg")
-import matplotlib.pyplot as plt
-import matplotlib.patches as pat
-from read_phew import read_phew
+# import matplotlib as mpl
+
+# mpl.use("Agg")
+# import matplotlib.pyplot as plt
+# import matplotlib.patches as pat
+
 
 from halo_properties.files.read_stars import read_rank_star_files
 from scipy import spatial
 import time
-import string
+
+# import string
 import argparse
 import os
+from halo_properties.params.params import *
 from halo_properties.utils.functions_latest import *
 from halo_properties.utils.utils import *
-from halo_properties.association.read_fof import o_fof
+from halo_properties.association.read_fof import o_fof, o_luke_fof, o_mp_fof
 
 # from read_fof import o_fof
 import h5py
@@ -43,20 +46,17 @@ from mpi4py import MPI
 
 
 def find_nearby_stars(star_tree, r_px, ctr):
-
     return (ctr, star_tree.query_ball_point(ctr, r_px))
 
 
 def find_nearby_stars_stellar(
-    star_coords, star_masses, star_tree, r_px, ctr, ldx, mvt=0, overstep=False
+    star_coords, star_masses, star_tree, r_px, ctr, mvt=0, overstep=False
 ):
-
     loc_mvt = 0.6
     mvt = 0
 
     ##print(mvt,loc_mvt)
     while loc_mvt > 0.5 or mvt < 0.5 * r_px:
-
         big_ball = star_tree.query_ball_point(ctr, r_px)
         cur_star_coords = star_coords[big_ball, :]
         cur_star_masses = star_masses[big_ball]
@@ -74,7 +74,7 @@ def find_nearby_stars_stellar(
             # print(overstep,r_px)
             # stellar_barycentre=get_ctr_mult(cur_star_coords,pos_vects,cur_star_masses)
             stellar_barycentre = get_ctr_mult_cheap(
-                ctr, cur_star_coords, ldx, cur_star_masses
+                ctr, cur_star_coords, cur_star_masses
             )
             # print(cur_star_coords)
             # print(stellar_barycentre)
@@ -90,15 +90,13 @@ def find_nearby_stars_stellar(
 
 
 def find_max_stellar(
-    star_coords, star_masses, star_tree, r_px, ctr, ldx, mvt=0, overstep=False
+    star_coords, star_masses, star_tree, r_px, ctr, mvt=0, overstep=False
 ):
-
     loc_mvt = 0.6
     mvt = 0
     stellar_peak = np.copy(ctr)
     # print('*****')
     while loc_mvt > 0.5 and mvt < 0.5 * r_px:
-
         ctr = np.copy(stellar_peak)
 
         big_ball = star_tree.query_ball_point(ctr, r_px)
@@ -160,10 +158,9 @@ def find_max_stellar(
 
 
 def find_nearby_stars_wrapper(
-    star_coords, star_masses, star_tree, r_px, ctr, ldx, assoc_mthd, overstep
+    star_coords, star_masses, star_tree, r_px, ctr, assoc_mthd, overstep
 ):
-
-    if assoc_mthd == "" or assoc_mthd=="fof_ctr":
+    if assoc_mthd == "" or assoc_mthd == "fof_ctr":
         ctr, bb = find_nearby_stars(star_tree, r_px, ctr)
 
     elif assoc_mthd == "star_barycentre":
@@ -174,9 +171,8 @@ def find_nearby_stars_wrapper(
             star_tree,
             r_px,
             ctr,
-            ldx,
-            0.0,
-            overstep,
+            mvt=0.0,
+            overstep=overstep,
         )
     elif assoc_mthd == "stellar_peak":
         # pos_vects=gen_pos_vects(ldx)
@@ -186,9 +182,8 @@ def find_nearby_stars_wrapper(
             star_tree,
             r_px,
             ctr,
-            ldx,
-            0.0,
-            overstep,
+            mvt=0.0,
+            overstep=overstep,
         )
 
     return (ctr, bb)
@@ -196,15 +191,14 @@ def find_nearby_stars_wrapper(
 
 def assoc_stars_to_haloes(
     out_nb,
-    ldx,
-    use_fof=True,
     rtwo_fact=1,
     npart_thresh=50,
     assoc_mthd="",
     overwrite=False,
-    hdf5=True,
+    binary_fof=False,
+    mp_fof=False,
+    ll=0.2,
 ):
-
     check_assoc_keys(assoc_mthd)
 
     # phew_path='/data2/jlewis/dusts/output_00'+out_nb
@@ -222,15 +216,16 @@ def assoc_stars_to_haloes(
 
     loc_star_path = os.path.join(star_path, output_str)
     # phew_path=os.path.join(path,output_str)
-    if 'll' in fof_path:
+    if "ll" in fof_path:
         fof_suffix = get_fof_suffix(fof_path)
     else:
-        fof_suffix = ll_to_fof_suffix(0.2)
+        fof_suffix = ll_to_fof_suffix(ll)
+
+    # print(fof_path, fof_suffix)
 
     rtwo_suffix = get_r200_suffix(rtwo_fact)
-    suffix = get_suffix(fof_suffix, rtwo_suffix)
+    suffix = get_suffix(fof_suffix=fof_suffix, rtwo_suffix=rtwo_suffix, mp=mp_fof)
 
-    
     Np_tot = ldx**3
 
     """Get scale factor and co"""
@@ -276,7 +271,7 @@ def assoc_stars_to_haloes(
     out_file = os.path.join(assoc_out, ("assoc_halos_%s" % out_nb) + suffix)
     if os.path.exists(out_file) and not overwrite:
         if rank == 0:
-            print("File %s exists and I'm not in overwrite mode ... Exiting"%out_file)
+            print("File %s exists and I'm not in overwrite mode ... Exiting" % out_file)
         return ()
 
     # Mp=3.*(H0*1e3/(pc*1e6))**2.*(om_m-om_b)*(Lco*pc*1e6)**3./Np_tot/8./np.pi/G/Msol #En Msol 4.04*1e5
@@ -289,27 +284,21 @@ def assoc_stars_to_haloes(
         out_Mp.write(np.float64(Mp))
         out_Mp.close()
 
-    halos = []
+    # Read halo TODO:homogenize the different paths and dirs
 
-    print(hdf5)
+    if binary_fof:
+        halos, halo_fnbs = o_fof(
+            os.path.join(fof_path, output_str, "fofres/halos_ll=%.1f" % ll)
+        )
 
-    if hdf5:
-        halos={}
-        with h5py.File(os.path.join(fof_path, output_str, "haloes_masst.h5"), "r") as src:
-
-            keys = src["Data"].keys()
-
-            for key in keys:
-                if key!="file_number":
-                    halos[key]=src["Data"][key][()]
-                else:
-                    halo_fnbs=src["Data"][key][()]
-
-        halos = np.asarray([halos[k] for k in halos.keys()]).T
+    elif mp_fof:
+        halos, halo_fnbs = o_mp_fof(os.path.join(fof_path, output_str), Mp)
 
     else:
-
-        halos,halo_fnbs=o_fof(os.path.join(fof_path, output_str, 'fofres/halos_ll=0.2'))
+        halos, halo_fnbs = o_luke_fof(
+            os.path.join(fof_path, fof_suffix),
+            output_str,
+        )
 
     # print(np.log10(np.max(halos[:,2])*Mp),get_r200(np.max(halos[:,2])))
     # print(np.log10(np.min(halos[:,2])*Mp),get_r200(np.min(halos[:,2])))
@@ -356,13 +345,13 @@ def assoc_stars_to_haloes(
     star_tree = spatial.cKDTree(stellar_coords, boxsize=ldx + 1e-6)
 
     # Local star IDs for creating list of 'lone stars'
-    size = np.asarray(np.int32(len(halos)))
+    # size = np.asarray(np.int32(len(halos)))
 
-    stt = time.time()
+    # stt = time.time()
 
     # Association and output
 
-    r_pxs = get_r200(halos[:, 1], om_m) * rtwo_fact
+    r_pxs = get_r200(halos[:, 1]) * rtwo_fact
 
     # print(np.log10(np.min(halos[:, 1]) * Mp), get_r200(np.min(halos[:, 1]), om_b))
 
@@ -385,13 +374,17 @@ def assoc_stars_to_haloes(
         print("Association starting")
 
     for halo_nb, halo in enumerate(halos[:]):
-
         r_px = r_pxs[halo_nb]
 
-        ctr_vanilla = halo[2:5]  # ctr without rounding
+        # ctr_vanilla = halo[2:5]  # ctr without rounding
         ctr = halo[2:5] * (ldx)
 
         # print(ctr)
+        # if rank == 0 and True:
+        #     print(stellar_coords.min(), stellar_coords.max())
+        #     print(halo[2:5] * (ldx))
+        #     print(halo[1])
+        #     print(r_px)
 
         overstep = np.any(ctr + r_px > ldx) or np.any(ctr - r_px < 0)
 
@@ -402,7 +395,6 @@ def assoc_stars_to_haloes(
             star_tree,
             r_px,
             ctr,
-            ldx,
             assoc_mthd,
             overstep=overstep,
         )
@@ -417,7 +409,6 @@ def assoc_stars_to_haloes(
             continue
 
         else:
-
             halo_star_ids.append(star_ids[big_ball])
             halo_halo_ids.append(halo_nb * np.ones(nb_stars))
 
@@ -445,13 +436,18 @@ def assoc_stars_to_haloes(
     comm.Barrier()
 
     if rank == 0:
-
         print("Association Finished")
 
         # we need to merge the work of the different processes by using our list of star ids and corresponding halo ids
 
         sort_halo_ids = np.argsort(halo_halo_ids)
         halo_star_ids = halo_star_ids[sort_halo_ids]
+
+        # halo_lnbs = np.zeros_like(halo_fnbs)
+        # for fnb in halo_fnbs:
+        #     cur_f = halo_fnbs == fnb
+
+        #     halo_lnbs[cur_f] = np.count_nonzero(cur_f)
 
         non_null = norm > 0
 
@@ -460,16 +456,18 @@ def assoc_stars_to_haloes(
         )  # if halo stars are split accross processes, new_ctr can be >ldx
         # so we must weight it correctly to get the mean of the non-zero values from each process (the ones where there were stars in the halo and new_ctr is thus != 0)
 
-        print(np.max(new_ctrs))
+        # print(np.max(new_ctrs))
 
         with h5py.File((out_file), "w") as out_halos:
-
             out_halos.create_dataset(
                 "ID", data=np.int64(halos[:, 0]), dtype=np.int64, compression="lzf"
             )
             out_halos.create_dataset(
                 "fnb", data=halo_fnbs, dtype=np.int32, compression="lzf"
             )
+            # out_halos.create_dataset(
+            #     "lnb", data=halo_lnbs, dtype=np.int32, compression="lzf"
+            # )
             out_halos.create_dataset(
                 "mass", data=halos[:, 1], dtype=np.float32, compression="lzf"
             )
@@ -492,7 +490,10 @@ def assoc_stars_to_haloes(
                 "stellar count", data=halo_star_nb, dtype=np.int32, compression="lzf"
             )
             out_halos.create_dataset(
-                "halo star ID", data=np.int64(halo_star_ids), dtype=np.int64, compression="lzf"
+                "halo star ID",
+                data=np.int64(halo_star_ids),
+                dtype=np.int64,
+                compression="lzf",
             )
 
             print("Done")
@@ -504,7 +505,6 @@ Main body
 
 
 if __name__ == "__main__":
-
     Arg_parser = argparse.ArgumentParser("Associate stars and halos in full simulation")
 
     Arg_parser.add_argument(
@@ -513,7 +513,6 @@ if __name__ == "__main__":
         type=int,
         help='snap number string, give as "XXX" so that 00001 is "001" and 00111 is "111"',
     )
-    Arg_parser.add_argument("ldx", metavar="ldx", type=int, help="box size in cells")
 
     Arg_parser.add_argument(
         "--rtwo_fact",
@@ -530,6 +529,13 @@ if __name__ == "__main__":
         default=50,
     )
     Arg_parser.add_argument(
+        "--ll",
+        metavar="fof linking length",
+        type=float,
+        help="dark matter particle number threshold for halos",
+        default=0.2,
+    )
+    Arg_parser.add_argument(
         "--assoc_mthd",
         metavar="assoc_mthd",
         type=str,
@@ -543,26 +549,36 @@ if __name__ == "__main__":
         default=False,
     )
     Arg_parser.add_argument(
-        "--no_hdf5",
+        "--binary_fof",
         action="store_true",
         help="fof in binary format?",
+        default=False,
+    )
+    Arg_parser.add_argument(
+        "--mp",
+        action="store_true",
+        help="fof with watershed segmentation by Mei Palanque",
         default=False,
     )
 
     args = Arg_parser.parse_args()
 
     out_nb = args.nb
-    ldx = args.ldx
     rtwo_fact = args.rtwo_fact
     npart_thresh = args.npart_thresh
     assoc_mthd = args.assoc_mthd
 
+    assert not (
+        args.binary_fof and args.mp
+    ), "Can't have both binary and mp segmentation"
+
     assoc_stars_to_haloes(
         out_nb,
-        ldx,
         npart_thresh=npart_thresh,
         rtwo_fact=rtwo_fact,
         assoc_mthd=assoc_mthd,
         overwrite=args.overwrite,
-        hdf5=args.no_hdf5==False,
+        binary_fof=args.binary_fof,
+        mp_fof=args.mp,
+        ll=0.2,
     )

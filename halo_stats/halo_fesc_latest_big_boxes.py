@@ -35,8 +35,18 @@ from halo_properties.src.bpass_fcts import (
     bin_star_info,
     comp_betas,
 )
-from halo_properties.src.ray_fcts import sph_2_cart, cart_2_sph, sum_over_rays_bias, sum_over_rays_bias_nopython, sum_over_rays_bias_multid
-from halo_properties.dust.dust_opacity import shoot_star_path_cheap, shoot_star_path, shoot_star_path_cheap_multid
+from halo_properties.src.ray_fcts import (
+    sph_2_cart,
+    cart_2_sph,
+    sum_over_rays_bias,
+    sum_over_rays_bias_nopython,
+    sum_over_rays_bias_multid,
+)
+from halo_properties.dust.dust_opacity import (
+    shoot_star_path_cheap,
+    shoot_star_path,
+    shoot_star_path_cheap_multid,
+)
 
 import healpy as hp
 
@@ -47,8 +57,13 @@ from mpi4py import MPI
 from halo_properties.utils.units import get_unit_facts, convert_temp
 from halo_properties.utils.utils import divide_task  # , sum_arrays_to_rank0
 from halo_properties.params.params import *
+
 # from time import sleep
-from halo_properties.dust.att_coefs import att_coefs, att_coef_draine_file, get_dust_att_files
+from halo_properties.dust.att_coefs import (
+    att_coefs,
+    att_coef_draine_file,
+    get_dust_att_files,
+)
 
 
 # from numba import jit
@@ -96,11 +111,13 @@ def write_fields(
             dtype=np.float32,
             compression="lzf",
         )
-        dset.attrs['unit']='solar masses'
-        dset.attrs['descripttion']='halo fof mass'
+        dset.attrs["unit"] = "solar masses"
+        dset.attrs["descripttion"] = "halo fof mass"
 
-        dset = out_halos.create_dataset("pos", data=pos, dtype=np.float64, compression="lzf")
-        dset.attrs['unit']='cells'
+        dset = out_halos.create_dataset(
+            "pos", data=pos, dtype=np.float64, compression="lzf"
+        )
+        dset.attrs["unit"] = "cells"
 
         for iset, att_set in enumerate(att_sets):
             trans_name = "Tr_%s" % att_set.name
@@ -110,8 +127,8 @@ def write_fields(
                 dtype=np.float32,
                 compression="lzf",
             )
-            dset.attrs['unit']=''
-            dset.attrs['descripttion']='halo posittion'
+            dset.attrs["unit"] = ""
+            dset.attrs["descripttion"] = "halo posittion"
 
             mag_name = "mag_%s" % att_set.name
             dset = out_halos.create_dataset(
@@ -121,8 +138,8 @@ def write_fields(
                 compression="lzf",
             )
 
-            dset.attrs['descripttion']='AB magnitude at 1600 Angstrom'
-            dset.attrs['unit']=''
+            dset.attrs["descripttion"] = "AB magnitude at 1600 Angstrom"
+            dset.attrs["unit"] = ""
 
             beta_name = "betas_%s" % att_set.name
             dset = out_halos.create_dataset(
@@ -132,8 +149,8 @@ def write_fields(
                 compression="lzf",
             )
 
-            dset.attrs['unit']=''
-            dset.attrs['descripttion']='UV slope'
+            dset.attrs["unit"] = ""
+            dset.attrs["descripttion"] = "UV slope"
 
         for ibin, name in enumerate(sfr_names):
             dset = out_halos.create_dataset(
@@ -143,8 +160,8 @@ def write_fields(
                 compression="lzf",
             )
 
-            dset.attrs['unit']='solar masses per Myr' 
-            dset.attrs['descripttion']='time averaged sfr'           
+            dset.attrs["unit"] = "solar masses per Myr"
+            dset.attrs["descripttion"] = "time averaged sfr"
 
             # print(halo_Lintrs[:,0])
         for ibin, name in enumerate(Lintr_names):
@@ -155,8 +172,8 @@ def write_fields(
                 compression="lzf",
             )
 
-            dset.attrs['unit']='photons per second'
-            dset.attrs['descripttion']='LyC luminosity'
+            dset.attrs["unit"] = "photons per second"
+            dset.attrs["descripttion"] = "LyC luminosity"
 
         dset = out_halos.create_dataset(
             "Mst",
@@ -164,14 +181,14 @@ def write_fields(
             dtype=np.float32,
             compression="lzf",
         )
-        dset.attrs['unit']='solar masses'
-        dset.attrs['descripttion']='stellar mass in rtwo_fact * r200'
+        dset.attrs["unit"] = "solar masses"
+        dset.attrs["descripttion"] = "stellar mass in rtwo_fact * r200"
 
         dset = out_halos.create_dataset(
             "oldest", data=halo_oldest, dtype=np.float32, compression="lzf"
         )
-        dset.attrs['unit']='Myr'
-        dset.attrs['descripttion']='age of oldest halo stellar particle'
+        dset.attrs["unit"] = "Myr"
+        dset.attrs["descripttion"] = "age of oldest halo stellar particle"
 
         dset = out_halos.create_dataset(
             "youngest",
@@ -179,8 +196,8 @@ def write_fields(
             dtype=np.float32,
             compression="lzf",
         )
-        dset.attrs['unit']='Myr'
-        dset.attrs['descripttion']='age of youngest halo stellar particle'
+        dset.attrs["unit"] = "Myr"
+        dset.attrs["descripttion"] = "age of youngest halo stellar particle"
 
         dset = out_halos.create_dataset(
             "stAge_wMst",
@@ -188,8 +205,8 @@ def write_fields(
             dtype=np.float32,
             compression="lzf",
         )
-        dset.attrs['unit']='Myr'
-        dset.attrs['descripttion']='stellar mass weighted stellar particle age'
+        dset.attrs["unit"] = "Myr"
+        dset.attrs["descripttion"] = "stellar mass weighted stellar particle age"
 
         dset = out_halos.create_dataset(
             "stZ_wMst",
@@ -197,14 +214,16 @@ def write_fields(
             dtype=np.float32,
             compression="lzf",
         )
-        dset.attrs['unit']='absolute (not solar) metallicity'
-        dset.attrs['descripttion']='stellar mass weighted stellar particle metallicity'
+        dset.attrs["unit"] = "absolute (not solar) metallicity"
+        dset.attrs[
+            "descripttion"
+        ] = "stellar mass weighted stellar particle metallicity"
 
         dset = out_halos.create_dataset(
             "gmass", data=halo_gmass, dtype=np.float32, compression="lzf"
         )
-        dset.attrs['unit']='solar masses'
-        dset.attrs['descripttion']='halo gas mass'
+        dset.attrs["unit"] = "solar masses"
+        dset.attrs["descripttion"] = "halo gas mass"
 
         dset = out_halos.create_dataset(
             "gmass(2e4K)",
@@ -212,8 +231,8 @@ def write_fields(
             dtype=np.float32,
             compression="lzf",
         )
-        dset.attrs['unit']='solar masses'
-        dset.attrs['descripttion']='halo gas mass of T<2e4K gas cells'
+        dset.attrs["unit"] = "solar masses"
+        dset.attrs["descripttion"] = "halo gas mass of T<2e4K gas cells"
 
         dset = out_halos.create_dataset(
             "max(rho)",
@@ -221,8 +240,8 @@ def write_fields(
             dtype=np.float32,
             compression="lzf",
         )
-        dset.attrs['unit']='H.cm^-3'
-        dset.attrs['descripttion']='maximum halo density'
+        dset.attrs["unit"] = "H.cm^-3"
+        dset.attrs["descripttion"] = "maximum halo density"
 
         dset = out_halos.create_dataset(
             "xhi_wMg",
@@ -230,15 +249,14 @@ def write_fields(
             dtype=np.float32,
             compression="lzf",
         )
-        dset.attrs['unit']=''
-        dset.attrs['descripttion']='gas mass weighted xhi'
-        
+        dset.attrs["unit"] = ""
+        dset.attrs["descripttion"] = "gas mass weighted xhi"
 
         dset = out_halos.create_dataset(
             "xhi_wV", data=halo_xhi_wV, dtype=np.float32, compression="lzf"
         )
-        dset.attrs['unit']=''
-        dset.attrs['descripttion']='volume weighted xhi'
+        dset.attrs["unit"] = ""
+        dset.attrs["descripttion"] = "volume weighted xhi"
 
         dset = out_halos.create_dataset(
             "xhi_wMst",
@@ -246,21 +264,20 @@ def write_fields(
             dtype=np.float32,
             compression="lzf",
         )
-        dset.attrs['unit']=''
-        dset.attrs['descripttion']='stellar mass weighted xhi'        
-        
+        dset.attrs["unit"] = ""
+        dset.attrs["descripttion"] = "stellar mass weighted xhi"
 
         dset = out_halos.create_dataset(
             "gtemp_max", data=halo_gtemp_max, dtype=np.float32, compression="lzf"
         )
-        dset.attrs['unit']='K'
-        dset.attrs['descripttion']='max gas temperature'
+        dset.attrs["unit"] = "K"
+        dset.attrs["descripttion"] = "max gas temperature"
 
         dset = out_halos.create_dataset(
             "gtemp_wMg", data=halo_gtemp_wMg, dtype=np.float32, compression="lzf"
         )
-        dset.attrs['unit']='K'
-        dset.attrs['descripttion']='gas mass weighted average gas temperature'
+        dset.attrs["unit"] = "K"
+        dset.attrs["descripttion"] = "gas mass weighted average gas temperature"
 
         dset = out_halos.create_dataset(
             "gtemp_wMst",
@@ -268,14 +285,14 @@ def write_fields(
             dtype=np.float32,
             compression="lzf",
         )
-        dset.attrs['unit']='K'
-        dset.attrs['descripttion']='stellar mass weighted average gas temperature'
+        dset.attrs["unit"] = "K"
+        dset.attrs["descripttion"] = "stellar mass weighted average gas temperature"
 
         dset = out_halos.create_dataset(
             "Zmass", data=halo_Zmass, dtype=np.float32, compression="lzf"
         )
-        dset.attrs['unit']='solar masses'
-        dset.attrs['descripttion']='halo metal mass'
+        dset.attrs["unit"] = "solar masses"
+        dset.attrs["descripttion"] = "halo metal mass"
 
         dset = out_halos.create_dataset(
             "Zmass_wMst",
@@ -283,14 +300,14 @@ def write_fields(
             dtype=np.float32,
             compression="lzf",
         )
-        dset.attrs['unit']='solar masses'
-        dset.attrs['descripttion']='stellar mass weighted average gas metallicity'
+        dset.attrs["unit"] = "solar masses"
+        dset.attrs["descripttion"] = "stellar mass weighted average gas metallicity"
 
         dset = out_halos.create_dataset(
             "Md", data=halo_Md, dtype=np.float32, compression="lzf"
         )
-        dset.attrs['unit']='solar masses'
-        dset.attrs['descripttion']='halo dust mass'
+        dset.attrs["unit"] = "solar masses"
+        dset.attrs["descripttion"] = "halo dust mass"
 
         dset = out_halos.create_dataset(
             "Md_wMst",
@@ -298,15 +315,23 @@ def write_fields(
             dtype=np.float32,
             compression="lzf",
         )
-        dset.attrs['unit']='solar masses'
-        dset.attrs['descripttion']='stellar mass weighted average dust mass'
+        dset.attrs["unit"] = "solar masses"
+        dset.attrs["descripttion"] = "stellar mass weighted average dust mass"
 
 
 def compute_fesc(
-    out_nb, overwrite=False, rtwo_fact=1, fesc_rad=1.0, ll=0.2, assoc_mthd="", test=False, dilate=8, mbin=1, mbin_width=1
+    out_nb,
+    overwrite=False,
+    rtwo_fact=1,
+    fesc_rad=1.0,
+    ll=0.2,
+    assoc_mthd="",
+    test=False,
+    dilate=8,
+    mbin=1,
+    mbin_width=1,
+    mp=False,
 ):
-
-
     # fesc_debug_avg = 0
     # debug_counts = 0
 
@@ -319,14 +344,15 @@ def compute_fesc(
     # unfortunately since we are bounded by memory (on buffy for example) this method leads to multiple
     # loads of the same subcube when processing the simulattion.
 
-    assert fesc_rad >= 1.0, "fesc_rad must be larger or equal to one (fesc integration radius must include stellar association radius)"
+    assert (
+        fesc_rad >= 1.0
+    ), "fesc_rad must be larger or equal to one (fesc integration radius must include stellar association radius)"
 
     comm = MPI.COMM_WORLD
     Nproc = comm.Get_size()
     rank = comm.Get_rank()
 
     if rank == 0:
-
         print("Running on %i tasks" % Nproc)
 
         if test:
@@ -339,7 +365,10 @@ def compute_fesc(
     fof_suffix = ll_to_fof_suffix(ll)
     rtwo_suffix = get_r200_suffix(rtwo_fact)
     frad_suffix = get_frad_suffix(fesc_rad)
-    suffix = get_suffix(fof_suffix, rtwo_suffix, frad_suffix)
+
+    suffix = get_suffix(
+        fof_suffix=fof_suffix, rtwo_suffix=rtwo_suffix, frad_suffix=frad_suffix, mp=mp
+    )
 
     out, assoc_out, analy_out = gen_paths(sim_name, out_nb, suffix, assoc_mthd)
 
@@ -363,14 +392,13 @@ def compute_fesc(
     plt.rcParams.update({"font.size": 18})
 
     # find number of subcubes
-    if rank==0:
+    if rank == 0:
         data_files = os.listdir(os.path.join(box_path, output_str))
         rho_files = [f for f in data_files if f[:3] == "rho" and "." not in f]
 
         n_subcubes = len(rho_files)
 
     else:
-
         n_subcubes = None
 
     # print(data_files, n_subcubes)
@@ -379,14 +407,12 @@ def compute_fesc(
 
     # print(rank, n_subcubes)
 
-
     assert (
         n_subcubes > 1
     ), "Couldn't find any 'rho' subcubes... Are you sure about the path?"
     # print(n_subcubes)
     subs_per_side = int(np.round(n_subcubes ** (1.0 / 3)))
     # print(subs_per_side)
-
 
     sub_side = int(float(ldx) / subs_per_side)
     # print(sub_side)
@@ -466,14 +492,14 @@ def compute_fesc(
     # setup dust attenuattion coefficient sets
     # first set corresponds to no dust attenuattion/extincttion !
     att_sets = [att_coefs("no_dust", 0.0, 0.0, 0.0, sixteen=0.0)]
-    
+
     draine_files = get_dust_att_files()
     for f in draine_files:
         # print(f)
         att_sets.append(att_coef_draine_file(f))
 
     if rank == 0:
-        print("I found %i sets of dust absorpttion coefficients" % (len(att_sets) - 1))
+        print("I found %i sets of dust absorption coefficients" % (len(att_sets) - 1))
 
     assert (
         att_sets[0].Kappa912 == 0.0
@@ -515,8 +541,6 @@ def compute_fesc(
     #     mode="w+",
     # )
 
-
-
     big_rho = np.zeros((big_side, big_side, big_side), dtype=np.float32)
     big_rhod = np.zeros((big_side, big_side, big_side), dtype=np.float32)
     big_metals = np.zeros((big_side, big_side, big_side), dtype=np.float32)
@@ -526,15 +550,14 @@ def compute_fesc(
     fmin, fmax, f_per_proc = divide_task(n_subcubes, Nproc, rank)
 
     if test:
-        #print(rank, fmin, fmax)
-        test_halo_masses=[]
-        test_halo_trs=[]
-        test_halo_lintrs=[]
+        # print(rank, fmin, fmax)
+        test_halo_masses = []
+        test_halo_trs = []
+        test_halo_lintrs = []
 
     for x_subnb in range(subs_per_side):
         for y_subnb in range(subs_per_side):
             for z_subnb in range(subs_per_side):
-
                 subcube_nb = np.ravel_multi_index(
                     (x_subnb, y_subnb, z_subnb),
                     (subs_per_side, subs_per_side, subs_per_side),
@@ -542,7 +565,7 @@ def compute_fesc(
 
                 # print(subcube_nb)
 
-                if (test and mbin==1) and (subcube_nb != 11):
+                if (test and mbin == 1) and (subcube_nb != 11):
                     continue
 
                 if (subcube_nb < fmin) or (subcube_nb >= fmax):
@@ -550,14 +573,12 @@ def compute_fesc(
 
                 out_file = os.path.join(analy_out, "halo_stats_%i" % subcube_nb)
 
-                if rank==0 and test:print(f"subcube #{subcube_nb:d}")
-
-                
+                if rank == 0 and test:
+                    print(f"subcube #{subcube_nb:d}")
 
                 out_exists = os.path.exists(out_file)
 
                 if out_exists and not (overwrite or test):
-
                     print(
                         "RANK %i: Skipping subcube #%i since it already exists"
                         % (rank, subcube_nb)
@@ -573,13 +594,16 @@ def compute_fesc(
                     ll=ll,
                     assoc_mthd=assoc_mthd,
                     subnb=subcube_nb,
+                    mp=mp,
                 )
 
-                if mbin!=1 and mbin_width!=1:
-                    #keep haloes in bin
-                    filt = ((mbin - mbin_width)<(sub_halo_tab["mass"] * Mp))*((sub_halo_tab["mass"] * Mp)<(mbin + mbin_width))
+                if mbin != 1 and mbin_width != 1:
+                    # keep haloes in bin
+                    filt = ((mbin - mbin_width) < (sub_halo_tab["mass"] * Mp)) * (
+                        (sub_halo_tab["mass"] * Mp) < (mbin + mbin_width)
+                    )
                     sub_halo_tab = sub_halo_tab[filt]
-                    sub_halo_tot_star_nb = sub_halo_tot_star_nb[filt]                
+                    sub_halo_tot_star_nb = sub_halo_tot_star_nb[filt]
 
                 # print(len(sub_halo_tab), len(sub_halo_tot_star_nb))
 
@@ -637,7 +661,6 @@ def compute_fesc(
                 limit_r_fesc = sub_halo_tab["rpx"] * fesc_rad + 1
                 sample_r_fesc = do_half_round(limit_r_fesc)
 
-
                 pos = do_half_round(loc_pos_nrmd)  # was np.int16
 
                 # (0,0,0) px locattion of sub_side**3 cube within whole data set
@@ -684,7 +707,7 @@ def compute_fesc(
                     (np.shape(sub_halo_tab)[0]), dtype=np.float32
                 )
                 # halo_emissivity = np.zeros(
-                    # (np.shape(sub_halo_tab)[0]), dtype=np.float64
+                # (np.shape(sub_halo_tab)[0]), dtype=np.float64
                 # )
 
                 halo_youngest = np.zeros((np.shape(sub_halo_tab)[0]), dtype=np.float32)
@@ -846,11 +869,9 @@ def compute_fesc(
                 # temp_units
 
                 for ind, halo in enumerate(sub_halo_tab):
-
                     # if test: print('    Halo #%i'%ind)
 
                     r_px = halo["rpx"]
-
 
                     # print(f"r_px:{r_px:f} \n sample_r:{sample_r[ind]:f}")
                     # print(f"r_px:{r_px * fesc_rad:f} \n sample_r:{sample_r_fesc[ind]:f}")
@@ -860,9 +881,6 @@ def compute_fesc(
                         lower_bounds[ind, 1] : upper_bounds[ind, 1],
                         lower_bounds[ind, 0] : upper_bounds[ind, 0],
                     ]
-
-
-
 
                     # if np.any(sm_rho == 0):
                     #     raise Excepttion("densities should never be 0")
@@ -881,26 +899,23 @@ def compute_fesc(
                     )
 
                     if fesc_rad != 1.0:
-
                         slices_fesc = np.index_exp[
-                        lower_bounds_fesc[ind, 2] : upper_bounds_fesc[ind, 2],
-                        lower_bounds_fesc[ind, 1] : upper_bounds_fesc[ind, 1],
-                        lower_bounds_fesc[ind, 0] : upper_bounds_fesc[ind, 0],
-                    ]
-                        
+                            lower_bounds_fesc[ind, 2] : upper_bounds_fesc[ind, 2],
+                            lower_bounds_fesc[ind, 1] : upper_bounds_fesc[ind, 1],
+                            lower_bounds_fesc[ind, 0] : upper_bounds_fesc[ind, 0],
+                        ]
+
                         sm_rho_fesc = big_rho[slices_fesc]
                         sm_rhod_fesc = big_rhod[slices_fesc]
                         sm_xHI_fesc = 1 - big_xion[slices_fesc]
 
                     else:
-
                         sm_rho_fesc = sm_rho
                         sm_rhod_fesc = sm_rhod
                         sm_xHI_fesc = sm_xHI
 
-
-
-                    if np.prod(sm_rho.shape)<1:continue
+                    if np.prod(sm_rho.shape) < 1:
+                        continue
 
                     # halo_gmass[ind] = (
                     #     np.sum(sm_rho)
@@ -937,7 +952,7 @@ def compute_fesc(
                     # )
                     # halo_rhoZ_avg[ind] = np.mean(sm_rho * sm_metals) * rho_fact
 
-                    #run faster by getting indices of relevent cells once (not once for evety mean/sum etc)
+                    # run faster by getting indices of relevent cells once (not once for evety mean/sum etc)
                     sample_coords = get_sample_coords(sm_rho.shape, dilate)
 
                     halo_gmass[ind] = (
@@ -947,19 +962,33 @@ def compute_fesc(
                         * (px_to_m * 1e2) ** 3
                     )
                     # halo_rhog_avg[ind] = mean_sph(sm_rho, r_px, sample_coords, dilate) * rho_fact
-                    
+
                     halo_2e4k_gmass[ind] = (
-                        sum_sph(sm_rho, r_px, sample_coords, dilate, weights=sm_temp > 2e4)
+                        sum_sph(
+                            sm_rho, r_px, sample_coords, dilate, weights=sm_temp > 2e4
+                        )
                         * rho_fact
                         * (Pmass / Msol)
                         * (px_to_m * 1e2) ** 3
                     )
                     halo_max_rhog[ind] = np.max(sm_rho) * rho_fact  # H/ccm
 
-                    halo_xhi_wMg[ind] = sum_sph(sm_xHI, r_px, sample_coords, dilate, weights=sm_rho/np.sum(sm_rho))
+                    halo_xhi_wMg[ind] = sum_sph(
+                        sm_xHI,
+                        r_px,
+                        sample_coords,
+                        dilate,
+                        weights=sm_rho / np.sum(sm_rho),
+                    )
                     halo_xhi_wV[ind] = mean_sph(sm_xHI, r_px, sample_coords, dilate)
 
-                    halo_gtemp_wMg[ind] = mean_sph(sm_temp, r_px, sample_coords, dilate, weights=sm_rho/np.sum(sm_rho))
+                    halo_gtemp_wMg[ind] = mean_sph(
+                        sm_temp,
+                        r_px,
+                        sample_coords,
+                        dilate,
+                        weights=sm_rho / np.sum(sm_rho),
+                    )
                     halo_gtemp_max[ind] = np.max(sm_temp)
 
                     halo_Md[ind] = (
@@ -980,9 +1009,11 @@ def compute_fesc(
                     sm_taus = np.zeros(((len(att_sets),) + np.shape(sm_xHI_fesc)))
 
                     for iset, att_set in enumerate(att_sets):
-                    
-                        sm_taus[iset] = ((sm_xHI_fesc * sm_rho_fesc) * (rho_fact * tau_fact)) + (
-                            (sm_rhod_fesc * att_set.Kappa912) * (rhod_fact * px_to_m * 100.0)
+                        sm_taus[iset] = (
+                            (sm_xHI_fesc * sm_rho_fesc) * (rho_fact * tau_fact)
+                        ) + (
+                            (sm_rhod_fesc * att_set.Kappa912)
+                            * (rhod_fact * px_to_m * 100.0)
                         )
                     sm_taus_dust = sm_taus[:] - sm_taus[0]
 
@@ -1002,7 +1033,6 @@ def compute_fesc(
 
                     # If there aren't any stars : no need to calculate emissivities or star formattion stuff
                     if sub_halo_star_nb[ind] > 0:
-
                         # print(np.log10(halo["mass"]*Mp), r_px)
 
                         # Get stars for halo  from list of associated stars
@@ -1011,8 +1041,9 @@ def compute_fesc(
                             - sub_halo_star_nb[ind] : sub_halo_tot_star_nb[ind]
                         ]
 
-
-                        rs = np.arange(0, 2 * r_px * fesc_rad, rad_res)  # so we do edge cases properly
+                        rs = np.arange(
+                            0, 2 * r_px * fesc_rad, rad_res
+                        )  # so we do edge cases properly
 
                         Rs, Phis = np.meshgrid(rs, phis)  # for healpix
                         Rs, Thes = np.meshgrid(rs, thes)  # for healpix
@@ -1023,7 +1054,9 @@ def compute_fesc(
                         # print(sub_halo_tot_star_nb[ind] - sub_halo_star_nb[ind], sub_halo_tot_star_nb[ind])
 
                         cur_stars = read_specific_stars(
-                            os.path.join(star_path, output_str), cur_star_ids, keys=["mass", "age", "Z/0.02", "x", "y", "z"]
+                            os.path.join(star_path, output_str),
+                            cur_star_ids,
+                            keys=["mass", "age", "Z/0.02", "x", "y", "z"],
                         )
 
                         halo_stellar_mass[ind] = np.sum(cur_stars["mass"]) / (
@@ -1083,8 +1116,6 @@ def compute_fesc(
 
                         emissivity_box = np.zeros_like(sm_rho_fesc, dtype=np.float64)
 
-                    
-
                         fracd_pos = np.transpose(
                             [cur_stars[key] for key in ["x", "y", "z"]]
                         )
@@ -1136,7 +1167,6 @@ def compute_fesc(
 
                         # Using indices we can sum up all the emissities in every cell of our halo
                         for istar, star in enumerate(cur_stars):
-
                             # print(star_sm_posz[istar],star_sm_posy[istar],star_sm_posx[istar], istar, cur_star_luminosity[istar])
                             emissivity_box[
                                 star_sm_posz[istar],
@@ -1144,39 +1174,35 @@ def compute_fesc(
                                 star_sm_posx[istar],
                             ] += cur_star_luminosity[istar]
 
-
                         # print(np.argmax(emissivity_box), np.max(emissivity_box), emissivity_box.shape)
                         # print(np.unravel_index(np.argmax(emissivity_box), (emissivity_box.shape)))
 
                         smldx = np.shape(emissivity_box)[0]
                         xind, yind, zind = np.mgrid[0:smldx, 0:smldx, 0:smldx]
 
-                        in_bounds = (
-                            np.linalg.norm(
-                                [
-                                    xind - 0.5 * smldx + 0.5,
-                                    yind - 0.5 * smldx + 0.5,
-                                    zind - 0.5 * smldx + 0.5,
-                                ],
-                                axis=0,
-                            )
-                            < (r_px * fesc_rad)
-                        )
+                        in_bounds = np.linalg.norm(
+                            [
+                                xind - 0.5 * smldx + 0.5,
+                                yind - 0.5 * smldx + 0.5,
+                                zind - 0.5 * smldx + 0.5,
+                            ],
+                            axis=0,
+                        ) < (r_px * fesc_rad)
                         # print(in_bounds)
                         cond = (
                             emissivity_box != 0
                         ) * in_bounds  # need to check that cell centre is in r200 even if stars won't be outside of r200
 
-                        normed_emissivity_box = emissivity_box / np.sum(
-                            emissivity_box
-                        )
+                        normed_emissivity_box = emissivity_box / np.sum(emissivity_box)
 
                         if fesc_rad != 1.0:
                             delta = int(sample_r_fesc[ind] - sample_r[ind])
 
                             # print(sample_r_fesc[ind] , sample_r[ind], delta)
 
-                            sm_emissivity_box = normed_emissivity_box[delta:-delta, delta:-delta, delta:-delta]
+                            sm_emissivity_box = normed_emissivity_box[
+                                delta:-delta, delta:-delta, delta:-delta
+                            ]
                             # print(sm_emissivity_box.shape, normed_emissivity_box.shape)
                             # print(sm_rho.shape, sm_rho_fesc.shape)
 
@@ -1186,11 +1212,8 @@ def compute_fesc(
                         cells_w_stars = normed_emissivity_box[cond]
                         xind, yind, zind = xind[cond], yind[cond], zind[cond]
 
-
                         # stellar mass weightred gas quantities
-                        halo_gtemp_wStMass[ind] = np.sum(
-                            sm_temp * sm_emissivity_box
-                        )
+                        halo_gtemp_wStMass[ind] = np.sum(sm_temp * sm_emissivity_box)
                         halo_Md_wStMass[ind] = (
                             np.sum(sm_rhod * sm_emissivity_box)
                             * rho_fact
@@ -1222,12 +1245,10 @@ def compute_fesc(
                             y_cell,
                             z_cell,
                         ) in enumerate(zip(cells_w_stars, xind, yind, zind)):
-
                             sm_ctr = np.asarray([z_cell, y_cell, x_cell]) + 0.5
 
                             # print(sm_taus[iset])
                             # print(np.shape(sm_taus), np.shape(sm_rho_fesc), np.shape(sm_rho))
-
 
                             # for iset in range(len(att_sets)):
                             #     halo_ray_Tr[iset, ind] += (
@@ -1237,7 +1258,7 @@ def compute_fesc(
                             #             r_px * fesc_rad, #go further if fesc_rad > 1
                             #             rad_res,
                             #             Xs,
-                            #             Ys, 
+                            #             Ys,
                             #             Zs,
                             #             debug=False,
                             #         )
@@ -1246,8 +1267,7 @@ def compute_fesc(
                             # halo_ray_Tr[ind]+=(sum_over_rays_bias(sm_tau,sm_ctr,r_px,rad_res,Xs,Ys,Zs))*cur_star_emissivity[star_nb]
                             # halo_ray_Tr_dust_SMC[ind]+=(sum_over_rays_bias(sm_tau_dust_LyC_SMC,sm_ctr,r_px,rad_res,Xs,Ys,Zs))*cur_star_emissivity[star_nb]
                             # halo_ray_Tr_dust_LMC[ind]+=(sum_over_rays_bias(sm_tau_dust_LyC_SMC,sm_ctr,r_px,rad_res,Xs,Ys,Zs))*cur_star_emissivity[star_nb]
-                            # halo_ray_Tr_dust_MW[ind]+=(sum_over_rays_bias(sm_tau_dust_LyC_SMC,sm_ctr,r_px,rad_res,Xs,Ys,Zs))*cur_star_emissivity[star_nb]                            
-
+                            # halo_ray_Tr_dust_MW[ind]+=(sum_over_rays_bias(sm_tau_dust_LyC_SMC,sm_ctr,r_px,rad_res,Xs,Ys,Zs))*cur_star_emissivity[star_nb]
 
                             # if test: print(halo_ray_Tr[:, ind])
 
@@ -1271,7 +1291,7 @@ def compute_fesc(
                                 sum_over_rays_bias_multid(
                                     sm_taus,
                                     sm_ctr,
-                                    r_px * fesc_rad, #go further if fesc_rad > 1
+                                    r_px * fesc_rad,  # go further if fesc_rad > 1
                                     rad_res,
                                     Xs,
                                     Ys,
@@ -1280,7 +1300,10 @@ def compute_fesc(
                                 )
                             ) * cell_w_stars
 
-                            halo_ray_Tr_cell[:, ind] += np.exp(-sm_taus[:, x_cell, y_cell, z_cell]) * cell_w_stars
+                            halo_ray_Tr_cell[:, ind] += (
+                                np.exp(-sm_taus[:, x_cell, y_cell, z_cell])
+                                * cell_w_stars
+                            )
 
                             dust_taus[
                                 :, x_cell, y_cell, z_cell
@@ -1298,7 +1321,6 @@ def compute_fesc(
                         #     print(np.max(star_taus[:,:], axis=1))
 
                         for iset, att_set in enumerate(att_sets):
-
                             if att_set.Kappa912 > 0.0:
                                 star_trans = np.exp(
                                     star_taus[iset]
@@ -1331,20 +1353,18 @@ def compute_fesc(
                         print("mags", halo_mags[:, ind])
                         print("betas", halo_betas[:, ind])
                         print(np.max(dust_taus, axis=(1, 2, 3)))
-                        print(halo_ray_Tr[0, ind], halo_ray_Tr_cell[0,ind])
+                        print(halo_ray_Tr[0, ind], halo_ray_Tr_cell[0, ind])
                         # if halo_ray_Tr[0, ind] < 1.0:
                         #     fesc_debug_avg += halo_ray_Tr[0, ind]
                         #     debug_counts += 1.0
                         #     print("%e" % (fesc_debug_avg / debug_counts))
 
-            # print(halo_2e4k_gmass, halo_2e4k_gmass.max(), np.mean(halo_2e4k_gmass))
+                # print(halo_2e4k_gmass, halo_2e4k_gmass.max(), np.mean(halo_2e4k_gmass))
 
                 if not test:
                     pos = np.transpose([sub_halo_tab[key] for key in ["x", "y", "z"]])
 
                     print("Writing %s" % out_file)
-
-        
 
                     write_fields(
                         Mp,
@@ -1381,91 +1401,108 @@ def compute_fesc(
                     )
 
                 else:
+                    print("Test run")
 
-                    print('Test run')
-
-                    
-
-                    #test fesc by plotting the fesc as a function of the stellar_rho
+                    # test fesc by plotting the fesc as a function of the stellar_rho
 
                     # halo_ray_Tr[0][halo_ray_Tr[0]<1e-10] = 1e-10
                     test_halo_trs.append(halo_ray_Tr[0])
-                    test_halo_lintrs.append(halo_Lintrs[:,0])
-                    test_halo_masses.append(sub_halo_tab["mass"]*Mp)
-
+                    test_halo_lintrs.append(halo_Lintrs[:, 0])
+                    test_halo_masses.append(sub_halo_tab["mass"] * Mp)
 
                     write_fields(
-                    Mp,
-                    att_sets,
-                    sub_halo_tab,
-                    "./test_data_%i.hdf5"%subcube_nb,
-                    sub_idxs,
-                    pos,
-                    halo_ray_Tr,
-                    halo_mags,
-                    halo_betas,
-                    halo_SFRs,
-                    halo_Lintrs,
-                    halo_stellar_mass,
-                    halo_youngest,
-                    halo_oldest,
-                    halo_stAgeWmass,
-                    halo_stZ_wStMass,
-                    halo_gmass,
-                    halo_2e4k_gmass,
-                    halo_max_rhog,
-                    halo_xhi_wV,
-                    halo_xhi_wMg,
-                    halo_xhi_wStMass,
-                    halo_gtemp_max,
-                    halo_gtemp_wMg,
-                    halo_gtemp_wStMass,
-                    halo_Zmass,
-                    halo_Zmass_wStMass,
-                    # halo_avgZ,
-                    halo_Md,
-                    halo_Md_wStMass,
-                    # halo_avgMd,
+                        Mp,
+                        att_sets,
+                        sub_halo_tab,
+                        "./test_data_%i.hdf5" % subcube_nb,
+                        sub_idxs,
+                        pos,
+                        halo_ray_Tr,
+                        halo_mags,
+                        halo_betas,
+                        halo_SFRs,
+                        halo_Lintrs,
+                        halo_stellar_mass,
+                        halo_youngest,
+                        halo_oldest,
+                        halo_stAgeWmass,
+                        halo_stZ_wStMass,
+                        halo_gmass,
+                        halo_2e4k_gmass,
+                        halo_max_rhog,
+                        halo_xhi_wV,
+                        halo_xhi_wMg,
+                        halo_xhi_wStMass,
+                        halo_gtemp_max,
+                        halo_gtemp_wMg,
+                        halo_gtemp_wStMass,
+                        halo_Zmass,
+                        halo_Zmass_wStMass,
+                        # halo_avgZ,
+                        halo_Md,
+                        halo_Md_wStMass,
+                        # halo_avgMd,
                     )
-
 
                     # return(halo_ray_Tr, halo_mags, sub_halo_tab, halo_gmass, sub_halo_tab["mass"] * Mp)
 
     if test:
+        fig, axs = plt.subplots(1, 1, figsize=(10, 10), sharey=True)
 
-        fig,axs=plt.subplots(1,1, figsize=(10,10), sharey=True)
-        
         test_halo_masses = np.concatenate(test_halo_masses)
         test_halo_trs = np.concatenate(test_halo_trs)
         test_halo_lintrs = np.concatenate(test_halo_lintrs)
 
-        
-        #2D histogram of halo fescs vs halo mass
-        img,binsx,binsy,counts = binned_statistic_2d(test_halo_masses, test_halo_trs, test_halo_trs, 'count', bins=[np.logspace(7,12,30), np.logspace(-5,0,30)])
-        axs.imshow(img.T, extent=np.log10([binsx.min(), binsx.max(), binsy.min(), binsy.max()]), origin='lower', aspect='auto', cmap='viridis', 
-        norm=mpl.colors.LogNorm(vmin=0, vmax=np.nanmax(img)))
+        # 2D histogram of halo fescs vs halo mass
+        img, binsx, binsy, counts = binned_statistic_2d(
+            test_halo_masses,
+            test_halo_trs,
+            test_halo_trs,
+            "count",
+            bins=[np.logspace(7, 12, 30), np.logspace(-5, 0, 30)],
+        )
+        axs.imshow(
+            img.T,
+            extent=np.log10([binsx.min(), binsx.max(), binsy.min(), binsy.max()]),
+            origin="lower",
+            aspect="auto",
+            cmap="viridis",
+            norm=mpl.colors.LogNorm(vmin=0, vmax=np.nanmax(img)),
+        )
 
         print(img.max(), img.min(), np.nanmax(img), np.nanmin(img))
 
-        #plot mean in bins
+        # plot mean in bins
         rho_bins = np.logspace(-28, -24, 8)
-        mean,bins,counts = binned_statistic(test_halo_masses, test_halo_trs*test_halo_lintrs, statistic=np.nansum, bins=binsx)
-        sum,bins,counts = binned_statistic(test_halo_masses, test_halo_lintrs, statistic=np.nansum, bins=binsx)
+        mean, bins, counts = binned_statistic(
+            test_halo_masses,
+            test_halo_trs * test_halo_lintrs,
+            statistic=np.nansum,
+            bins=binsx,
+        )
+        sum, bins, counts = binned_statistic(
+            test_halo_masses, test_halo_lintrs, statistic=np.nansum, bins=binsx
+        )
         mean = mean / sum
 
-        print(list(zip(np.log10(bins[:-1]),mean/sum)))
+        print(list(zip(np.log10(bins[:-1]), mean / sum)))
 
-        axs.plot(np.log10(bins[:-1] + 0.5 * np.diff(bins)), np.log10(mean), 'r--', label='mean')
+        axs.plot(
+            np.log10(bins[:-1] + 0.5 * np.diff(bins)),
+            np.log10(mean),
+            "r--",
+            label="mean",
+        )
 
-        
-        axs.set_xlabel(r'$M_{\mathrm{halo}}, \, M_{\odot}$')
-        axs.set_ylabel(r'$f_{esc}$')
+        axs.set_xlabel(r"$M_{\mathrm{halo}}, \, M_{\odot}$")
+        axs.set_ylabel(r"$f_{esc}$")
         # axs.set_xscale('log')
         # axs.set_yscale('log')
-        axs.set_ylim(-5,0)
-        axs.set_xlim(7,12)
+        axs.set_ylim(-5, 0)
+        axs.set_xlim(7, 12)
 
-        fig.savefig('test_fesc_halo.png')
+        fig.savefig("test_fesc_halo.png")
+
 
 """
 Main body
@@ -1473,7 +1510,6 @@ Main body
 
 
 if __name__ == "__main__":
-
     Arg_parser = argparse.ArgumentParser("Compute gas and stellar properties in halos")
 
     Arg_parser.add_argument(
@@ -1487,14 +1523,14 @@ if __name__ == "__main__":
         metavar="rtwo_fact",
         type=float,
         help="1.0 -> associate stellar particles within 1xR200 for all haloes",
-        default=1
+        default=1,
     )
     Arg_parser.add_argument(
         "--fesc_rad",
         metavar="fesc_rad",
         type=float,
         help="1.0 -> use association radius as integration limit for fesc computation",
-        default=1
+        default=1,
     )
     Arg_parser.add_argument(
         "--ll", metavar="ll", type=float, help="linking length for fof", default=0.2
@@ -1504,40 +1540,43 @@ if __name__ == "__main__":
         metavar="assoc_mthd",
         type=str,
         help="method for linking stars to fof",
-        default=""
+        default="",
     )
     Arg_parser.add_argument(
         "--overwrite",
         action="store_true",
         help="When used, code overwrites all found data",
-        default=False
+        default=False,
     )
     Arg_parser.add_argument(
         "--test",
         action="store_true",
         help="When used, code runs on one subcube and doesn't write",
-        default=False
+        default=False,
     )
     Arg_parser.add_argument(
         "--dilate",
         type=int,
         help="number of times to resample grid when performing sums within r_px",
-        default=8
+        default=8,
     )
 
     Arg_parser.add_argument(
-        "--mbin",
-        metavar="mbin",
-        type=float,
-        help="halo mass bin centre",
-        default=1
+        "--mbin", metavar="mbin", type=float, help="halo mass bin centre", default=1
     )
     Arg_parser.add_argument(
         "--mbin_width",
         metavar="mbin_width",
         type=float,
         help="halo mass bin centre",
-        default=1
+        default=1,
+    )
+    Arg_parser.add_argument(
+        "--mp",
+        metavar="mp segmentation",
+        action="store_true",
+        help="Use Mei Palanque's watershed segmentation catalogue",
+        default=False,
     )
 
     args = Arg_parser.parse_args()
@@ -1551,6 +1590,7 @@ if __name__ == "__main__":
     fesc_rad = args.fesc_rad
     mbin = args.mbin
     mbin_width = args.mbin_width
+    mp = args.mp
 
     compute_fesc(
         out_nb,
@@ -1563,4 +1603,5 @@ if __name__ == "__main__":
         dilate=dilate,
         mbin=mbin,
         mbin_width=mbin_width,
+        mp=mp,
     )

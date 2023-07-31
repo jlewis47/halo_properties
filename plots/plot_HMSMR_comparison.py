@@ -12,28 +12,17 @@ from halo_properties.params.params import *
 from halo_properties.utils.functions_latest import get_infos
 from plot_functions.generic.stat import xy_stat
 from plot_functions.generic.plot_functions import make_figure, xy_plot_stat
-from plot_functions.ionising.fescs import (
-    fesc_Mh_plot,
-    fesc_Mst_plot,
-    plot_dustier_fesc,
-    plot_dustier_fesc_ms,
-)
+from plot_functions.hmsmr.hmsmrs import plot_hmsmr_constraints, plot_dustier_hmsmr
 import os
 import h5py
 
 
-def load_fescs(
-    sim_name, out_nb, assoc_mthd, ll, rtwo_fact, mp, fesc_type="gas", xkey="mass"
-):
-    fesc_keys = {"gas": "Tr_no_dust", "full": "Tr_kext_albedo_WD_LMC2_10"}
-
-    fesc_key = fesc_keys[fesc_type]
-
+def load_masses(sim_name, out_nb, assoc_mthd, ll, rtwo_fact, mp):
     print(
-        f"LOADING : {out_nb:d} ll={ll:f}, {rtwo_fact:f}xr200, association: {assoc_mthd:s}, {fesc_key:s}, xkey={xkey:s}"
+        f"LOADING : {out_nb:d} ll={ll:f}, {rtwo_fact:f}xr200, association: {assoc_mthd:s} mp={mp}"
     )
 
-    keys = [xkey, fesc_key, "SFR10"]
+    keys = ["mass", "Mst"]
 
     fof_suffix = ll_to_fof_suffix(ll)
     rtwo_suffix = get_r200_suffix(rtwo_fact)
@@ -49,15 +38,11 @@ def load_fescs(
     # print(f'OSError : {out_nb:d} ll={ll:f}, {rtwo_fact:f}xr200, associatfiles.: {assoc_mthd:s}, {fesc_key:s}, xkey={xkey:s}')
     # print(e)
 
-    sfing = datas["SFR10"] > 0
-
-    return (datas[xkey][sfing], datas[fesc_keys[fesc_type]][sfing])
+    return (datas["mass"], datas["Mst"])
 
 
 out_nb = 52
 overwrite = False
-fesc_type = "gas"
-x_type = "Mst"  # "Mst"
 lls = [0.2, 0.2]
 mps = [False, True]
 # lls = [0.1, 0.15, 0.2, 0.2, 0.2]
@@ -73,14 +58,9 @@ r200s = [1.0, 1.0]
 # r200s = [1.0, 1.0, 1.0, 1.0, 2.0]
 
 mnbins = 55
-if x_type == "mass":
-    mass_bins = np.logspace(7.5, 12, mnbins)
-    plot_fct = fesc_Mh_plot
-    xlabel = "$M_{\mathrm{h}}\,[M_{\odot}]$"
-elif x_type == "Mst":
-    mass_bins = np.logspace(3.5, 11.5, mnbins)
-    plot_fct = fesc_Mst_plot
-    xlabel = "$M_{\star}\,[M_{\odot}]$"
+mass_bins = np.logspace(7.5, 12, mnbins)
+xlabel = "$M_{\mathrm{h}}\,[M_{\odot}]$"
+ylabel = "$M_{\star}\,[M_{\odot}]$"
 
 info_path = os.path.join(sim_path, f"output_{out_nb:06d}", "group_000001")
 
@@ -124,75 +104,61 @@ for iplot, (assoc_mthd, ll, r200, mp) in enumerate(zip(assoc_mthds, lls, r200s, 
 
     mp_str = ""
     if mp:
-        mp_str += "mp_"
+        mp_str += "mp"
     out_file = os.path.join(
         out_path,
-        f"fescs_{redshift:.1f}_{assoc_mthd:s}_{ll:.2f}_{r200:.1f}_{mp_str:s}{fesc_type:s}_{x_type:s}.hdf5",
+        f"hmsmr_{redshift:.1f}_{assoc_mthd:s}_{ll:.2f}_{r200:.1f}_{mp_str:s}.hdf5",
     )
 
     exists = os.path.isfile(out_file)
 
     if overwrite or not exists:
-        mass, fesc = load_fescs(
-            "CoDaIII",
-            out_nb,
-            assoc_mthd,
-            ll,
-            r200,
-            mp,
-            fesc_type=fesc_type,
-            xkey=x_type,
-        )
-        xbins, counts = xy_stat(mass, fesc, xbins=mass_bins, mthd="count")
-        xbins, median = xy_stat(mass, fesc, xbins=mass_bins, mthd="median")
+        mass, stmass = load_masses("CoDaIII", out_nb, assoc_mthd, ll, r200, mp)
+        xbins, counts = xy_stat(mass, stmass, xbins=mass_bins, mthd="count")
+        xbins, median = xy_stat(mass, stmass, xbins=mass_bins, mthd="median")
+        xbins, mean = xy_stat(mass, stmass, xbins=mass_bins, mthd="mean")
         xbins, p5 = xy_stat(
-            mass, fesc, xbins=mass_bins, mthd=lambda x: np.percentile(x, 5)
+            mass, stmass, xbins=mass_bins, mthd=lambda x: np.percentile(x, 5)
         )
         xbins, p95 = xy_stat(
-            mass, fesc, xbins=mass_bins, mthd=lambda x: np.percentile(x, 95)
+            mass, stmass, xbins=mass_bins, mthd=lambda x: np.percentile(x, 95)
         )
 
         last_bin_w_enough = np.max(np.where(counts > 10))
         scat_mass_cut = mass_bins[last_bin_w_enough]
 
-        high_mass_x, high_mass_fesc = (
+        high_mass, high_stmass = (
             mass[mass > scat_mass_cut],
-            fesc[mass > scat_mass_cut],
+            stmass[mass > scat_mass_cut],
         )
 
         # if not exists :
         with h5py.File(out_file, "w") as dest:
             dest.create_dataset("xbins", data=xbins, dtype="f4", compression="lzf")
             dest.create_dataset("median", data=median, dtype="f4", compression="lzf")
+            dest.create_dataset("mean", data=mean, dtype="f4", compression="lzf")
             dest.create_dataset("p5", data=p5, dtype="f4", compression="lzf")
             dest.create_dataset("p95", data=p95, dtype="f4", compression="lzf")
             dest.create_dataset(
-                "low_count_fescs", data=high_mass_fesc, dtype="f4", compression="lzf"
+                "low_count_stmasses", data=high_stmass, dtype="f4", compression="lzf"
             )
             dest.create_dataset(
-                "low_count_masses", data=high_mass_x, dtype="f4", compression="lzf"
+                "low_count_masses", data=high_mass, dtype="f4", compression="lzf"
             )
-
-        # elif overwrite and exists:
-
-        #     with h5py.File(out_file, 'a') as dest:
-        #         f_masses = dest["xbins"]
-        #         f_fescs = dest["fescs"]
-
-        #         f_masses[...] = xbins
-        #         f_fescs[...] = ystat
 
     else:
         with h5py.File(out_file, "r") as dest:
             xbins = dest["xbins"][()]
             median = dest["median"][()]
+            mean = dest["mean"][()]
             p5 = dest["p5"][()]
             p95 = dest["p95"][()]
-            high_mass_fesc = dest["low_count_fescs"][()]
-            high_mass_x = dest["low_count_masses"][()]
+            high_stmass = dest["low_count_stmasses"][()]
+            high_mass = dest["low_count_masses"][()]
 
     stats = {}
     stats["median"] = median
+    stats["mean"] = mean
     stats["p5"] = p5
     stats["p95"] = p95
 
@@ -201,10 +167,10 @@ for iplot, (assoc_mthd, ll, r200, mp) in enumerate(zip(assoc_mthds, lls, r200s, 
         ax,
         xbins,
         stats,
-        high_mass_x,
-        high_mass_fesc,
+        high_mass,
+        high_stmass,
         xlabel=xlabel,
-        ylabel="$f_{\mathrm{esc}}$",
+        ylabel=ylabel,
         color=next(ax._get_lines.prop_cycler)["color"],
     )
 
@@ -217,23 +183,23 @@ for iplot, (assoc_mthd, ll, r200, mp) in enumerate(zip(assoc_mthds, lls, r200s, 
 
 
 # lines = plot_fct(fig, ax, masses, fescs, fesc_type, redshift)
+
 dustier_lines = []
 dustier_labels = []
-if x_type == "mass":
-    dustier_lines, dustier_labels = plot_dustier_fesc(ax, redshift, fkey="fesc")
-if x_type == "Mst":
-    dustier_lines, dustier_labels = plot_dustier_fesc_ms(ax, redshift, fkey="fesc")
 
+dustier_lines, dustier_labels = plot_dustier_hmsmr(ax, redshift)
 labels += dustier_labels
 lines += dustier_lines
 
+cst_lines, cst_labels = plot_hmsmr_constraints(ax, redshift)
+labels += cst_labels
+lines += cst_lines
 
-ax.set_ylim(1e-3, 1)
+
+# ax.set_ylim(1e-3, 1)
 # ax.set_xlim(4e7, 1e12)
 
 plt.legend(lines, labels, framealpha=0.0)
 
-fig_name = (
-    f"./figs/fesc_comparison_{out_nb:d}_{redshift:.1f}_{fesc_type:s}_{x_type:s}.png"
-)
+fig_name = f"./figs/HMSMR_comparison_{out_nb:d}_{redshift:.1f}.png"
 fig.savefig(fig_name)

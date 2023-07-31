@@ -1,2 +1,0 @@
-###
-from params.params import *

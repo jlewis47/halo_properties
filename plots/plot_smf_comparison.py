@@ -10,25 +10,10 @@ from halo_properties.params.params import *
 
 from plot_functions.generic.stat import mass_function
 from plot_functions.generic.plot_functions import make_figure
-from plot_functions.smf.smfs import plot_constraints, smf_plot
+from plot_functions.smf.smfs import plot_constraints, smf_plot, make_smf
 
 
 
-
-
-
-def make_smf(stellar_masses, bins, box_size):
-    """make smf from stellar masses and bins
-
-    Args:
-        stellar_masses (_type_): stellar masses in same units as bins
-        bins (_type_): bins for smf
-        box_size (_type_): size of box in cMpc
-    """
-
-    bins, smf_no_units = mass_function(stellar_masses, bins)
-
-    return(bins, smf_no_units / box_size**3)
 
     
 def load_stellar_masses(sim_name, out_nb, assoc_mthd, ll, rtwo_fact):
@@ -56,7 +41,7 @@ def load_stellar_masses(sim_name, out_nb, assoc_mthd, ll, rtwo_fact):
 
     return(datas["Mst"][()])
 
-out_nb = 82
+out_nb = 34
 overwrite = True 
 # lls = [0.1]
 lls = [0.1, 0.15, 0.2, 0.2, 0.2]
@@ -97,6 +82,7 @@ assert len(r200s) == len(assoc_mthds) == len(lls), "check input parameter lists'
 masses = []
 smfs = []
 labels = []
+errs=[]
 # lines = []
 
 for assoc_mthd, ll, r200 in zip(assoc_mthds, lls, r200s):
@@ -114,11 +100,12 @@ for assoc_mthd, ll, r200 in zip(assoc_mthds, lls, r200s):
     
         stellar_masses = load_stellar_masses("CoDaIII", out_nb, assoc_mthd, ll, r200)
     
-        bins, smf = make_smf(stellar_masses, mass_bins, Lco)
+        bins, smf, err = make_smf(stellar_masses, mass_bins, Lco)
 
         with h5py.File(out_file, 'w') as dest:
             dest.create_dataset("xbins", data = bins, dtype='f4')
             dest.create_dataset("smf", data = smf, dtype='f8')
+            dest.create_dataset("err", data = err, dtype='f8')
 
 
     else:
@@ -126,14 +113,16 @@ for assoc_mthd, ll, r200 in zip(assoc_mthds, lls, r200s):
         with h5py.File(out_file, 'r') as dest:
             bins = dest["xbins"][()]
             smf = dest["smf"][()]
+            err = dest["err"][()]
 
 
 
     masses.append(bins)
     smfs.append(smf)
+    errs.append(err)
     labels.append(f"{assoc_mthd:s} ll={ll:.2f} {r200:.1f}Xr200")
 
-lines = smf_plot(fig, ax, masses, smfs, redshift)
+lines = smf_plot(fig, ax, masses, smfs, redshift, yerrs=errs)
 
 cst_lines, cst_labels = plot_constraints(fig, ax, redshift)
 
@@ -142,7 +131,9 @@ lines += cst_lines
 
 ax.legend(lines, labels, framealpha=0.0)
 
-fig.savefig(f'./figs/smf_comparison_{out_nb:d}')
+
+
+fig.savefig(f'./figs/smf_comparison_{out_nb:d}', bbox_inches="tight")
 
 
 
