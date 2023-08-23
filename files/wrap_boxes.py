@@ -634,17 +634,17 @@ def read_cutout(data_pth, fields, ctr, size, ldx=8192, subsize=512):
         np.all(oversteps_bool, axis=0)
     ), "ctr, size, and subsize mean that overstepping single subcube in at least two diretions... not supported use other functions"
 
-    print(ctr_subnb)
-    print(ctr_in_sub)
-    print(lo_lims, hi_lims)
-    print(oversteps)
-    print(oversteps_bool)
+    # print(ctr_subnb)
+    # print(ctr_in_sub)
+    # print(lo_lims, hi_lims)
+    # print(oversteps)
+    # print(oversteps_bool)
 
     zbnds = oversteps_bool[0][0], np.full(1, True), oversteps_bool[1][0]
     ybnds = oversteps_bool[0][1], np.full(1, True), oversteps_bool[1][1]
     xbnds = oversteps_bool[0][2], np.full(1, True), oversteps_bool[1][2]
 
-    print(len(fields), size)
+    # print(len(fields), size)
 
     cutout = np.zeros((len(fields), size, size, size), dtype="f4")
 
@@ -660,8 +660,6 @@ def read_cutout(data_pth, fields, ctr, size, ldx=8192, subsize=512):
                     nb_to_get = new_wrap_single(ctr_subnb, n_subcubes, iz, iy, ix)
 
                     # print(nb_to_get, ctr_subnb, n_subcubes, iz, iy, ix)
-
-                    data_name = os.path.join(data_pth, "%s_%05i" % (field, nb_to_get))
 
                     if ix == 0:
                         xlow, xhigh = 0, abs(oversteps[0][2])
@@ -716,17 +714,21 @@ def read_cutout(data_pth, fields, ctr, size, ldx=8192, subsize=512):
                         load_zlow, load_zhigh = 0, abs(oversteps[1][0])
 
                     try:
-                        print(ix, iy, iz)
-                        print(xlow, xhigh, ylow, yhigh, zlow, zhigh)
-                        print(
-                            load_xlow,
-                            load_xhigh,
-                            load_ylow,
-                            load_yhigh,
-                            load_zlow,
-                            load_zhigh,
-                        )
+                        # print(ix, iy, iz)
+                        # print(xlow, xhigh, ylow, yhigh, zlow, zhigh)
+                        # print(
+                        #     load_xlow,
+                        #     load_xhigh,
+                        #     load_ylow,
+                        #     load_yhigh,
+                        #     load_zlow,
+                        #     load_zhigh,
+                        # )
                         for ifield, field in enumerate(fields):
+                            data_name = os.path.join(
+                                data_pth, "%s_%05i" % (field, nb_to_get)
+                            )
+
                             cutout[
                                 ifield, xlow:xhigh, ylow:yhigh, zlow:zhigh
                             ] = o_data_memmap(
