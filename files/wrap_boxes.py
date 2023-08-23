@@ -626,7 +626,7 @@ def read_cutout(data_pth, fields, ctr, size, ldx=8192, subsize=512):
     lo_lims = ctr_in_sub - size // 2
     hi_lims = ctr_in_sub + size // 2
 
-    oversteps = np.array([lo_lims - 0, hi_lims - subsize])
+    oversteps = np.array([lo_lims - 0, hi_lims - (subsize - 1)])
 
     oversteps_bool = [oversteps[0] < 0, oversteps[1] > 0]
 
@@ -644,90 +644,89 @@ def read_cutout(data_pth, fields, ctr, size, ldx=8192, subsize=512):
     ybnds = oversteps_bool[0][1], np.full(1, True), oversteps_bool[1][1]
     xbnds = oversteps_bool[0][2], np.full(1, True), oversteps_bool[1][2]
 
+    print(len(fields), size)
+
     cutout = np.zeros((len(fields), size, size, size), dtype="f4")
 
     dims = 3
 
-    for ifield, field in enumerate(fields):
-        for ix in range(dims):
-            for iy in range(dims):
-                for iz in range(dims):
-                    # print(xbnds[ix], ybnds[iy], zbnds[iz])
-                    # print(np.all([xbnds[ix], ybnds[iy], zbnds[iz]], axis=0))
+    for ix in range(dims):
+        for iy in range(dims):
+            for iz in range(dims):
+                # print(xbnds[ix], ybnds[iy], zbnds[iz])
+                # print(np.all([xbnds[ix], ybnds[iy], zbnds[iz]], axis=0))
 
-                    if np.any(np.all([xbnds[ix], ybnds[iy], zbnds[iz]], axis=0)):
-                        nb_to_get = new_wrap_single(ctr_subnb, n_subcubes, iz, iy, ix)
+                if np.any(np.all([xbnds[ix], ybnds[iy], zbnds[iz]], axis=0)):
+                    nb_to_get = new_wrap_single(ctr_subnb, n_subcubes, iz, iy, ix)
 
-                        # print(nb_to_get, ctr_subnb, n_subcubes, iz, iy, ix)
+                    # print(nb_to_get, ctr_subnb, n_subcubes, iz, iy, ix)
 
-                        data_name = os.path.join(
-                            data_pth, "%s_%05i" % (field, nb_to_get)
+                    data_name = os.path.join(data_pth, "%s_%05i" % (field, nb_to_get))
+
+                    if ix == 0:
+                        xlow, xhigh = 0, abs(oversteps[0][2])
+                        load_xlow, load_xhigh = (
+                            (subsize - 1) - abs(oversteps[0][2]),
+                            (subsize - 1),
+                        )
+                    elif ix == 1:
+                        xlow, xhigh = abs(min(oversteps[0][2], 0)), abs(
+                            min(size, size - oversteps[1][2])
+                        )
+                        w = xhigh - xlow
+                        load_xlow = max(0, lo_lims[2])
+                        load_xhigh = load_xlow + w
+                    else:
+                        xlow, xhigh = size - abs(oversteps[1][2]), size
+                        load_xlow, load_xhigh = 0, abs(oversteps[1][2])
+
+                    if iy == 0:
+                        ylow, yhigh = 0, abs(oversteps[0][1])
+                        load_ylow, load_yhigh = (
+                            (subsize - 1) - abs(oversteps[0][1]),
+                            (subsize - 1),
+                        )
+                    elif iy == 1:
+                        ylow, yhigh = abs(min(oversteps[0][1], 0)), abs(
+                            min(size, size - oversteps[1][1])
+                        )
+                        w = yhigh - ylow
+                        load_ylow = max(0, lo_lims[1])
+                        load_yhigh = load_ylow + w
+                    else:
+                        ylow, yhigh = size - abs(oversteps[1][1]), size
+                        load_ylow, load_yhigh = 0, abs(oversteps[1][1])
+
+                    if iz == 0:
+                        zlow, zhigh = 0, abs(oversteps[0][0])
+                        load_zlow, load_zhigh = (
+                            (subsize - 1) - abs(oversteps[0][0]),
+                            (subsize - 1),
                         )
 
-                        if ix == 0:
-                            xlow, xhigh = 0, abs(oversteps[0][2])
-                            load_xlow, load_xhigh = (
-                                subsize - abs(oversteps[0][2]),
-                                subsize,
-                            )
-                        elif ix == 1:
-                            xlow, xhigh = abs(min(oversteps[0][2], 0)), abs(
-                                min(size, size - oversteps[1][2])
-                            )
-                            w = xhigh - xlow
-                            load_xlow = max(0, lo_lims[2])
-                            load_xhigh = load_xlow + w
-                        else:
-                            xlow, xhigh = 0, size - abs(oversteps[1][2])
-                            load_xlow, load_xhigh = 0, abs(oversteps[1][2])
+                    elif iz == 1:
+                        zlow, zhigh = abs(min(oversteps[0][0], 0)), abs(
+                            min(size, size - oversteps[1][0])
+                        )
+                        w = zhigh - zlow
+                        load_zlow = max(0, lo_lims[0])
+                        load_zhigh = load_zlow + w
+                    else:
+                        zlow, zhigh = size - abs(oversteps[1][0]), size
+                        load_zlow, load_zhigh = 0, abs(oversteps[1][0])
 
-                        if iy == 0:
-                            ylow, yhigh = 0, abs(oversteps[0][1])
-                            load_ylow, load_yhigh = (
-                                subsize - abs(oversteps[0][1]),
-                                subsize,
-                            )
-                        elif iy == 1:
-                            ylow, yhigh = abs(min(oversteps[0][1], 0)), abs(
-                                min(size, size - oversteps[1][1])
-                            )
-                            w = yhigh - ylow
-                            load_ylow = max(0, lo_lims[1])
-                            load_yhigh = load_ylow + w
-                        else:
-                            ylow, yhigh = 0, size - abs(oversteps[1][1])
-                            load_ylow, load_yhigh = 0, abs(oversteps[1][1])
-
-                        if iz == 0:
-                            zlow, zhigh = 0, abs(oversteps[0][0])
-                            load_zlow, load_zhigh = (
-                                subsize - abs(oversteps[0][0]),
-                                subsize,
-                            )
-
-                        elif iz == 1:
-                            zlow, zhigh = abs(min(oversteps[0][0], 0)), abs(
-                                min(size, size - oversteps[1][0])
-                            )
-                            w = zhigh - zlow
-                            load_zlow = max(0, lo_lims[0])
-                            load_zhigh = load_zlow + w
-                        else:
-                            zlow, zhigh = 0, size - abs(oversteps[1][0])
-                            load_zlow, load_zhigh = 0, abs(oversteps[1][0])
-
-                        try:
-                            print(ix, iy, iz)
-                            print(xlow, xhigh, ylow, yhigh, zlow, zhigh)
-                            print(
-                                load_xlow,
-                                load_xhigh,
-                                load_ylow,
-                                load_yhigh,
-                                load_zlow,
-                                load_zhigh,
-                            )
-
+                    try:
+                        print(ix, iy, iz)
+                        print(xlow, xhigh, ylow, yhigh, zlow, zhigh)
+                        print(
+                            load_xlow,
+                            load_xhigh,
+                            load_ylow,
+                            load_yhigh,
+                            load_zlow,
+                            load_zhigh,
+                        )
+                        for ifield, field in enumerate(fields):
                             cutout[
                                 ifield, xlow:xhigh, ylow:yhigh, zlow:zhigh
                             ] = o_data_memmap(
@@ -739,13 +738,9 @@ def read_cutout(data_pth, fields, ctr, size, ldx=8192, subsize=512):
                                 ),
                             )
 
-                        except IndexError:
-                            print(
-                                "Missing box assuming this is known ... Filling with 0s"
-                            )
-                            cutout[ifield, :, :, :] = np.zeros(
-                                (subsize, subsize, subsize)
-                            )
-                            continue
+                    except IndexError:
+                        print("Missing box assuming this is known ... Filling with 0s")
+                        cutout[ifield, :, :, :] = np.zeros((subsize, subsize, subsize))
+                        continue
 
     return cutout
