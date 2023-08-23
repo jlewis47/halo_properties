@@ -436,7 +436,7 @@ def new_wrap_single(subnb, nb_subcubes, ix, iy, iz):
     mody = prep_mod(y, iy, n_per_row)
     modz = prep_mod(z, iz, n_per_row)
 
-    print(subnb, modz, mody, modx)
+    # print(subnb, modz, mody, modx)
 
     nb = np.ravel_multi_index((modx, mody, modz), (n_per_row, n_per_row, n_per_row))
 
