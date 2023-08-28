@@ -28,7 +28,7 @@ dilate=4 #sums and means resample the grid 2**dilate times to get <rtwo_fact * r
 
 #for snap in $1; do 
 snap=$1
-mpiexec -np $SLURM_NTASKS --bind-to core --report-bindings  python -u run_halo_fesc.py $snap --assoc_mthd="stellar_peak" --ll=0.2 --rtwo_fact=1.0 --dilate=$dilate --overwrite --mp
+mpiexec -np $SLURM_NTASKS --bind-to core --report-bindings  python -u run_halo_fesc.py $snap --assoc_mthd="stellar_peak" --ll=0.2 --rtwo_fact=1.0 --dilate=$dilate  --mp
 wait
 # mpiexec -np $SLURM_NTASKS --bind-to core --report-bindings  python -u run_halo_fesc.py $snap --assoc_mthd="stellar_peak" --ll=0.2 --rtwo_fact=1.0 --dilate $dilate --overwrite
 # wait

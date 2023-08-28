@@ -329,8 +329,9 @@ def compute_fesc(
     test=False,
     dilate=8,
     mbin=1,
-    mbin_width=1,
     mp=False,
+    rstar=1.0,
+    subnb=None,
 ):
     # fesc_debug_avg = 0
     # debug_counts = 0
@@ -347,6 +348,11 @@ def compute_fesc(
     assert (
         fesc_rad >= 1.0
     ), "fesc_rad must be larger or equal to one (fesc integration radius must include stellar association radius)"
+
+    assert (
+        rstar <= 1.0
+    ), "rstar must be <= 1.0"
+
 
     comm = MPI.COMM_WORLD
     Nproc = comm.Get_size()
@@ -370,7 +376,7 @@ def compute_fesc(
         fof_suffix=fof_suffix, rtwo_suffix=rtwo_suffix, frad_suffix=frad_suffix, mp=mp
     )
 
-    out, assoc_out, analy_out = gen_paths(sim_name, out_nb, suffix, assoc_mthd)
+    out, assoc_out, analy_out = gen_paths(sim_name, out_nb, suffix, assoc_mthd, rstar=rstar)
 
     if rank == 0 and not os.path.exists(analy_out):
         os.makedirs(analy_out)
@@ -439,13 +445,20 @@ def compute_fesc(
 
     redshift = 1.0 / a - 1.0
 
-    if rank == 0:
-        print("Redshift is %.1f" % redshift)
+
 
     with open(os.path.join(out, "Mp"), "rb") as mass_file:
         Mp = np.fromfile(mass_file, dtype=np.float64)
+
+
     if rank == 0:
+        print("Redshift is %.1f" % redshift)
         print("DM part mass in msun : %e" % Mp)
+        if rstar<1.0 : print("Using rstar = %.2f"%rstar)
+        if fesc_rad>1.0 : print("Using fesc_rad = %.2f"%fesc_rad)
+        if mp : print("Using stellar associations from MP catalogue")
+        if test : print("Running in test mode: one subcube will be processed and no output will be written")
+        if subnb!=None : print("Only processing subcube #%i"%subnb)
 
     dist_obs = 345540.98618977674  # distance to obs point from box (0,0,0); in number of cells for z=6
 
@@ -563,7 +576,8 @@ def compute_fesc(
                     (subs_per_side, subs_per_side, subs_per_side),
                 )
 
-                # print(subcube_nb)
+                if subnb != None and subcube_nb != subnb:
+                    continue
 
                 if (test and mbin == 1) and (subcube_nb != 11):
                     continue
@@ -580,10 +594,15 @@ def compute_fesc(
 
                 if out_exists and not (overwrite or test):
                     print(
-                        "RANK %i: Skipping subcube #%i since it already exists"
-                        % (rank, subcube_nb)
+                        "RANK %i: Skipping subcube #%i since it already exists (%s)"
+                        % (rank, subcube_nb, out_file)
                     )
-                    continue
+                    continue  #
+
+                print(
+                    "RANK %i: Processing subcube #%i (%s)"
+                    % (rank, subcube_nb, out_file)
+                )
 
                 sub_halo_tab, halo_star_ids, sub_halo_tot_star_nb = read_assoc(
                     out_nb,
@@ -597,6 +616,8 @@ def compute_fesc(
                     mp=mp,
                 )
 
+                print(len(sub_halo_tab), len(sub_halo_tot_star_nb))
+
                 if mbin != 1 and mbin_width != 1:
                     # keep haloes in bin
                     filt = ((mbin - mbin_width) < (sub_halo_tab["mass"] * Mp)) * (
@@ -604,15 +625,17 @@ def compute_fesc(
                     )
                     sub_halo_tab = sub_halo_tab[filt]
                     sub_halo_tot_star_nb = sub_halo_tot_star_nb[filt]
-
+                    print(np.sum(filt), "mbin")
                 # print(len(sub_halo_tab), len(sub_halo_tot_star_nb))
 
                 if len(sub_halo_tab) < 1:
+                    print("RANK %i: No haloes in subcube #%i" % (rank, subcube_nb))
                     continue
 
                 loc_pos_nrmd = np.asarray(
                     [list(col) for col in sub_halo_tab[["x", "y", "z"]]]
                 )
+
                 loc_pos_nrmd = loc_pos_nrmd % ldx
 
                 # coords_tree = KDTree(pos_nrmd, boxsize=ldx)
@@ -1180,6 +1203,11 @@ def compute_fesc(
                         smldx = np.shape(emissivity_box)[0]
                         xind, yind, zind = np.mgrid[0:smldx, 0:smldx, 0:smldx]
 
+                        fesc_rlim = r_px * fesc_rad
+
+                        if rstar < 1.0 and fesc_rlim > 2.0:
+                            fesc_rlim *= rstar
+
                         in_bounds = np.linalg.norm(
                             [
                                 xind - 0.5 * smldx + 0.5,
@@ -1187,15 +1215,18 @@ def compute_fesc(
                                 zind - 0.5 * smldx + 0.5,
                             ],
                             axis=0,
-                        ) < (r_px * fesc_rad)
+                        ) < fesc_rlim
                         # print(in_bounds)
                         cond = (
                             emissivity_box != 0
                         ) * in_bounds  # need to check that cell centre is in r200 even if stars won't be outside of r200
 
+
+
                         normed_emissivity_box = emissivity_box / np.sum(emissivity_box)
 
-                        if fesc_rad != 1.0:
+                        # if fesc_rad != 1.0:
+                        if sample_r_fesc[ind] > sample_r[ind]:
                             delta = int(sample_r_fesc[ind] - sample_r[ind])
 
                             # print(sample_r_fesc[ind] , sample_r[ind], delta)
@@ -1349,7 +1380,7 @@ def compute_fesc(
                         print("gas mass=%E msun" % halo_gmass[ind])
                         print("dust mass=%E msun" % halo_Md[ind])
                         print("max(rhog)=%E Hpccm" % halo_max_rhog[ind])
-                        print("extincttions", halo_mags[1:, ind] - halo_mags[0, ind])
+                        print("extinctions", halo_mags[1:, ind] - halo_mags[0, ind])
                         print("mags", halo_mags[:, ind])
                         print("betas", halo_betas[:, ind])
                         print(np.max(dust_taus, axis=(1, 2, 3)))
@@ -1554,6 +1585,14 @@ if __name__ == "__main__":
         help="When used, code runs on one subcube and doesn't write",
         default=False,
     )
+
+    Arg_parser.add_argument(
+        "--sub_nb",
+        type=int,
+        help="When used, run and sve result for one 512^3 cell subcube",
+        default=None,
+    )
+
     Arg_parser.add_argument(
         "--dilate",
         type=int,
@@ -1571,9 +1610,15 @@ if __name__ == "__main__":
         help="halo mass bin centre",
         default=1,
     )
+
+    Arg_parser.add_argument(
+        "--rstar", metavar="rstar", type=float, help="rstar * fesc_rad * r200 is the radius within with fesc los can start (so if rstar <1, \
+        we don't compute fesc using the stars r>rstar * fesc_rad * r200). Only accounted for when fesc_rad * r200 > 2", default=1
+    )
+
     Arg_parser.add_argument(
         "--mp",
-        metavar="mp segmentation",
+        # metavar="mp_segmentation",
         action="store_true",
         help="Use Mei Palanque's watershed segmentation catalogue",
         default=False,
@@ -1591,6 +1636,8 @@ if __name__ == "__main__":
     mbin = args.mbin
     mbin_width = args.mbin_width
     mp = args.mp
+    rstar=args.rstar
+    sub_nb = args.sub_nb
 
     compute_fesc(
         out_nb,
@@ -1604,4 +1651,6 @@ if __name__ == "__main__":
         mbin=mbin,
         mbin_width=mbin_width,
         mp=mp,
+        rstar=rstar,
+        subnb=sub_nb,
     )

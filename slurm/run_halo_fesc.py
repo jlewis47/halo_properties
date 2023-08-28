@@ -58,6 +58,18 @@ Arg_parser.add_argument(
     default=False,
 )
 
+Arg_parser.add_argument(
+    "--rstar", metavar="rstar", type=float, help="rstar * fesc_rad * r200 is the radius within with fesc los can start (so if rstar <1, \
+    we don't compute fesc using the stars r>rstar * fesc_rad * r200). Only accounted for when fesc_rad * r200 > 2", default=1
+)
+
+Arg_parser.add_argument(
+    "--sub_nb",
+    type=int,
+    help="When used, run and sve result for one 512^3 cell subcube",
+    default=None,
+)
+
 args = Arg_parser.parse_args()
 
 out_nb = args.nb
@@ -67,7 +79,8 @@ ll = args.ll
 overwrite = args.overwrite
 dilate = args.dilate
 fesc_rad = args.fesc_rad
-
+rstar = args.rstar
+sub_nb = args.sub_nb
 
 compute_fesc(
     out_nb,
@@ -79,4 +92,6 @@ compute_fesc(
     test=args.test,
     dilate=dilate,
     mp=args.mp,
+    rstar=rstar,
+    subnb=sub_nb,
 )

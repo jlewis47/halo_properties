@@ -38,7 +38,7 @@ def read_assoc(
     rtwo_suffix = get_r200_suffix(rtwo_fact)
     suffix = get_suffix(fof_suffix=fof_suffix, rtwo_suffix=rtwo_suffix, mp=mp)
 
-    print("suffix:", suffix)
+    # print("suffix:", suffix)
 
     out, assoc_out, analy_out = gen_paths(sim_name, out_nb, suffix, assoc_mthd)
 
@@ -48,8 +48,8 @@ def read_assoc(
         ix, iy, iz = np.unravel_index(int(subnb), (rps, rps, rps))
 
     fname = os.path.join(assoc_out, ("assoc_halos_%s" % out_nb) + suffix)
-    print(fof_suffix, rtwo_suffix, suffix)
-    print("looking for:", fname)
+    # print(fof_suffix, rtwo_suffix, suffix)
+    # print("looking for:", fname)
 
     with h5py.File(fname, "r") as F:
         # keys = list(F.keys())
