@@ -26,6 +26,9 @@ def read_assoc(
     Get right binary files, format correctly and return
     rel_fof_path is the relative path to the fof files of each snapshot starting from the snapshot directory
 
+    bounds is formatted as [[xmin,xmax],[ymin,ymax],[zmin,zmax]]
+
+
     """
 
     """
@@ -57,11 +60,14 @@ def read_assoc(
 
         has_stars = F["stellar count"][()] > 0
 
-        coords = np.where(
-            np.tile(has_stars, (3, 1)).T,
-            F["coords_new"][()][:, :],
-            F["coords"][()][:, :] * ldx,
-        )
+        if "coords_new" in F.keys() and "coords" in F.keys():
+            coords = np.where(
+                np.tile(has_stars, (3, 1)).T,
+                F["coords_new"][()][:, :],
+                F["coords"][()][:, :] * ldx,
+            )
+        else:
+            coords = F["coords"][()]
 
         x, y, z = coords.T
 
