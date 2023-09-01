@@ -88,7 +88,7 @@ def sum_arrays_to_rank0(comm, array, op=MPI.SUM):
     return recvbuf
 
 
-def merge_arrays_rank0(comm, array, dtype=np.int64):
+def merge_arrays_rank0(comm, array, dtype=np.int64, debug=False):
     # get size of final object
     recvbuf = None
     if comm.rank == 0:
@@ -97,7 +97,8 @@ def merge_arrays_rank0(comm, array, dtype=np.int64):
     sendcounts = np.array(comm.gather(len(array), 0))
 
     if comm.rank == 0:
-        print("sendcounts: {}, total: {}".format(sendcounts, sum(sendcounts)))
+        if debug:
+            print("sendcounts: {}, total: {}".format(sendcounts, sum(sendcounts)))
         recvbuf = np.empty(sum(sendcounts), dtype=int)
     else:
         recvbuf = None
@@ -106,11 +107,34 @@ def merge_arrays_rank0(comm, array, dtype=np.int64):
     # allocate buffet on rank 0
     if comm.rank == 0:
         recvbuf = np.empty(tot_size, dtype=dtype)
+        # print(tot_size)
 
     # gather
     comm.Gatherv(sendbuf=array, recvbuf=(recvbuf, sendcounts), root=0)
 
     return recvbuf
+
+
+def merge_arrays_rank0_Ndd_flatten_rebuild(comm, array, dtype=np.int64, debug=False):
+    """
+    first dimension of multi dimensional array should be the one merged accross ranks
+    ALL OTHERS ARE EXPETED TO REMAIN THE SAME
+    """
+
+    ndims = len(array.shape)
+    shape = array.shape
+
+    # print(shape)
+
+    out = merge_arrays_rank0(comm, np.ravel(array), dtype=dtype, debug=debug)
+
+    if comm.rank == 0:
+        # print(out, tgt_shape)
+        tgt_shape = (-1,) + shape[1:]
+        # print(out, tgt_shape, shape)
+        return out.reshape(tgt_shape)
+    else:
+        return None
 
 
 def divide_task(nb_files, Nproc, rank):

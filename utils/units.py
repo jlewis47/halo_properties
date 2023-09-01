@@ -2,6 +2,15 @@ from ..params.params import *
 
 
 def get_unit_facts(data_type, px_to_m, unit_d, unit_l, unit_t, aexp):
+    assert data_type in [
+        "tau",
+        "rho",
+        "rhod",
+        "vvrho",
+        "temp",
+        "flux",
+    ], "unrecognized data type"
+
     if data_type == "tau":
         return px_to_m * sigma_UV * 1e6 * 0.76  # important musnt count the helium...
     elif data_type == "rho":

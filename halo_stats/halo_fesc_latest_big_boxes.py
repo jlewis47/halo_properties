@@ -329,6 +329,7 @@ def compute_fesc(
     test=False,
     dilate=8,
     mbin=1,
+    mbin_width=1,
     mp=False,
     rstar=1.0,
     subnb=None,
@@ -349,10 +350,7 @@ def compute_fesc(
         fesc_rad >= 1.0
     ), "fesc_rad must be larger or equal to one (fesc integration radius must include stellar association radius)"
 
-    assert (
-        rstar <= 1.0
-    ), "rstar must be <= 1.0"
-
+    assert rstar <= 1.0, "rstar must be <= 1.0"
 
     comm = MPI.COMM_WORLD
     Nproc = comm.Get_size()
@@ -376,7 +374,9 @@ def compute_fesc(
         fof_suffix=fof_suffix, rtwo_suffix=rtwo_suffix, frad_suffix=frad_suffix, mp=mp
     )
 
-    out, assoc_out, analy_out = gen_paths(sim_name, out_nb, suffix, assoc_mthd, rstar=rstar)
+    out, assoc_out, analy_out = gen_paths(
+        sim_name, out_nb, suffix, assoc_mthd, rstar=rstar
+    )
 
     if rank == 0 and not os.path.exists(analy_out):
         os.makedirs(analy_out)
@@ -445,20 +445,24 @@ def compute_fesc(
 
     redshift = 1.0 / a - 1.0
 
-
-
     with open(os.path.join(out, "Mp"), "rb") as mass_file:
         Mp = np.fromfile(mass_file, dtype=np.float64)
-
 
     if rank == 0:
         print("Redshift is %.1f" % redshift)
         print("DM part mass in msun : %e" % Mp)
-        if rstar<1.0 : print("Using rstar = %.2f"%rstar)
-        if fesc_rad>1.0 : print("Using fesc_rad = %.2f"%fesc_rad)
-        if mp : print("Using stellar associations from MP catalogue")
-        if test : print("Running in test mode: one subcube will be processed and no output will be written")
-        if subnb!=None : print("Only processing subcube #%i"%subnb)
+        if rstar < 1.0:
+            print("Using rstar = %.2f" % rstar)
+        if fesc_rad > 1.0:
+            print("Using fesc_rad = %.2f" % fesc_rad)
+        if mp:
+            print("Using stellar associations from MP catalogue")
+        if test:
+            print(
+                "Running in test mode: one subcube will be processed and no output will be written"
+            )
+        if subnb != None:
+            print("Only processing subcube #%i" % subnb)
 
     dist_obs = 345540.98618977674  # distance to obs point from box (0,0,0); in number of cells for z=6
 
@@ -1064,6 +1068,12 @@ def compute_fesc(
                             - sub_halo_star_nb[ind] : sub_halo_tot_star_nb[ind]
                         ]
 
+                        cur_stars = read_specific_stars(
+                            os.path.join(star_path, output_str),
+                            cur_star_ids,
+                            keys=["mass", "age", "Z/0.02", "x", "y", "z"],
+                        )
+
                         rs = np.arange(
                             0, 2 * r_px * fesc_rad, rad_res
                         )  # so we do edge cases properly
@@ -1075,12 +1085,6 @@ def compute_fesc(
                         # print(cur_star_ids)
 
                         # print(sub_halo_tot_star_nb[ind] - sub_halo_star_nb[ind], sub_halo_tot_star_nb[ind])
-
-                        cur_stars = read_specific_stars(
-                            os.path.join(star_path, output_str),
-                            cur_star_ids,
-                            keys=["mass", "age", "Z/0.02", "x", "y", "z"],
-                        )
 
                         halo_stellar_mass[ind] = np.sum(cur_stars["mass"]) / (
                             1 - eta_sn
@@ -1208,20 +1212,21 @@ def compute_fesc(
                         if rstar < 1.0 and fesc_rlim > 2.0:
                             fesc_rlim *= rstar
 
-                        in_bounds = np.linalg.norm(
-                            [
-                                xind - 0.5 * smldx + 0.5,
-                                yind - 0.5 * smldx + 0.5,
-                                zind - 0.5 * smldx + 0.5,
-                            ],
-                            axis=0,
-                        ) < fesc_rlim
+                        in_bounds = (
+                            np.linalg.norm(
+                                [
+                                    xind - 0.5 * smldx + 0.5,
+                                    yind - 0.5 * smldx + 0.5,
+                                    zind - 0.5 * smldx + 0.5,
+                                ],
+                                axis=0,
+                            )
+                            < fesc_rlim
+                        )
                         # print(in_bounds)
                         cond = (
                             emissivity_box != 0
                         ) * in_bounds  # need to check that cell centre is in r200 even if stars won't be outside of r200
-
-
 
                         normed_emissivity_box = emissivity_box / np.sum(emissivity_box)
 
@@ -1354,7 +1359,7 @@ def compute_fesc(
                         for iset, att_set in enumerate(att_sets):
                             if att_set.Kappa912 > 0.0:
                                 star_trans = np.exp(
-                                    star_taus[iset]
+                                    -star_taus[iset]
                                     * att_set.Kappa1600
                                     / att_set.Kappa912
                                 )
@@ -1612,8 +1617,12 @@ if __name__ == "__main__":
     )
 
     Arg_parser.add_argument(
-        "--rstar", metavar="rstar", type=float, help="rstar * fesc_rad * r200 is the radius within with fesc los can start (so if rstar <1, \
-        we don't compute fesc using the stars r>rstar * fesc_rad * r200). Only accounted for when fesc_rad * r200 > 2", default=1
+        "--rstar",
+        metavar="rstar",
+        type=float,
+        help="rstar * fesc_rad * r200 is the radius within with fesc los can start (so if rstar <1, \
+        we don't compute fesc using the stars r>rstar * fesc_rad * r200). Only accounted for when fesc_rad * r200 > 2",
+        default=1,
     )
 
     Arg_parser.add_argument(
@@ -1636,7 +1645,7 @@ if __name__ == "__main__":
     mbin = args.mbin
     mbin_width = args.mbin_width
     mp = args.mp
-    rstar=args.rstar
+    rstar = args.rstar
     sub_nb = args.sub_nb
 
     compute_fesc(

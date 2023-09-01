@@ -2,7 +2,7 @@
 #SBATCH -A AST031
 #SBATCH -J stellar_association_stpeak
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=8
+#SBATCH --ntasks-per-node=16
 #SBATCH --cpus-per-task 1
 #SBATCH --exclusive
 #SBATCH --mem=0
@@ -106,8 +106,9 @@ export SLURM_CPU_BIND=none
 # mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $1 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /gpfs/alpine/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=2 --assoc_mthd='stellar_peak'
 
 #with MP's segmentation
-#mpiexec -np $SLURM_NTASKS python -u run_association.py $1 --rtwo_fact=1 --assoc_mthd='stellar_peak' --mp
-mpiexec -np $SLURM_NTASKS python -u run_association.py $1 --rtwo_fact=2 --assoc_mthd='stellar_peak' --mp
+mpiexec -np $SLURM_NTASKS python -u run_association.py $1 --rtwo_fact=1 --assoc_mthd='stellar_peak' --mp
+#mpiexec -np $SLURM_NTASKS python -u run_association.py $1 --rtwo_fact=2 --assoc_mthd='stellar_peak' --mp
+# mpiexec -np $SLURM_NTASKS python -u run_association.py $1 --rtwo_fact=0.5 --assoc_mthd='stellar_peak' --mp 
 # srun --exclusive python -u get_halo_mags.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.2 --rtwo_fact=1.0 --assoc_mthd='stellar_peak'
 # srun --exclusive python -u get_halo_mags.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.1 --rtwo_fact=2.0 --assoc_mthd='stellar_peak'
 # srun --exclusive python -u get_halo_mags.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.2 --rtwo_fact=2.0 --assoc_mthd='stellar_peak'

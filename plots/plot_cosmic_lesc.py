@@ -29,6 +29,7 @@ def load_data(
     ifile=None,
     fesc_type="gas",
     xkey="mass",
+    mp=False,
 ):
     fesc_keys = {"gas": "Tr_no_dust", "full": "Tr_kext_albedo_WD_LMC2_10"}
 
@@ -40,7 +41,7 @@ def load_data(
 
     fof_suffix = ll_to_fof_suffix(ll)
     rtwo_suffix = get_r200_suffix(rtwo_fact)
-    suffix = get_suffix(fof_suffix, rtwo_suffix)
+    suffix = get_suffix(fof_suffix, rtwo_suffix, mp=mp)
 
     out, assoc_out, analy_out = gen_paths(sim_name, out_nb, suffix, assoc_mthd)
 
@@ -69,7 +70,8 @@ def load_data(
 
 setup_plotting()
 
-out_nbs = [14, 23, 34, 42, 52, 65, 82, 106]
+# out_nbs = [14, 23, 34, 42, 52, 65, 82, 106]
+out_nbs = [52, 65, 82, 106]
 # out_nbs = [106]
 
 overwrite = False
@@ -82,6 +84,7 @@ assoc_mthd = "stellar_peak"
 # assoc_mthds = ['stellar_peak', 'stellar_peak', 'stellar_peak', 'fof_ctr', 'stellar_peak']
 r200 = 1.0
 # r200s = [1.0, 1.0, 1.0, 1.0, 2.0]
+mp = True
 
 Nsub = int(4096 / 8.0)
 subLco = 64**3 / Nsub
@@ -108,6 +111,9 @@ out_file = os.path.join(
     out_path,
     f"cosmic_fesc_{stat_mthd:s}_{assoc_mthd:s}_{ll:.2f}_{r200:.1f}_{fesc_type:s}",
 )
+
+if mp:
+    out_file += "_mp"
 
 exists = os.path.isfile(out_file)
 

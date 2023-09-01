@@ -47,7 +47,7 @@ outputs
 sfr_age_bins = [0, 1, 5, 10, 50, 100]  # Myr
 sfr_names = ["SFR%i" % bin for bin in sfr_age_bins[1:]]
 Lintr_names = ["Lintr"] + ["Lintr%i" % bin for bin in sfr_age_bins[1:]]
-profile_radius_bins = [0.1 * i for i in range(1, 11)]  # in fracttions of r200
+profile_radius_bins = [0.1 * i for i in range(1, 11)]  # in fractions of r200
 
 """
 Physics

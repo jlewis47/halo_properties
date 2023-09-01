@@ -60,3 +60,28 @@ def gather_h5py_files(path, keys):
             tot_l += loc_l
 
     return (datas[k] for k in keys)
+
+def save_dict_to_hdf5(f, d):
+
+    for k, v in d.items():
+        if isinstance(v, dict):
+            save_dict_to_hdf5(f, v)
+        else:
+            f.create_dataset(k, data=v)
+
+def save_snapshot_hdr(f, snapshot_info):
+
+    with h5py.File(f, "a") as dest:
+
+        if not "header" in dest and not "hdr" in dest and not "Header" in dest:
+            hdr = dest.create_group("header")
+        else:
+            if "header" in dest:
+                hdr = dest["header"]
+            elif "hdr" in dest:
+                hdr = dest["hdr"]
+            elif "Header" in dest:
+                hdr = dest["Header"]
+
+        save_dict_to_hdf5(hdr, snapshot_info)
+            
