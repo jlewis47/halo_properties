@@ -21,6 +21,7 @@ def read_assoc(
     bounds=None,
     mass_cut=None,
     mp=False,
+    clean=True
 ):
     """
     Get right binary files, format correctly and return
@@ -50,7 +51,11 @@ def read_assoc(
         rps = int(ldx / sub_ldx)
         ix, iy, iz = np.unravel_index(int(subnb), (rps, rps, rps))
 
-    fname = os.path.join(assoc_out, ("assoc_halos_%s" % out_nb) + suffix)
+    if clean:
+        fname = os.path.join(assoc_out, (f"assoc_halos_clean_{out_nb:d}") + suffix)
+    else:
+        fname = os.path.join(assoc_out, (f"assoc_halos_{out_nb:d}") + suffix)
+    
     # print(fof_suffix, rtwo_suffix, suffix)
     # print("looking for:", fname)
 

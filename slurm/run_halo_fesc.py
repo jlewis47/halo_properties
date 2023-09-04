@@ -59,6 +59,13 @@ Arg_parser.add_argument(
 )
 
 Arg_parser.add_argument(
+    "--clean",
+    help="use cleaned halo cats",
+    action="store_true",
+    default=False,
+)
+
+Arg_parser.add_argument(
     "--rstar", metavar="rstar", type=float, help="rstar * fesc_rad * r200 is the radius within with fesc los can start (so if rstar <1, \
     we don't compute fesc using the stars r>rstar * fesc_rad * r200). Only accounted for when fesc_rad * r200 > 2", default=1
 )
@@ -94,4 +101,5 @@ compute_fesc(
     mp=args.mp,
     rstar=rstar,
     subnb=sub_nb,
+    clean=args.clean,
 )

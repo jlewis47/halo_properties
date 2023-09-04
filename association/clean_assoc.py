@@ -48,7 +48,7 @@ def clean_assoc(out_nb,
     out_file = os.path.join(assoc_out, ("assoc_halos_clean_%s" % out_nb) + suffix)
 
     if os.path.isfile(out_file) and not overwrite:
-        print("File exists and overwrite is False")
+        if rank==0 : print(f"File exists ({out_file:s}) and overwrite is False")
         return
 
     comm = MPI.COMM_WORLD
@@ -67,14 +67,15 @@ def clean_assoc(out_nb,
         ll=ll,
         assoc_mthd=assoc_mthd,
         mp=mp,
+        clean=False
     )
 
     uniques, u_inverse, u_count = np.unique(halo_star_ids, return_counts=True, return_inverse=True)
 
-    mult_uniques = uniques[u_count > 1][:10]
+    mult_uniques = uniques[u_count > 1][:]
 
     loc_mult_uniques = np.array_split(mult_uniques, size)[rank]
-    loc_mult_u_counts = np.array_split(u_count[u_count > 1][:10], size)[rank]
+    loc_mult_u_counts = np.array_split(u_count[u_count > 1][:], size)[rank]
 
 
     if rank==0:
@@ -82,15 +83,16 @@ def clean_assoc(out_nb,
 
     halo_nstar_red = np.zeros_like(sub_halo_tab["nstar"], dtype=np.int32)
     halo_mstar_red = np.zeros_like(sub_halo_tab["nstar"], dtype=np.float32)
-    stellar_id_args_to_del = np.zeros(np.sum(loc_mult_u_counts[loc_mult_u_counts>1])-len(loc_mult_uniques), dtype=np.int32)
+    stellar_id_args_to_del = np.zeros(np.sum(loc_mult_u_counts)-len(loc_mult_u_counts), dtype=np.int32)
 
     sub_halo_tot_star_nb_m1 = sub_halo_tot_star_nb - sub_halo_tab["nstar"]
 
     i_id_to_del = 0
 
-    for tgt_unique in loc_mult_uniques:
+    for itgt,tgt_unique in enumerate(loc_mult_uniques):
 
-        # if itgt%1000==0:
+        if rank==0 and itgt%1000==0:
+            print(f"rank 0 is processing {itgt}/{len(loc_mult_uniques)}")
 
         star_u_args = (halo_star_ids == tgt_unique).nonzero()[0]
         # u_halo_args = np.digitize(star_u_args, sub_halo_tot_star_nb)
@@ -107,24 +109,26 @@ def clean_assoc(out_nb,
         # print(dists)
         not_closest_u_halo = u_halo_args[dists != np.min(dists)]
 
-        halo_nstar_red[not_closest_u_halo]= halo_nstar_red[not_closest_u_halo] - 1
+        halo_nstar_red[not_closest_u_halo] = halo_nstar_red[not_closest_u_halo] - 1
         halo_mstar_red[not_closest_u_halo] = halo_mstar_red[not_closest_u_halo] - star["mass"][0]
 
         for h_arg in not_closest_u_halo:
 
             lo,hi = sub_halo_tot_star_nb_m1[h_arg], sub_halo_tot_star_nb[h_arg]
 
+            # if rank==0:print(stellar_id_args_to_del, i_id_to_del, star_u_args[(star_u_args<hi) * (star_u_args>=lo)], lo, hi)
+
             stellar_id_args_to_del[i_id_to_del] = (star_u_args[(star_u_args<hi) * (star_u_args>=lo)])[0]
             i_id_to_del+=1
 
-        stellar_id_args_to_del = stellar_id_args_to_del[stellar_id_args_to_del>0]
+    stellar_id_args_to_del = stellar_id_args_to_del[stellar_id_args_to_del>0]
 
     comm.Barrier()
 
     if rank==0:
         print("Cleaning targets found merging target on rank 0")
 
-    print(rank, stellar_id_args_to_del, halo_nstar_red)
+    # print(rank, stellar_id_args_to_del, halo_nstar_red)
 
     #gather all the stellar_id_args_to_del and halo_nstar_red
     stellar_id_args_to_del = merge_arrays_rank0(comm, np.int32(stellar_id_args_to_del), dtype=np.int32)
@@ -139,14 +143,14 @@ def clean_assoc(out_nb,
 
         print("rank 0 is cleaning targets...")
 
-        print(len(halo_star_ids), len(halo_nstar_red), sub_halo_tab["nstar"].shape)
+        # print(len(halo_star_ids), len(halo_nstar_red), sub_halo_tab["nstar"].shape)
 
         # stellar_id_args_to_del = np.concatenate(stellar_id_args_to_del)
-        halo_mstar_red = np.sum(halo_mstar_redaxis = 0)
-        halo_nstar_red = np.sum(halo_nstar_redaxis = 0)
+        # halo_mstar_red = np.sum(halo_mstar_redaxis = 0)
+        # halo_nstar_red = np.sum(halo_nstar_redaxis = 0)
 
-        print(len(halo_star_ids), halo_nstar_red.shape, sub_halo_tab["nstar"].shape)
-        print(0, stellar_id_args_to_del, halo_nstar_red)
+        # print(len(halo_star_ids), halo_nstar_red.shape, sub_halo_tab["nstar"].shape)
+        # print(0, stellar_id_args_to_del, halo_nstar_red)
 
 
 
@@ -159,7 +163,7 @@ def clean_assoc(out_nb,
 
         with h5py.File((out_file), "w") as out_halos:
             out_halos.create_dataset(
-                "ID", data=np.int64(sub_halo_tab["ids"]), dtype=np.int64, compression="lzf"
+                "ID", data=np.int64(sub_halo_tab["ids"][()]), dtype=np.int64, compression="lzf"
             )
             # out_halos.create_dataset(
             #     "fnb", data=halo_fnbs, dtype=np.int32, compression="lzf"
@@ -168,13 +172,13 @@ def clean_assoc(out_nb,
             #     "lnb", data=halo_lnbs, dtype=np.int32, compression="lzf"
             # )
             out_halos.create_dataset(
-                "mass", data=sub_halo_tab["mass"], dtype=np.float32, compression="lzf"
+                "mass", data=sub_halo_tab["mass"][()], dtype=np.float32, compression="lzf"
             )
             out_halos.create_dataset(
-                "coords", data=sub_halo_tab[["x","y","z"]], dtype=np.float64, compression="lzf"
+                "coords", data=np.asarray(sub_halo_tab[["x","y","z"]].tolist()), dtype=np.float64, compression="lzf"
             )
             out_halos.create_dataset(
-                "rpx", data=sub_halo_tab["rpx"], dtype=np.float32, compression="lzf"
+                "rpx", data=sub_halo_tab["rpx"][()], dtype=np.float32, compression="lzf"
             )
 
             out_halos.create_dataset(
@@ -197,8 +201,8 @@ def clean_assoc(out_nb,
 
 
 
-        print(len(updated_halo_star_ids), len(updated_sub_halo_nstar))
-        print(np.sum(updated_sub_halo_nstar), np.sum(sub_halo_tab["nstar"]))
+        # print(len(updated_halo_star_ids), len(updated_sub_halo_nstar))
+        # print(np.sum(updated_sub_halo_nstar), np.sum(sub_halo_tab["nstar"]))
 
 
 

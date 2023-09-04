@@ -5,6 +5,7 @@ from halo_properties.utils.utils import (
     gather_h5py_files,
     ll_to_fof_suffix,
     get_r200_suffix,
+    get_frad_suffix,
     get_suffix,
 )
 from halo_properties.utils.output_paths import gen_paths
@@ -23,24 +24,42 @@ import h5py
 
 
 def load_fescs(
-    sim_name, out_nb, assoc_mthd, ll, rtwo_fact, mp, fesc_type="gas", xkey="mass"
+    sim_name="",
+    out_nb=-1,
+    assoc_mthd="stellar_peak",
+    ll=0.2,
+    r200=1.0,
+    mp=False,
+    fesc_type="gas",
+    xkey="mass",
+    clean=False,
+    rstar=1.0,
+    fesc_rad=1.0,
 ):
     fesc_keys = {"gas": "Tr_no_dust", "full": "Tr_kext_albedo_WD_LMC2_10"}
 
     fesc_key = fesc_keys[fesc_type]
 
     print(
-        f"LOADING : {out_nb:d} ll={ll:f}, {rtwo_fact:f}xr200, association: {assoc_mthd:s}, {fesc_key:s}, xkey={xkey:s}"
+        f"LOADING : {out_nb:d} ll={ll:f}, {r200:f}xr200, association: {assoc_mthd:s}, {fesc_key:s}, xkey={xkey:s}"
     )
 
     keys = [xkey, fesc_key, "SFR10"]
 
     fof_suffix = ll_to_fof_suffix(ll)
-    rtwo_suffix = get_r200_suffix(rtwo_fact)
-    suffix = get_suffix(fof_suffix=fof_suffix, rtwo_suffix=rtwo_suffix, mp=mp)
+    rtwo_suffix = get_r200_suffix(r200)
+    frad_suffix = get_frad_suffix(fesc_rad)
 
-    out, assoc_out, analy_out = gen_paths(sim_name, out_nb, suffix, assoc_mthd)
+    suffix = get_suffix(
+        fof_suffix=fof_suffix, rtwo_suffix=rtwo_suffix, frad_suffix=frad_suffix, mp=mp
+    )
 
+    out, assoc_out, analy_out = gen_paths(
+        sim_name, out_nb, suffix, assoc_mthd, rstar=rstar
+    )
+
+    if clean:
+        analy_out += "_clean"
     # print(analy_out)
 
     # try:
@@ -58,10 +77,10 @@ out_nb = 52
 overwrite = False
 fesc_type = "gas"
 x_type = "Mst"  # "Mst"
-lls = [0.2, 0.2]
-mps = [False, True]
+lls = [0.2, 0.2, 0.2, 0.2]
+mps = [False, True, True, True]
 # lls = [0.1, 0.15, 0.2, 0.2, 0.2]
-assoc_mthds = ["stellar_peak", "stellar_peak"]
+assoc_mthds = ["stellar_peak", "stellar_peak", "stellar_peak", "stellar_peak"]
 # assoc_mthds = [
 #     "stellar_peak",
 #     "stellar_peak",
@@ -69,7 +88,9 @@ assoc_mthds = ["stellar_peak", "stellar_peak"]
 #     "fof_ctr",
 #     "stellar_peak",
 # ]
-r200s = [1.0, 1.0]
+r200s = [1.0, 1.0, 1.0, 1.0]
+rstars = [1.0, 1.0, 0.5, 1.0]
+cleans = [False, False, False, True]
 # r200s = [1.0, 1.0, 1.0, 1.0, 2.0]
 
 mnbins = 55
@@ -117,7 +138,9 @@ ncols = 6
 nrows = 1
 
 
-for iplot, (assoc_mthd, ll, r200, mp) in enumerate(zip(assoc_mthds, lls, r200s, mps)):
+for iplot, (assoc_mthd, ll, r200, rstar, mp, clean) in enumerate(
+    zip(assoc_mthds, lls, r200s, rstars, mps, cleans)
+):
     out_path = os.path.join("./files")
     if not os.path.isdir(out_path):
         os.makedirs(out_path)
@@ -125,24 +148,31 @@ for iplot, (assoc_mthd, ll, r200, mp) in enumerate(zip(assoc_mthds, lls, r200s, 
     mp_str = ""
     if mp:
         mp_str += "mp_"
+    clean_str = ""
+    if clean:
+        clean_str += "mp_"
+
     out_file = os.path.join(
         out_path,
-        f"fescs_{redshift:.1f}_{assoc_mthd:s}_{ll:.2f}_{r200:.1f}_{mp_str:s}{fesc_type:s}_{x_type:s}.hdf5",
+        f"fescs_{redshift:.1f}_{assoc_mthd:s}_{ll:.2f}_{r200:.1f}_{rstar:.1f}_{mp_str:s}_{clean_str:s}_{fesc_type:s}_{x_type:s}.hdf5",
     )
 
     exists = os.path.isfile(out_file)
 
     if overwrite or not exists:
         mass, fesc = load_fescs(
-            "CoDaIII",
-            out_nb,
-            assoc_mthd,
-            ll,
-            r200,
-            mp,
+            sim_name="CoDaIII",
+            out_nb=out_nb,
+            assoc_mthd=assoc_mthd,
+            ll=ll,
+            r200=r200,
+            rstar=rstar,
+            mp=mp,
+            clean=clean,
             fesc_type=fesc_type,
             xkey=x_type,
         )
+
         xbins, counts = xy_stat(mass, fesc, xbins=mass_bins, mthd="count")
         xbins, median = xy_stat(mass, fesc, xbins=mass_bins, mthd="median")
         xbins, p5 = xy_stat(
@@ -196,7 +226,7 @@ for iplot, (assoc_mthd, ll, r200, mp) in enumerate(zip(assoc_mthds, lls, r200s, 
     stats["p5"] = p5
     stats["p95"] = p95
 
-    line = xy_plot_stat(
+    line, label = xy_plot_stat(
         fig,
         ax,
         xbins,
@@ -204,15 +234,19 @@ for iplot, (assoc_mthd, ll, r200, mp) in enumerate(zip(assoc_mthds, lls, r200s, 
         high_mass_x,
         high_mass_fesc,
         xlabel=xlabel,
-        ylabel="$f_{\mathrm{esc}}$",
+        ylabel="$f_{\mathrm{esc, g}}$",
         color=next(ax._get_lines.prop_cycler)["color"],
     )
 
     lines.append(line)
 
     label = f"{assoc_mthd:s} ll={ll:.2f} {r200:.1f}Xr200"
+    if rstar != 1.0:
+        label += f" rstar={rstar:.1f}"
     if mp:
         label += " mp"
+    if clean:
+        label += " clean"
     labels.append(label)
 
 
@@ -220,13 +254,18 @@ for iplot, (assoc_mthd, ll, r200, mp) in enumerate(zip(assoc_mthds, lls, r200s, 
 dustier_lines = []
 dustier_labels = []
 if x_type == "mass":
-    dustier_lines, dustier_labels = plot_dustier_fesc(ax, redshift, fkey="fesc")
+    dustier_lines, dustier_labels = plot_dustier_fesc(
+        ax, redshift, fkey="fesc", color="k"
+    )
 if x_type == "Mst":
-    dustier_lines, dustier_labels = plot_dustier_fesc_ms(ax, redshift, fkey="fesc")
+    dustier_lines, dustier_labels = plot_dustier_fesc_ms(
+        ax, redshift, fkey="fesc", color="k"
+    )
 
 labels += dustier_labels
 lines += dustier_lines
 
+ax.grid()
 
 ax.set_ylim(1e-3, 1)
 # ax.set_xlim(4e7, 1e12)
