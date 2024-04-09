@@ -4,86 +4,46 @@ from mpi4py import MPI
 import h5py
 
 
-def get_fof_suffix(fof_path):
-    fof_suffix = ""
-    cut_path = np.asarray(fof_path.split("/"))
-    print(cut_path)
-    find_ll = np.where(["ll_0p" in s for s in cut_path])
-    if len(find_ll[0]) == 0:
-        return fof_suffix
-    fof_suffix = cut_path[find_ll[0][0]]
-
-    return fof_suffix
-
-
-def ll_to_fof_suffix(ll):
-    if type(ll) == float:
-        ll = int(ll * 1000)
-
-    return "ll_0p%i" % ll
-
-
-def get_r200_suffix(rtwo_fact):
-    rtwo_suffix = ""
-
-    if rtwo_fact != 1:
-        if int(rtwo_fact) - rtwo_fact == 0:
-            rtwo_suffix += "%ixr200" % rtwo_fact
-        else:
-            rtwo_suffix += "%.1fxr200" % rtwo_fact
-            rtwo_suffix = rtwo_suffix.replace(".", "p")
-
-    return rtwo_suffix
-
-
-def get_frad_suffix(frad_fact):
-    frad_suffix = ""
-
-    if frad_fact != 1 and frad_fact != 1.0:
-        if int(frad_fact) - frad_fact == 0:
-            frad_suffix += "frad%i" % frad_fact
-        else:
-            frad_suffix += "frad%.1f" % frad_fact
-            frad_suffix = frad_suffix.replace(".", "p")
-
-    return frad_suffix
-
-
-def get_suffix(fof_suffix="", rtwo_suffix="", frad_suffix="", mp=False):
-    suffix = ""
-
-    if fof_suffix != "":
-        suffix += "_%s" % fof_suffix
-
-    if rtwo_suffix != "":
-        suffix += "_%s" % rtwo_suffix
-
-    if frad_suffix != "":
-        suffix += "_%s" % frad_suffix
-
-    if mp:
-        suffix += "_mp"
-
-    return suffix
-
-
-def check_assoc_keys(assoc):
-    possible_keys = ["", "star_barycentre", "stellar_peak", "fof_ctr"]
-
-    found = [assoc == key for key in possible_keys]
-
-    assert np.sum(found) > 0, (
-        "error association method unrecognized, possible methods ares %s"
-        % possible_keys
-    )
-
-
 def sum_arrays_to_rank0(comm, array, op=MPI.SUM):
     recvbuf = None
     if comm.rank == 0:
         recvbuf = np.empty_like(array)
 
     comm.Reduce(array, recvbuf, op)
+
+    return recvbuf
+
+
+def scatter_arrays_rank0(comm, array, dtype=np.int64, debug=False):
+    # get size of final object
+
+    if comm.rank == 0:
+        # sendbuf = np.empty(comm.Get_size())
+
+        sendbuf = array
+
+        # count: the size of each sub-task
+        ave, res = divmod(sendbuf.size, comm.size)
+        count = [ave + 1 if p < res else ave for p in range(comm.size)]
+        count = np.array(count)
+
+        # displacement: the starting index of each sub-task
+        displ = [sum(count[:p]) for p in range(comm.size)]
+        displ = np.array(displ)
+
+    else:
+        sendbuf = None
+        # initialize count on worker processes
+        count = np.zeros(comm.size, dtype=int)
+        displ = None
+
+    # broadcast count
+    comm.Bcast(count, root=0)
+
+    # initialize recvbuf on all processes
+    recvbuf = np.zeros(count[comm.rank], dtype=dtype)
+
+    comm.Scatterv([sendbuf, count, displ, dtype], recvbuf, root=0)
 
     return recvbuf
 
@@ -183,6 +143,8 @@ def gather_h5py_files(path, keys=None, rank=0, Nrank=1):
 
     types = []
     dims = []
+
+    # print(path, files)
 
     with h5py.File(files[0], "r") as src:
         if keys == None:

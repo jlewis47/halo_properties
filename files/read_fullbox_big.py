@@ -50,9 +50,10 @@ def o_data_memmap(data_pth, slices):
     if tot_size * 4 > buf_size:
         raise Exception("multiple fortran buffer not supported")
     else:
-        get_size = tot_size
+        # get_size = tot_size
+        pass
 
-    bitdata = np.zeros((nx * ny * nz * 4), dtype="S1")
+    # bitdata = np.zeros((nx * ny * nz * 4), dtype="S1")
 
     ((x0, x1), (y0, y1), (z0, z1)) = slices
 

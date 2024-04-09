@@ -64,7 +64,7 @@ codaiii_out_nb_to_zed = {
     106: 5.0,
 }
 codaiii_zed_to_out_nb = dict((v, k) for k, v in codaiii_out_nb_to_zed.items())
-codaiii_path = "/gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_82_ll_0p200"
+codaiii_path = "/lustre/orion/proj-shared/ast031/jlewis/CoDaIII_analysis/results_stellar_peak_halos_82_ll_0p200"
 codaiii_keys, codaiii_datas = gather_stat_files(
     codaiii_path, tgt_mass_str, nb_files=512
 )

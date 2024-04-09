@@ -3,7 +3,7 @@ import os
 import numpy as np
 
 
-def gather_h5py_files(path, keys):
+def gather_h5py_files(path, keys, mcut=None):
     files = [os.path.join(path, f) for f in os.listdir(path) if "halo_stats" in f]
 
     data_len = 0
@@ -31,12 +31,17 @@ def gather_h5py_files(path, keys):
 
         data_len += src[k].len()
 
-    # print(cols,types)
+    # print(cols, types, keys)
 
     for f in files[1:]:
         try:
             with h5py.File(f, "r") as src:
-                data_len += src[keys[0]].len()
+                if mcut != None:
+                    masses = src["mass"][()]
+                    mcut_arg = masses > mcut
+                    data_len += np.sum(mcut_arg)
+                else:
+                    data_len += src[keys[0]].len()
         except OSError:
             print(f"pb with file {f:s}... skipping")
             files.remove(f)
@@ -50,8 +55,14 @@ def gather_h5py_files(path, keys):
     tot_l = 0
     for f in files:
         with h5py.File(f, "r") as src:
+            if mcut != None:
+                masses = src["mass"][()]
+                mcut_arg = masses > mcut
+            else:
+                mcut_arg = slice(None)
+
             for ik, k in enumerate(keys):
-                loc_data = src[k][()]
+                loc_data = src[k][mcut_arg]
                 loc_l = len(loc_data)
                 if cols[ik] > 1:
                     datas[k][tot_l : tot_l + loc_l, :] = loc_data
@@ -61,18 +72,17 @@ def gather_h5py_files(path, keys):
 
     return (datas[k] for k in keys)
 
-def save_dict_to_hdf5(f, d):
 
+def save_dict_to_hdf5(f, d):
     for k, v in d.items():
         if isinstance(v, dict):
             save_dict_to_hdf5(f, v)
         else:
             f.create_dataset(k, data=v)
 
+
 def save_snapshot_hdr(f, snapshot_info):
-
     with h5py.File(f, "a") as dest:
-
         if not "header" in dest and not "hdr" in dest and not "Header" in dest:
             hdr = dest.create_group("header")
         else:
@@ -84,4 +94,3 @@ def save_snapshot_hdr(f, snapshot_info):
                 hdr = dest["Header"]
 
         save_dict_to_hdf5(hdr, snapshot_info)
-            

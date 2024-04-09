@@ -24,7 +24,7 @@ import os
 from halo_properties.association.read_assoc_latest import read_assoc
 from halo_properties.files.read_stars import read_specific_stars
 from halo_properties.files.read_fullbox_big import *
-from halo_properties.utils.utils import ll_to_fof_suffix, get_r200_suffix, get_suffix
+from halo_properties.utils.output_paths import gen_paths, dataset
 from halo_properties.utils.functions_latest import *
 from halo_properties.src.bpass_fcts import (
     get_mag_tab_BPASSV221_betas,
@@ -215,9 +215,9 @@ def write_fields(
             compression="lzf",
         )
         dset.attrs["unit"] = "absolute (not solar) metallicity"
-        dset.attrs[
-            "descripttion"
-        ] = "stellar mass weighted stellar particle metallicity"
+        dset.attrs["descripttion"] = (
+            "stellar mass weighted stellar particle metallicity"
+        )
 
         dset = out_halos.create_dataset(
             "gmass", data=halo_gmass, dtype=np.float32, compression="lzf"
@@ -333,6 +333,8 @@ def compute_fesc(
     mp=False,
     rstar=1.0,
     subnb=None,
+    clean=True,
+    max_DTM=0.5,
 ):
     # fesc_debug_avg = 0
     # debug_counts = 0
@@ -366,17 +368,23 @@ def compute_fesc(
         else:
             print("Skipping existing files")
 
-    fof_suffix = ll_to_fof_suffix(ll)
-    rtwo_suffix = get_r200_suffix(rtwo_fact)
-    frad_suffix = get_frad_suffix(fesc_rad)
-
-    suffix = get_suffix(
-        fof_suffix=fof_suffix, rtwo_suffix=rtwo_suffix, frad_suffix=frad_suffix, mp=mp
+    dset = dataset(
+        r200=rtwo_fact,
+        fesc_rad=fesc_rad,
+        rstar=rstar,
+        ll=ll,
+        assoc_mthd=assoc_mthd,
+        clean=clean,
+        mp=mp,
+        max_DTM=max_DTM,
+        neb_cont_file_name=neb_cont_file_name,
     )
 
-    out, assoc_out, analy_out = gen_paths(
-        sim_name, out_nb, suffix, assoc_mthd, rstar=rstar
-    )
+    out, assoc_out, analy_out, suffix = gen_paths(sim_name, out_nb, dset)
+
+    # print(analy_out, neb_cont_file_name)
+
+    # input("")
 
     if rank == 0 and not os.path.exists(analy_out):
         os.makedirs(analy_out)
@@ -389,9 +397,9 @@ def compute_fesc(
         output_str = "output_%05i" % out_nb
 
     if sixdigits:
-        info_path = os.path.join(sim_path, output_str, "group_000001")
+        info_path = os.path.join(sim_path, "outputs", output_str, "group_000001")
     else:
-        info_path = os.path.join(sim_path, output_str)
+        info_path = os.path.join(sim_path, "outputs", output_str)
 
     snap_box_path = os.path.join(box_path, output_str)
 
@@ -475,6 +483,25 @@ def compute_fesc(
         metal_bins,
         age_bins,
     ) = get_mag_tab_BPASSV221_betas(bpass_file_name)
+
+    if neb_cont_file_name != None:
+        (
+            neb_cont_mags,
+            neb_cont_xis,
+            neb_cont_contbetalow,
+            neb_cont_contbetahigh,
+            neb_cont_beta,
+            neb_cont_metal_bins,
+            neb_cont_age_bins,
+        ) = get_mag_tab_BPASSV221_betas(neb_cont_file_name)
+
+        neb_low_mags_fct = get_mag_interp_fct(
+            neb_cont_contbetalow, neb_cont_age_bins, neb_cont_metal_bins
+        )
+        neb_high_mags_fct = get_mag_interp_fct(
+            neb_cont_contbetahigh, neb_cont_age_bins, neb_cont_metal_bins
+        )
+
     mags_fct = get_mag_interp_fct(mags, age_bins, metal_bins)
     low_mags_fct = get_mag_interp_fct(contbetalow, age_bins, metal_bins)
     high_mags_fct = get_mag_interp_fct(contbetahigh, age_bins, metal_bins)
@@ -508,7 +535,7 @@ def compute_fesc(
 
     # setup dust attenuattion coefficient sets
     # first set corresponds to no dust attenuattion/extincttion !
-    att_sets = [att_coefs("no_dust", 0.0, 0.0, 0.0, sixteen=0.0)]
+    att_sets = [att_coefs("no_dust", 0.0, 0.0, 0.0, 0.0, sixteen=0.0)]
 
     draine_files = get_dust_att_files()
     for f in draine_files:
@@ -611,13 +638,9 @@ def compute_fesc(
                 sub_halo_tab, halo_star_ids, sub_halo_tot_star_nb = read_assoc(
                     out_nb,
                     sim_name,
-                    ldx,
+                    dset,
                     sub_side,
-                    rtwo_fact=rtwo_fact,
-                    ll=ll,
-                    assoc_mthd=assoc_mthd,
                     subnb=subcube_nb,
-                    mp=mp,
                 )
 
                 print(len(sub_halo_tab), len(sub_halo_tot_star_nb))
@@ -935,14 +958,32 @@ def compute_fesc(
                         sm_rho_fesc = big_rho[slices_fesc]
                         sm_rhod_fesc = big_rhod[slices_fesc]
                         sm_xHI_fesc = 1 - big_xion[slices_fesc]
+                        sm_metals_fesc = 1 - big_metals[slices_fesc]
 
                     else:
                         sm_rho_fesc = sm_rho
                         sm_rhod_fesc = sm_rhod
                         sm_xHI_fesc = sm_xHI
+                        sm_metals_fesc = sm_metals
 
                     if np.prod(sm_rho.shape) < 1:
                         continue
+
+                    if max_DTM < 0.5:
+                        dtm = sm_rhod / (sm_metals * sm_rho)
+                        high_DTM = dtm > max_DTM
+                        sm_rhod[high_DTM] = max_DTM * (
+                            sm_metals[high_DTM] * sm_rho[high_DTM]
+                        )
+                        # sm_rhod[dtm > max_DTM] = np.nanmin([max_DTM / dtm, max_DTM * (sm_metals * sm_rho)], axis=0)
+
+                    if fesc_rad != 1.0:
+                        dtm_fesc = sm_rhod_fesc / (sm_metals_fesc * sm_rho_fesc)
+                        high_DTM = dtm_fesc > max_DTM
+                        sm_rhod_fesc[dtm_fesc > max_DTM] = max_DTM * (
+                            sm_metals_fesc[dtm_fesc > max_DTM]
+                            * sm_rho_fesc[dtm_fesc > max_DTM]
+                        )
 
                     # halo_gmass[ind] = (
                     #     np.sum(sm_rho)
@@ -1123,6 +1164,21 @@ def compute_fesc(
                             cur_stars["age"], cur_stars["Z/0.02"] * 0.02, high_mags_fct
                         )
 
+                        if neb_cont_file_name != None:
+                            neb_low_conts = get_star_mags_metals(
+                                cur_stars["age"],
+                                cur_stars["Z/0.02"] * 0.02,
+                                neb_low_mags_fct,
+                            )
+                            neb_high_conts = get_star_mags_metals(
+                                cur_stars["age"],
+                                cur_stars["Z/0.02"] * 0.02,
+                                neb_high_mags_fct,
+                            )
+
+                            low_conts += neb_low_conts
+                            high_conts += neb_high_conts
+
                         halo_stAgeWmass[ind] = np.average(
                             cur_stars["age"], weights=cur_stars["mass"]
                         )
@@ -1161,7 +1217,7 @@ def compute_fesc(
                         # print(pos[ind])
                         # print(fracd_pos)
 
-                        # basically we get the indices of stars for a posittion histogram
+                        # basically we get the indices of stars for a position histogram
                         sm_xgrid = np.arange(
                             lower_bounds_fesc[ind, 0], upper_bounds_fesc[ind, 0], 1
                         )
@@ -1250,6 +1306,7 @@ def compute_fesc(
 
                         # stellar mass weightred gas quantities
                         halo_gtemp_wStMass[ind] = np.sum(sm_temp * sm_emissivity_box)
+
                         halo_Md_wStMass[ind] = (
                             np.sum(sm_rhod * sm_emissivity_box)
                             * rho_fact
@@ -1341,10 +1398,10 @@ def compute_fesc(
                                 * cell_w_stars
                             )
 
-                            dust_taus[
-                                :, x_cell, y_cell, z_cell
-                            ] = shoot_star_path_cheap_multid(
-                                sm_ctr, sm_taus_dust[:], 2 * r_px * fesc_rad
+                            dust_taus[:, x_cell, y_cell, z_cell] = (
+                                shoot_star_path_cheap_multid(
+                                    sm_ctr, sm_taus_dust[:], 2 * r_px * fesc_rad
+                                )
                             )
 
                         # now we can use our indices again to get the proper tau/trans for every star : SO MUCH MUCH MUCH MUCH FASTER !
@@ -1606,6 +1663,13 @@ if __name__ == "__main__":
     )
 
     Arg_parser.add_argument(
+        "--max_DTM",
+        type=float,
+        help="reset maximum dust to metal value in every loaded cell to this value",
+        default=0.5,
+    )
+
+    Arg_parser.add_argument(
         "--mbin", metavar="mbin", type=float, help="halo mass bin centre", default=1
     )
     Arg_parser.add_argument(
@@ -1630,6 +1694,13 @@ if __name__ == "__main__":
         # metavar="mp_segmentation",
         action="store_true",
         help="Use Mei Palanque's watershed segmentation catalogue",
+        default=False,
+    )
+
+    Arg_parser.add_argument(
+        "--clean",
+        action="store_true",
+        help="Use cleaned version of cat",
         default=False,
     )
 
@@ -1662,4 +1733,6 @@ if __name__ == "__main__":
         mp=mp,
         rstar=rstar,
         subnb=sub_nb,
+        clean=args.clean,
+        max_DTM=args.max_DTM,
     )

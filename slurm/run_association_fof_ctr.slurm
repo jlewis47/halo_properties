@@ -27,42 +27,42 @@ export SLURM_CPU_BIND=none
 
 # for i in  14 23 42 52 65 82 106; do
 
-#     srun --exclusive python star_halo_latest.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /gpfs/alpine/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=1 --assoc_mthd='stellar_peak'
+#     srun --exclusive python star_halo_latest.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /lustre/orion/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=1 --assoc_mthd='stellar_peak'
 
-#     srun --exclusive python  get_halo_mags.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.2 --rtwo_fact=1.0 --assoc_mthd='stellar_peak'
-
-# done;
-
-# for i in  14 23 42 52 65 82 106; do
-
-#     srun --exclusive python star_halo_latest.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /gpfs/alpine/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=1 --assoc_mthd=''
-
-#     srun --exclusive python  get_halo_mags.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.2 --rtwo_fact=1.0 --assoc_mthd=''
+#     srun --exclusive python  get_halo_mags.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.2 --rtwo_fact=1.0 --assoc_mthd='stellar_peak'
 
 # done;
 
 # for i in  14 23 42 52 65 82 106; do
 
-#     srun --exclusive python star_halo_latest.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /gpfs/alpine/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=1 --assoc_mthd='stellar_barycentre'
+#     srun --exclusive python star_halo_latest.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /lustre/orion/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=1 --assoc_mthd=''
 
-#     srun --exclusive python  get_halo_mags.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.2 --rtwo_fact=1.0 --assoc_mthd='stellar_barycentre'
+#     srun --exclusive python  get_halo_mags.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.2 --rtwo_fact=1.0 --assoc_mthd=''
 
 # done;
 
 # for i in  14 23 42 52 65 82 106; do
 
-#     srun --exclusive python star_halo_latest.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /gpfs/alpine/proj-shared/ast031/conaboy/fof/ll_0p100 --rtwo_fact=1 --assoc_mthd='stellar_peak'
+#     srun --exclusive python star_halo_latest.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /lustre/orion/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=1 --assoc_mthd='stellar_barycentre'
 
-#     srun --exclusive python  get_halo_mags.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.1 --rtwo_fact=1.0 --assoc_mthd='stellar_peak'
+#     srun --exclusive python  get_halo_mags.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.2 --rtwo_fact=1.0 --assoc_mthd='stellar_barycentre'
+
+# done;
+
+# for i in  14 23 42 52 65 82 106; do
+
+#     srun --exclusive python star_halo_latest.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /lustre/orion/proj-shared/ast031/conaboy/fof/ll_0p100 --rtwo_fact=1 --assoc_mthd='stellar_peak'
+
+#     srun --exclusive python  get_halo_mags.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.1 --rtwo_fact=1.0 --assoc_mthd='stellar_peak'
 
 # done;
 
 
 # for i in  14 23 42 52 65 82 106; do
 
-#     srun --exclusive python star_halo_latest.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /gpfs/alpine/proj-shared/ast031/conaboy/fof/ll_0p100 --rtwo_fact=1 --assoc_mthd=''
+#     srun --exclusive python star_halo_latest.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /lustre/orion/proj-shared/ast031/conaboy/fof/ll_0p100 --rtwo_fact=1 --assoc_mthd=''
 
-#     srun --exclusive python  get_halo_mags.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.1 --rtwo_fact=1.0 --assoc_mthd=''
+#     srun --exclusive python  get_halo_mags.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.1 --rtwo_fact=1.0 --assoc_mthd=''
 
 # done;
 
@@ -70,12 +70,12 @@ export SLURM_CPU_BIND=none
 # #for i in 14 23 42 52 65 82 106; do
 # for i in 101; do
 
-# #srun --exclusive python -u star_halo_latest.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /gpfs/alpine/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=1 --assoc_mthd='stellar_peak'
-# #mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /gpfs/alpine/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=2 --assoc_mthd='stellar_peak'
-# mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /gpfs/alpine/proj-shared/ast031/conaboy/fof/ll_0p100 --rtwo_fact=1 --assoc_mthd='stellar_peak'
-# mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /gpfs/alpine/proj-shared/ast031/conaboy/fof/ll_0p100 --rtwo_fact=2 --assoc_mthd='stellar_peak'
+# #srun --exclusive python -u star_halo_latest.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /lustre/orion/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=1 --assoc_mthd='stellar_peak'
+# #mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /lustre/orion/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=2 --assoc_mthd='stellar_peak'
+# mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /lustre/orion/proj-shared/ast031/conaboy/fof/ll_0p100 --rtwo_fact=1 --assoc_mthd='stellar_peak'
+# mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /lustre/orion/proj-shared/ast031/conaboy/fof/ll_0p100 --rtwo_fact=2 --assoc_mthd='stellar_peak'
 
-# #srun --exclusive python -u get_halo_mags.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.2 --rtwo_fact=1.0 --assoc_mthd='stellar_peak'
+# #srun --exclusive python -u get_halo_mags.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.2 --rtwo_fact=1.0 --assoc_mthd='stellar_peak'
 
 # done
 
@@ -84,28 +84,28 @@ export SLURM_CPU_BIND=none
 # for i in 116; do
 # for i in 34; do
 
-# #srun --exclusive python -u star_halo_latest.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /gpfs/alpine/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=1 --assoc_mthd='stellar_peak'
-# mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /gpfs/alpine/proj-shared/ast031/conaboy/fof/ll_0p100 --rtwo_fact=1 --assoc_mthd='stellar_peak'
-# mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /gpfs/alpine/proj-shared/ast031/conaboy/fof/ll_0p100 --rtwo_fact=2 --assoc_mthd='stellar_peak'
-# mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /gpfs/alpine/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=2 --assoc_mthd='stellar_peak'
-# mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /gpfs/alpine/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=1 --assoc_mthd='stellar_peak'
+# #srun --exclusive python -u star_halo_latest.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /lustre/orion/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=1 --assoc_mthd='stellar_peak'
+# mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /lustre/orion/proj-shared/ast031/conaboy/fof/ll_0p100 --rtwo_fact=1 --assoc_mthd='stellar_peak'
+# mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /lustre/orion/proj-shared/ast031/conaboy/fof/ll_0p100 --rtwo_fact=2 --assoc_mthd='stellar_peak'
+# mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /lustre/orion/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=2 --assoc_mthd='stellar_peak'
+# mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /lustre/orion/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=1 --assoc_mthd='stellar_peak'
 
-# # srun --exclusive python -u get_halo_mags.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.2 --rtwo_fact=1.0 --assoc_mthd='stellar_peak'
-# # srun --exclusive python -u get_halo_mags.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.1 --rtwo_fact=2.0 --assoc_mthd='stellar_peak'
-# # srun --exclusive python -u get_halo_mags.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.2 --rtwo_fact=2.0 --assoc_mthd='stellar_peak'
+# # srun --exclusive python -u get_halo_mags.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.2 --rtwo_fact=1.0 --assoc_mthd='stellar_peak'
+# # srun --exclusive python -u get_halo_mags.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.1 --rtwo_fact=2.0 --assoc_mthd='stellar_peak'
+# # srun --exclusive python -u get_halo_mags.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.2 --rtwo_fact=2.0 --assoc_mthd='stellar_peak'
 
 # done
 
 
-#srun --exclusive python -u star_halo_latest.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /gpfs/alpine/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=1 --assoc_mthd='stellar_peak'
-mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $1 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /gpfs/alpine/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=1 --assoc_mthd='fof_ctr' 
-mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $1 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /gpfs/alpine/proj-shared/ast031/conaboy/fof/ll_0p100 --rtwo_fact=1 --assoc_mthd='fof_ctr'  
-mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $1 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /gpfs/alpine/proj-shared/ast031/conaboy/fof/ll_0p100 --rtwo_fact=2 --assoc_mthd='fof_ctr' 
-mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $1 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /gpfs/alpine/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=2 --assoc_mthd='fof_ctr' 
+#srun --exclusive python -u star_halo_latest.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /lustre/orion/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=1 --assoc_mthd='stellar_peak'
+mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $1 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /lustre/orion/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=1 --assoc_mthd='fof_ctr' 
+mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $1 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /lustre/orion/proj-shared/ast031/conaboy/fof/ll_0p100 --rtwo_fact=1 --assoc_mthd='fof_ctr'  
+mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $1 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /lustre/orion/proj-shared/ast031/conaboy/fof/ll_0p100 --rtwo_fact=2 --assoc_mthd='fof_ctr' 
+mpiexec -np $SLURM_NTASKS python -u star_halo_latest.py $1 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII /lustre/orion/proj-shared/ast031/conaboy/fof/ll_0p200 --rtwo_fact=2 --assoc_mthd='fof_ctr' 
 
-# srun --exclusive python -u get_halo_mags.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.2 --rtwo_fact=1.0 --assoc_mthd='stellar_peak'
-# srun --exclusive python -u get_halo_mags.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.1 --rtwo_fact=2.0 --assoc_mthd='stellar_peak'
-# srun --exclusive python -u get_halo_mags.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.2 --rtwo_fact=2.0 --assoc_mthd='stellar_peak'
+# srun --exclusive python -u get_halo_mags.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.2 --rtwo_fact=1.0 --assoc_mthd='stellar_peak'
+# srun --exclusive python -u get_halo_mags.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.1 --rtwo_fact=2.0 --assoc_mthd='stellar_peak'
+# srun --exclusive python -u get_halo_mags.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.2 --rtwo_fact=2.0 --assoc_mthd='stellar_peak'
 
 
 

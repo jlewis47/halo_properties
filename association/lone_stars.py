@@ -25,8 +25,9 @@ import numpy as np
 
 
 from halo_properties.files.read_stars import read_rank_star_files
-from scipy import spatial
-import time
+
+# from scipy import spatial
+# import times
 
 # import string
 import argparse
@@ -34,14 +35,16 @@ import os
 from halo_properties.params.params import *
 from halo_properties.utils.functions_latest import *
 from halo_properties.utils.utils import *
-from halo_properties.association.read_fof import o_fof, o_luke_fof, o_mp_fof
+
+# from halo_properties.association.read_fof import o_fof, o_luke_fof, o_mp_fof
 from halo_properties.association.read_assoc_latest import read_assoc
 
 # from read_fof import o_fof
 import h5py
 from halo_properties.utils.output_paths import *
 from halo_properties.files.wrap_boxes import *
-from scipy.stats import binned_statistic_dd
+
+# from scipy.stats import binned_statistic_dd
 import h5py
 from mpi4py import MPI
 
@@ -54,6 +57,7 @@ def find_lone_stars(
     overwrite=False,
     binary_fof=False,
     mp_fof=False,
+    clean=False,
     ll=0.2,
 ):
     check_assoc_keys(assoc_mthd)
@@ -72,16 +76,10 @@ def find_lone_stars(
         info_path = os.path.join(info_path, "group_000001")
 
     loc_star_path = os.path.join(star_path, output_str)
-    # phew_path=os.path.join(path,output_str)
-    if "ll" in fof_path:
-        fof_suffix = get_fof_suffix(fof_path)
-    else:
-        fof_suffix = ll_to_fof_suffix(ll)
 
-    # print(fof_path, fof_suffix)
+    dset = dataset(rtwo=rtwo_fact, ll=ll, assoc_mthd=assoc_mthd, clean=clean, mp=mp_fof)
 
-    rtwo_suffix = get_r200_suffix(rtwo_fact)
-    suffix = get_suffix(fof_suffix=fof_suffix, rtwo_suffix=rtwo_suffix, mp=mp_fof)
+    out, assoc_out, analy_out, suffix = gen_paths(sim_name, out_nb, dset)
 
     Np_tot = ldx**3
 
@@ -114,8 +112,6 @@ def find_lone_stars(
 
     tstep = 0.0  # temporary
 
-    out, assoc_out, analy_out = gen_paths(sim_name, out_nb, suffix, assoc_mthd)
-
     out_file = os.path.join(assoc_out, ("lone_stars_%s" % out_nb) + suffix)
     if os.path.exists(out_file) and not overwrite:
         if rank == 0:
@@ -132,28 +128,30 @@ def find_lone_stars(
         out_Mp.close()
 
     if rank == 0:
-        print("read association")
+        print("Reading association")
 
     # read_association result
     (
-        halo_fnbs,
-        halo_lnbs,
-        halo_stellar_mass,
-        halo_star_nb,
+        _,
         halo_star_ids,
-        halo_halo_ids,
-        halo_coords,
-        halo_coords_new,
-        halo_rpx,
-    ) = read_assoc(out_nb, assoc_mthd, suffix=suffix)
+        _,
+    ) = read_assoc(out_nb, sim_name, dset, return_keys=[])
+    # ) = read_assoc(out_nb, sim_name, dset, return_keys=["ids", "mstar", "nstar"])
+
+    # halo_halo_ids = fof_cat["ids"]
+    # halo_stellar_mass = fof_cat["mstar"]
+    # halo_star_nb = fof_cat["nstar"]
 
     set_assoc_stars = set(halo_star_ids)
+
+    if rank == 0:
+        print("Reading stars")
 
     # Stars
     time_myr, stars, star_ids = read_rank_star_files(loc_star_path, rank, Nproc)
 
     families = stars["family"]
-    stars = stars[families == 2, :]
+    stars = stars[families == 2]
     star_ids = star_ids[families == 2]
 
     stars = np.transpose(
@@ -181,12 +179,22 @@ def find_lone_stars(
 
     comm.Barrier()
 
-    halo_star_nb = sum_arrays_to_rank0(comm, halo_star_nb)
-    halo_star_ids = merge_arrays_rank0(comm, np.concatenate(halo_star_ids))
-    halo_halo_ids = merge_arrays_rank0(comm, np.concatenate(halo_halo_ids))
-    halo_stellar_mass = sum_arrays_to_rank0(comm, halo_stellar_mass)
-    norm = sum_arrays_to_rank0(comm, np.int8(np.all(new_ctrs != 0, axis=1)))
-    new_ctrs = sum_arrays_to_rank0(comm, new_ctrs)  #
+    # halo_star_nb = sum_arrays_to_rank0(comm, np.ascontiguousarray(halo_star_nb))
+    # halo_star_ids = merge_arrays_rank0(comm, np.concatenate(halo_star_ids))
+    # halo_halo_ids = merge_arrays_rank0(comm, np.concatenate(halo_halo_ids))
+    # halo_stellar_mass = sum_arrays_to_rank0(comm, halo_stellar_mass)
+    # norm = sum_arrays_to_rank0(comm, np.int8(np.all(new_ctrs != 0, axis=1)))
+    # new_ctrs = sum_arrays_to_rank0(comm, new_ctrs)  #
+
+    print(
+        unassoc_ids,
+        unassoc_x,
+        unassoc_y,
+        unassoc_z,
+        unassoc_mass,
+        unassoc_age,
+        unassoc_Z,
+    )
 
     tot_unassoc_ids = merge_arrays_rank0(comm, unassoc_ids, dtype=np.int64)
 
@@ -302,6 +310,12 @@ if __name__ == "__main__":
         help="fof with watershed segmentation by Mei Palanque",
         default=False,
     )
+    Arg_parser.add_argument(
+        "--clean",
+        action="store_true",
+        help="use cleaned catalogue",
+        default=False,
+    )
 
     args = Arg_parser.parse_args()
 
@@ -322,5 +336,6 @@ if __name__ == "__main__":
         overwrite=args.overwrite,
         binary_fof=args.binary_fof,
         mp_fof=args.mp,
+        clean=args.clean,
         ll=0.2,
     )

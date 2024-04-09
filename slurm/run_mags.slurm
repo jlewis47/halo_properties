@@ -14,7 +14,7 @@ module load python
 #for i in  14 23 42 65 82 106; do
 for i in  34; do
 
-mpiexec -np $SLURM_NTASKS python -u get_halo_mags.py $i 8192 /gpfs/alpine/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.2 --rtwo_fact=1.0 --assoc_mthd='stellar_peak'
+mpiexec -np $SLURM_NTASKS python -u get_halo_mags.py $i 8192 /lustre/orion/proj-shared/ast031/pocvirk/CoDaIII/prod_sr/ CoDaIII --ll=0.2 --rtwo_fact=1.0 --assoc_mthd='stellar_peak'
 
 done
 

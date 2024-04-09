@@ -68,7 +68,7 @@ def o_luke_fof(fof_path, output_str):
 
     with h5py.File(os.path.join(fof_path, output_str, "haloes_masst.h5"), "r") as src:
         keys = list(src["Data"].keys())
-
+        print(keys)
         for key in keys:
             if key != "file_number":
                 halos[key] = src["Data"][key][()]
@@ -107,9 +107,9 @@ def o_mp_fof(data_path, Mp):
             ("mass", "f4"),
         ]
     )
-    data = data.astype(new_dt)
-
     data["mass"] = data["mass"] / Mp
+
+    data = data.astype(new_dt)
 
     return_keys = ["idx", "mass", "x", "y", "z"]
 

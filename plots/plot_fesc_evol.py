@@ -1,8 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import binned_statistic
-from halo_properties.utils.utils import gather_h5py_files, ll_to_fof_suffix, get_r200_suffix, get_suffix
-from halo_properties.utils.output_paths import gen_paths
+from halo_properties.utils.utils import gather_h5py_files
+from halo_properties.utils.output_paths import gen_paths, dataset
 from halo_properties.params.params import *
 from halo_properties.utils.functions_latest import get_infos
 from plot_functions.generic.stat import xy_stat
@@ -13,7 +13,7 @@ import h5py
 
 
 
-def load_data(sim_name, out_nb, assoc_mthd, ll, rtwo_fact, fesc_type='gas', xkey='mass'):
+def load_data(sim_name, out_nb, assoc_mthd, ll, rtwo_fact, fesc_type='gas', xkey='mass', mp=False, clean=False):
 
     fesc_keys = {'gas':"Tr_no_dust",
                 'full':"Tr_kext_albedo_WD_LMC2_10"}
@@ -24,11 +24,11 @@ def load_data(sim_name, out_nb, assoc_mthd, ll, rtwo_fact, fesc_type='gas', xkey
 
     keys = [xkey, fesc_key, "SFR10"]
 
-    fof_suffix = ll_to_fof_suffix(ll)
-    rtwo_suffix = get_r200_suffix(rtwo_fact)
-    suffix = get_suffix(fof_suffix, rtwo_suffix)
+    dset = dataset(rtwo=rtwo_fact, ll=ll, assoc_mthd=assoc_mthd, clean=clean, mp=mp)
 
-    out, assoc_out, analy_out = gen_paths(sim_name, out_nb, suffix, assoc_mthd)
+    out, assoc_out, analy_out, suffix = gen_paths(
+        sim_name, out_nb, dset
+    )
 
     # print(analy_out)
 
@@ -44,7 +44,7 @@ def load_data(sim_name, out_nb, assoc_mthd, ll, rtwo_fact, fesc_type='gas', xkey
 
 setup_plotting()
 
-out_nbs = [23,34,42,52,65,82,106]
+out_nbs = [34,52,65,82]
 # out_nbs = [106]
 
 overwrite = False 
@@ -57,6 +57,8 @@ assoc_mthd = 'stellar_peak'
 # assoc_mthds = ['stellar_peak', 'stellar_peak', 'stellar_peak', 'fof_ctr', 'stellar_peak']
 r200 = 1.0
 # r200s = [1.0, 1.0, 1.0, 1.0, 2.0]
+mp=True
+clean=True
 
 mnbins = 55
 mass_bins = np.logspace(7.5, 12, mnbins)
@@ -103,12 +105,17 @@ for out_nb in out_nbs:
     if not os.path.isdir(out_path):os.makedirs(out_path)
 
     out_file = os.path.join(out_path, f'fescs_{redshift:.1f}_{stat_mthd:s}_{assoc_mthd:s}_{ll:.2f}_{r200:.1f}_{fesc_type:s}')
+    if mp:
+        out_file += "_mp"
+    if clean:
+        out_file += "_clean"
+
 
     exists = os.path.isfile(out_file)
 
     if overwrite or not exists:
 
-        data_mass, data_fesc, sfing = load_data("CoDaIII", out_nb, assoc_mthd, ll, r200, fesc_type=fesc_type, xkey='mass')
+        data_mass, data_fesc, sfing = load_data("CoDaIII", out_nb, assoc_mthd, ll, r200, fesc_type=fesc_type, xkey='mass', mp=mp, clean=clean)
         xbins, fesc = xy_stat(data_mass, data_fesc, xbins = mass_bins, mthd=stat_mthd)
         xbins, fesc_sfing = xy_stat(data_mass[sfing], data_fesc[sfing], xbins = mass_bins, mthd=stat_mthd)
     
@@ -168,6 +175,7 @@ plt.legend(lines, labels, framealpha=0.0, prop={"size":14}, ncol=2)
 
 fig_name = f"./figs/fesc_evolution_{stat_mthd:s}_{assoc_mthd:s}_ll={int(100*ll):d}_{int(r200):d}Xr200_{fesc_type:s}"
 fig.savefig(fig_name)
+fig.savefig(fig_name+".pdf", format='pdf')
 
 
 

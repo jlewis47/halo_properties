@@ -12,7 +12,6 @@ It also tracks stars that don't end up associated, that are saved to separate 'L
 
 """
 
-
 from halo_properties.params.params import *
 
 import numpy as np
@@ -210,7 +209,7 @@ def assoc_stars_to_haloes(
     else:
         output_str = "output_%05i" % out_nb
 
-    info_path = os.path.join(sim_path, output_str)
+    info_path = os.path.join(sim_path, "outputs", output_str)
     if sixdigits:
         info_path = os.path.join(info_path, "group_000001")
 
@@ -257,7 +256,9 @@ def assoc_stars_to_haloes(
 
     tstep = 0.0  # temporary
 
-    out, assoc_out, analy_out = gen_paths(sim_name, out_nb, suffix, assoc_mthd)
+    dset = dataset(rtwo=rtwo_fact, ll=ll, assoc_mthd=assoc_mthd, mp=mp_fof, clean=False)
+
+    out, assoc_out, analy_out, analy_suffix = gen_paths(sim_name, out_nb, dset)
 
     if rank == 0:
         # if no out folder, make it

@@ -46,7 +46,7 @@ def compute_stellar_Tr(
     from halo_properties.params.params import star_path, pc, Pmass, ldx, nside, rad_res
 
     out_path = os.path.join(
-        f"/gpfs/alpine/proj-shared/ast031/jlewis/{sim_name:s}" + "_analysis",
+        f"/lustre/orion/proj-shared/ast031/jlewis/{sim_name:s}" + "_analysis",
         "stellar_part_fesc",
         f"output_{out_nb:06d}",
     )

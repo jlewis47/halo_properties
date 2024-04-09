@@ -2,13 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # from scipy.stats import binned_statistic
-from halo_properties.utils.utils import (
-    gather_h5py_files,
-    ll_to_fof_suffix,
-    get_r200_suffix,
-    get_suffix,
-)
-from halo_properties.utils.output_paths import gen_paths
+from halo_properties.utils.utils import gather_h5py_files
+from halo_properties.utils.output_paths import gen_paths, dataset
 from halo_properties.params.params import *
 from halo_properties.utils.functions_latest import get_infos
 
@@ -23,13 +18,10 @@ from scipy.spatial import KDTree
 def load_data(
     sim_name,
     out_nb,
-    assoc_mthd,
-    ll,
-    rtwo_fact,
+    dset,
     ifile=None,
     fesc_type="gas",
     xkey="mass",
-    mp=False,
 ):
     fesc_keys = {"gas": "Tr_no_dust", "full": "Tr_kext_albedo_WD_LMC2_10"}
 
@@ -39,11 +31,7 @@ def load_data(
 
     keys = [xkey, fesc_key, "Lintr"]
 
-    fof_suffix = ll_to_fof_suffix(ll)
-    rtwo_suffix = get_r200_suffix(rtwo_fact)
-    suffix = get_suffix(fof_suffix, rtwo_suffix, mp=mp)
-
-    out, assoc_out, analy_out = gen_paths(sim_name, out_nb, suffix, assoc_mthd)
+    out, assoc_out, analy_out, suffix = gen_paths(sim_name, out_nb, dset)
 
     # print(analy_out)
 
@@ -54,7 +42,11 @@ def load_data(
         datas = {}
 
         fname = f"halo_stats_{ifile:d}"
-        with h5py.File(os.path.join(analy_out, fname), "r") as src:
+
+        tgt_path = os.path.join(analy_out, fname)
+
+        # print(fname)
+        with h5py.File(tgt_path, "r") as src:
             for k in keys:
                 try:
                     datas[k] = src[k][()]
@@ -62,7 +54,7 @@ def load_data(
                     print(f"no key file {fname:s}")
                     return [np.nan]
     # except OSError as e:
-    # print(f'OSError : {out_nb:d} ll={ll:f}, {rtwo_fact:f}xr200, associatfiles.: {assoc_mthd:s}, {fesc_key:s}, xkey={xkey:s}')
+    # print(f'OSError : {out_nb:d} ll={ll:f}, {rtwo_fact:f}xr200, association.: {assoc_mthd:s}, {fesc_key:s}, xkey={xkey:s}')
     # print(e)
 
     return (datas[fesc_key], datas["Lintr"])
@@ -71,8 +63,8 @@ def load_data(
 setup_plotting()
 
 # out_nbs = [14, 23, 34, 42, 52, 65, 82, 106]
-out_nbs = [52, 65, 82, 106]
-# out_nbs = [106]
+# out_nbs = [34, 42, 52, 65, 82, 106]
+out_nbs = [106]
 
 overwrite = False
 fesc_type = "gas"
@@ -84,11 +76,19 @@ assoc_mthd = "stellar_peak"
 # assoc_mthds = ['stellar_peak', 'stellar_peak', 'stellar_peak', 'fof_ctr', 'stellar_peak']
 r200 = 1.0
 # r200s = [1.0, 1.0, 1.0, 1.0, 2.0]
-mp = True
+mp = False
+clean = True
 
-Nsub = int(4096 / 8.0)
-subLco = 64**3 / Nsub
+l = 64
 
+fperside = int(ldx / 512)
+Nsub_pside = int(64 / fperside)
+Nsub = int(Nsub_pside**3)
+fpersub = int(4096 / Nsub)
+fpersub_pside = int(np.cbrt(fpersub))
+subLco = l / Nsub_pside
+
+print(f"fpersub : {fpersub:d}, Nsub : {Nsub:d} Nsub_pside : {Nsub_pside:d}")
 
 lesc_global_avg = np.zeros_like(out_nbs, dtype="f8")
 lesc_global_std = np.zeros_like(out_nbs, dtype="f8")
@@ -109,14 +109,25 @@ if not os.path.isdir(out_path):
 
 out_file = os.path.join(
     out_path,
-    f"cosmic_fesc_{stat_mthd:s}_{assoc_mthd:s}_{ll:.2f}_{r200:.1f}_{fesc_type:s}",
+    f"cosmic_lesc_{stat_mthd:s}_{assoc_mthd:s}_{ll:.2f}_{r200:.1f}_{fesc_type:s}",
 )
 
 if mp:
     out_file += "_mp"
+if clean:
+    out_file += "_clean"
 
 exists = os.path.isfile(out_file)
 
+
+dset = dataset(
+    rtwo=r200,
+    ll=ll,
+    assoc_mthd=assoc_mthd,
+    clean=clean,
+    mp=mp,
+    neb_cont_file_name=neb_cont_file_name,
+)
 
 if not exists or overwrite:
     cosmic_lesc = np.zeros((len(out_nbs), Nsub))
@@ -146,20 +157,37 @@ if not exists or overwrite:
         redshifts[i_out] = 1.0 / a - 1.0
 
         for isub in range(Nsub):
-            # ix,iy,iz = np.unravel_index(isub, (8,8,8))
+            ix, iy, iz = np.unravel_index(isub, (Nsub_pside, Nsub_pside, Nsub_pside))
+            ixp1, iyp1, izp1 = ix + 1, iy + 1, iz + 1
 
-            for ifile in range(isub * 8, (isub + 1) * 8):
+            # print(ix,ixp1)
+            # print(iy,iyp1)
+            # print(iz,izp1)
+
+            xs = np.arange(ix * fpersub_pside, ixp1 * fpersub_pside)
+            ys = np.arange(iy * fpersub_pside, iyp1 * fpersub_pside)
+            zs = np.arange(iz * fpersub_pside, izp1 * fpersub_pside)
+
+            # print(xs, ys, zs)
+
+            ifiles = np.ravel(
+                np.ravel_multi_index(
+                    np.meshgrid(xs, ys, zs), (fperside, fperside, fperside)
+                )
+            )
+
+            # print(ifiles)
+
+            for ifile in ifiles:
                 fesc, lintr = load_data(
                     sim_name,
                     out,
-                    assoc_mthd="stellar_peak",
-                    ll=0.2,
-                    rtwo_fact=1.0,
+                    dset,
                     ifile=ifile,
                 )
                 cosmic_lesc[i_out, isub] += np.nansum(fesc * lintr) / (
-                    subLco / (H0 / 100) ** 3
-                )  # Msun per comoving Mpc.h^-1
+                    subLco**3 / (H0 / 100) ** 3
+                )  # Msun per comoving Mpc
             # print((ix+1)/2.,(ix)/2.)
 
     lesc_global_avg = np.mean(cosmic_lesc, axis=1)
@@ -184,7 +212,7 @@ else:
         redshifts = src["redshifts"][()]
         lesc_global_avg = src["avg"][()]
         lesc_global_std = src["std"][()]
-        # lesc_global_p50 = src["med"][()]
+        lesc_global_p50 = src["med"][()]
         lesc_global_p5 = src["lo_5"][()]
         lesc_global_p95 = src["hi_95"][()]
 
@@ -217,8 +245,16 @@ ax.legend(
 )
 # ax.legend([line], ["CoDa III"], framealpha=0.1)
 
+ax.grid()
+
 ax.set_xlim(15, 4.6)
+ax.set_ylim(1e50, 2e51)
 
 fig_name = f"./figs/cosmic_lesc_{stat_mthd:s}_{assoc_mthd:s}_ll={int(100*ll):d}_{int(r200):d}Xr200_{fesc_type:s}"
+if mp:
+    fig_name += "_mp"
+if clean:
+    fig_name += "_clean"
+
 fig.savefig(fig_name)
 fig.savefig(fig_name + ".pdf", format="pdf")

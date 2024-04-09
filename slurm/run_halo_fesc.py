@@ -51,6 +51,14 @@ Arg_parser.add_argument(
     help="number of times to resample grid when performing sums within r_px",
     default=8,
 )
+
+Arg_parser.add_argument(
+    "--max_DTM",
+    type=float,
+    help="reset maximum dust to metal value in every loaded cell to this value",
+    default=0.5,
+)
+
 Arg_parser.add_argument(
     "--mp",
     help="Use MP's watershed segmented fof haloes",
@@ -66,8 +74,12 @@ Arg_parser.add_argument(
 )
 
 Arg_parser.add_argument(
-    "--rstar", metavar="rstar", type=float, help="rstar * fesc_rad * r200 is the radius within with fesc los can start (so if rstar <1, \
-    we don't compute fesc using the stars r>rstar * fesc_rad * r200). Only accounted for when fesc_rad * r200 > 2", default=1
+    "--rstar",
+    metavar="rstar",
+    type=float,
+    help="rstar * fesc_rad * r200 is the radius within with fesc los can start (so if rstar <1, \
+    we don't compute fesc using the stars r>rstar * fesc_rad * r200). Only accounted for when fesc_rad * r200 > 2",
+    default=1,
 )
 
 Arg_parser.add_argument(
@@ -102,4 +114,5 @@ compute_fesc(
     rstar=rstar,
     subnb=sub_nb,
     clean=args.clean,
+    max_DTM=args.max_DTM,
 )

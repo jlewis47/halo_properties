@@ -1,14 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import binned_statistic
-from halo_properties.utils.utils import (
-    gather_h5py_files,
-    ll_to_fof_suffix,
-    get_r200_suffix,
-    get_suffix,
-    get_frad_suffix,
-)
-from halo_properties.utils.output_paths import gen_paths
+from halo_properties.utils.utils import gather_h5py_files
+from halo_properties.utils.output_paths import gen_paths, dataset
 from halo_properties.params.params import *
 from halo_properties.utils.functions_latest import get_infos
 from plot_functions.generic.stat import xy_stat_usual
@@ -25,20 +19,11 @@ def load_masses(sim_name, out_nb, assoc_mthd, ll, rtwo_fact, frad, mp, clean):
 
     keys = ["mass", "Mst"]
 
-    fof_suffix = ll_to_fof_suffix(ll)
-    rtwo_suffix = get_r200_suffix(rtwo_fact)
-    frad_suffix = get_frad_suffix(frad)
-    suffix = get_suffix(
-        fof_suffix=fof_suffix,
-        rtwo_suffix=rtwo_suffix,
-        frad_suffix=frad_suffix,
-        mp=mp,
+    dset = dataset(
+        rtwo=rtwo_fact, fesc_rad=frad, ll=ll, assoc_mthd=assoc_mthd, clean=clean, mp=mp
     )
 
-    out, assoc_out, analy_out = gen_paths(sim_name, out_nb, suffix, assoc_mthd)
-
-    if clean:
-        analy_out += "_clean"
+    out, assoc_out, analy_out, suffix = gen_paths(sim_name, out_nb, dset)
 
     # print(analy_out)
 
@@ -51,12 +36,15 @@ def load_masses(sim_name, out_nb, assoc_mthd, ll, rtwo_fact, frad, mp, clean):
     return (datas["mass"], datas["Mst"])
 
 
-out_nb = 52
+out_nb = 106
 overwrite = False
-lls = [0.2, 0.2, 0.2, 0.2][::-1]
-mps = [True, False, True, True][::-1]
+# lls = [0.2, 0.2, 0.2, 0.2][::-1]
+lls = [0.2, 0.15]
+# mps = [True, False, True, True][::-1]
+mps = [False, False]
 # lls = [0.1, 0.15, 0.2, 0.2, 0.2]
-assoc_mthds = ["stellar_peak", "stellar_peak", "stellar_peak", "stellar_peak"][::-1]
+# assoc_mthds = ["stellar_peak", "stellar_peak", "stellar_peak", "stellar_peak"][::-1]
+assoc_mthds = ["stellar_peak", "stellar_peak"]
 # assoc_mthds = [
 #     "stellar_peak",
 #     "stellar_peak",
@@ -64,9 +52,12 @@ assoc_mthds = ["stellar_peak", "stellar_peak", "stellar_peak", "stellar_peak"][:
 #     "fof_ctr",
 #     "stellar_peak",
 # ]
-r200s = [1.0, 1.0, 1.0, 0.5][::-1]
-frads = [1.0, 1.0, 1.0, 2.0][::-1]
-cleans = [True, False, False, False][::-1]
+# r200s = [1.0, 1.0, 1.0, 0.5][::-1]
+# frads = [1.0, 1.0, 1.0, 2.0][::-1]
+frads = [1.0, 1.0]
+r200s = [1.0, 1.0]
+# cleans = [True, False, False, False][::-1]
+cleans = [True, True]
 # r200s = [1.0, 1.0, 1.0, 1.0, 2.0]
 
 mnbins = 55
@@ -74,7 +65,7 @@ mass_bins = np.logspace(7.5, 12, mnbins)
 xlabel = "$M_{\mathrm{h}}\,[M_{\odot}]$"
 ylabel = "$M_{\star}\,[M_{\odot}]$"
 
-info_path = os.path.join(sim_path, f"output_{out_nb:06d}", "group_000001")
+info_path = os.path.join(sim_path, "outputs", f"output_{out_nb:06d}", "group_000001")
 
 (
     t,

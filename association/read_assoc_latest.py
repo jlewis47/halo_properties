@@ -4,6 +4,7 @@ import argparse
 import os
 from ..utils.output_paths import *
 from ..utils.utils import *
+from ..params.params import ldx
 
 # from ..files.read_stars import unpair, read_star_file, read_specific_stars
 import h5py
@@ -12,16 +13,13 @@ import h5py
 def read_assoc(
     out_nb,
     sim_name,
-    ldx,
+    dset,
     sub_ldx=None,
-    rtwo_fact=1,
-    ll=200,
-    assoc_mthd="",
     subnb=None,
     bounds=None,
     mass_cut=None,
-    mp=False,
-    clean=True
+    st_mass_cut=None,
+    return_keys=None,
 ):
     """
     Get right binary files, format correctly and return
@@ -36,15 +34,15 @@ def read_assoc(
     Open association files
     """
 
+    # mp = dset.mp
+    clean = dset.clean
+    # ll = dset.ll
+    # rtwo_fact = dset.r200
+    assoc_mthd = dset.assoc_mthd
+
     check_assoc_keys(assoc_mthd)
 
-    fof_suffix = ll_to_fof_suffix(ll)
-    rtwo_suffix = get_r200_suffix(rtwo_fact)
-    suffix = get_suffix(fof_suffix=fof_suffix, rtwo_suffix=rtwo_suffix, mp=mp)
-
-    # print("suffix:", suffix)
-
-    out, assoc_out, analy_out = gen_paths(sim_name, out_nb, suffix, assoc_mthd)
+    out, assoc_out, analy_out, suffix = gen_paths(sim_name, out_nb, dset)
 
     # print(rps)
     if subnb != None:
@@ -55,7 +53,7 @@ def read_assoc(
         fname = os.path.join(assoc_out, (f"assoc_halos_clean_{out_nb:d}") + suffix)
     else:
         fname = os.path.join(assoc_out, (f"assoc_halos_{out_nb:d}") + suffix)
-    
+
     # print(fof_suffix, rtwo_suffix, suffix)
     # print("looking for:", fname)
 
@@ -73,6 +71,8 @@ def read_assoc(
             )
         else:
             coords = F["coords"][()]
+
+        # print(fname, F.keys())
 
         x, y, z = coords.T
 
@@ -99,36 +99,77 @@ def read_assoc(
         # print(np.min(F["mass"]),np.max(F["mass"]),mass_cut)
 
         if mass_cut != None:
-            mass_cond = F["mass"][()] > mass_cut
+
+            single_val = np.prod(mass_cut) == mass_cut
+
+            if single_val:
+
+                mass_cond = F["mass"][()] > mass_cut
+
+            else:
+                min_mass, max_mass = mass_cut
+                mass_cond = (F["mass"][()] > min_mass) * (F["mass"][()] < max_mass)
 
             cond = cond * mass_cond
+
+        if st_mass_cut != None:
+
+            single_val = np.all(np.prod(st_mass_cut) == st_mass_cut)
+
+            if single_val:
+
+                mass_cond = F["stellar mass"][()] > st_mass_cut
+
+            else:
+                min_mass, max_mass = st_mass_cut
+
+                mass_cond = (F["stellar mass"][()] > min_mass) * (
+                    F["stellar mass"][()] < max_mass
+                )
+
+            cond = cond * mass_cond
+
+        return_types = {
+            "ids": "i8",
+            "mass": "f4",
+            "x": "f8",
+            "y": "f8",
+            "z": "f8",
+            "rpx": "f4",
+            "mstar": "f4",
+            "nstar": "i4",
+        }
+        read_2_return = {
+            "ids": "ID",
+            "mass": "mass",
+            "rpx": "rpx",
+            "mstar": "stellar mass",
+            "nstar": "stellar count",
+        }
+        if return_keys == None:
+            return_keys = ["ids", "mass", "x", "y", "z", "rpx", "mstar", "nstar"]
+
+        return_dtype = []
+        for key in return_keys:
+            return_dtype.append((key, return_types[key]))
 
         l = np.count_nonzero(cond)
         fofs = np.empty(
             (l),
-            dtype=[
-                ("ids", "i8"),
-                # ("fnb", "i4"),
-                ("mass", "f4"),
-                ("x", "f4"),
-                ("y", "f4"),
-                ("z", "f4"),
-                ("rpx", "f4"),
-                ("mstar", "f4"),
-                ("nstar", "i4"),
-            ],
+            return_dtype,
         )
 
-        # apply mass and pos cut
-        fofs["mass"] = F["mass"][cond]
-        # fofs["fnb"] = F["fnb"][cond]
-        fofs["x"] = x[cond]
-        fofs["y"] = y[cond]
-        fofs["z"] = z[cond]
-        fofs["ids"] = F["ID"][cond]
-        fofs["rpx"] = F["rpx"][cond]
-        fofs["mstar"] = F["stellar mass"][cond]
-        fofs["nstar"] = F["stellar count"][cond]
+        for key in return_keys:
+            if key in read_2_return.keys():
+                fofs[key] = F[read_2_return[key]][cond]
+            elif key == "x":
+                fofs[key] = x[cond]
+            elif key == "y":
+                fofs[key] = y[cond]
+            elif key == "z":
+                fofs[key] = z[cond]
+            else:
+                print("unrecognized key:", key)
 
         halo_star_ids = F["halo star ID"][()]
 

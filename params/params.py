@@ -5,16 +5,16 @@ global params for all codes
 ldx = 8192
 sim_name = "CoDaIII"
 
-sim_path = f"/gpfs/alpine/proj-shared/ast031/pocvirk/{sim_name:s}/prod_sr/"
+sim_path = f"/lustre/orion/proj-shared/ast031/pocvirk/{sim_name:s}/prod_sr/"
 star_path = (
-    f"/gpfs/alpine/proj-shared/ast031/pocvirk/{sim_name:s}/prod_sr/reduced/stars"
+    f"/lustre/orion/proj-shared/ast031/pocvirk/{sim_name:s}/prod_sr/reduced/stars"
 )
 box_path = (
-    f"/gpfs/alpine/proj-shared/ast031/pocvirk/{sim_name:s}/prod_sr/reduced/fullbox"
+    f"/lustre/orion/proj-shared/ast031/pocvirk/{sim_name:s}/prod_sr/reduced/fullbox"
 )
 
-# fof_path = "/gpfs/alpine/proj-shared/ast031/conaboy/fof/"
-fof_path = "/gpfs/alpine/proj-shared/ast031/jlewis/CoDaIII/prod_sr/mp_cats/"  # MP cats
+fof_path = "/lustre/orion/proj-shared/ast031/conaboy/fof/"
+# fof_path = "/lustre/orion/proj-shared/ast031/jlewis/CoDaIII/prod_sr/mp_cats/"  # MP cats
 
 sixdigits = True
 
@@ -22,11 +22,11 @@ sixdigits = True
 # # sim_name = "8Mpc_with_T_cor"
 # sim_name = "8Mpc_no_T_cor"
 
-# sim_path = f"/gpfs/alpine/ast031/scratch/pocvirk/calib/2023/{sim_name:s}/"
-# star_path = f"/gpfs/alpine/ast031/scratch/pocvirk/calib/2023/{sim_name:s}/reduced/stars"
-# box_path = f"/gpfs/alpine/ast031/scratch/pocvirk/calib/2023/{sim_name:s}/reduced/fullbox"
+# sim_path = f"/lustre/orion/ast031/scratch/pocvirk/calib/2023/{sim_name:s}/"
+# star_path = f"/lustre/orion/ast031/scratch/pocvirk/calib/2023/{sim_name:s}/reduced/stars"
+# box_path = f"/lustre/orion/ast031/scratch/pocvirk/calib/2023/{sim_name:s}/reduced/fullbox"
 
-# fof_path = f"/gpfs/alpine/ast031/scratch/pocvirk/calib/2023/{sim_name:s}"
+# fof_path = f"/lustre/orion/ast031/scratch/pocvirk/calib/2023/{sim_name:s}"
 
 # sixdigits=False
 
@@ -54,6 +54,7 @@ Physics
 """
 
 bpass_file_name = "cstSFR_5Myr_BPASSv2.2.1_kroupa_binary_MMax=100_pseudo-f=1_emissivites_mags_betas.txt"
+neb_cont_file_name = "cstSFR_5Myr_nebular_continuum_SB99_pseudo-f=1_pf_width=200Angstrom_emissivites_mags_betas.txt"
 
 # Physical constants, from NIST where available
 Pmass = 1.6726219e-27  # Kg proton mass

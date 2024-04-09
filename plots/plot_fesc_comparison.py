@@ -1,14 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import binned_statistic
-from halo_properties.utils.utils import (
-    gather_h5py_files,
-    ll_to_fof_suffix,
-    get_r200_suffix,
-    get_frad_suffix,
-    get_suffix,
-)
-from halo_properties.utils.output_paths import gen_paths
+from halo_properties.utils.utils import gather_h5py_files
+from halo_properties.utils.output_paths import gen_paths, dataset
 from halo_properties.params.params import *
 from halo_properties.utils.functions_latest import get_infos
 from plot_functions.generic.stat import xy_stat
@@ -26,15 +20,10 @@ import h5py
 def load_fescs(
     sim_name="",
     out_nb=-1,
-    assoc_mthd="stellar_peak",
-    ll=0.2,
-    r200=1.0,
-    mp=False,
+    dataset=None,
     fesc_type="gas",
     xkey="mass",
     clean=False,
-    rstar=1.0,
-    fesc_rad=1.0,
 ):
     fesc_keys = {"gas": "Tr_no_dust", "full": "Tr_kext_albedo_WD_LMC2_10"}
 
@@ -46,17 +35,7 @@ def load_fescs(
 
     keys = [xkey, fesc_key, "SFR10"]
 
-    fof_suffix = ll_to_fof_suffix(ll)
-    rtwo_suffix = get_r200_suffix(r200)
-    frad_suffix = get_frad_suffix(fesc_rad)
-
-    suffix = get_suffix(
-        fof_suffix=fof_suffix, rtwo_suffix=rtwo_suffix, frad_suffix=frad_suffix, mp=mp
-    )
-
-    out, assoc_out, analy_out = gen_paths(
-        sim_name, out_nb, suffix, assoc_mthd, rstar=rstar
-    )
+    out, assoc_out, analy_out, suffix = gen_paths(sim_name, out_nb, dataset)
 
     if clean:
         analy_out += "_clean"
@@ -73,12 +52,12 @@ def load_fescs(
     return (datas[xkey][sfing], datas[fesc_keys[fesc_type]][sfing])
 
 
-out_nb = 52
-overwrite = False
+out_nb = 106
+overwrite = True
 fesc_type = "gas"
-x_type = "Mst"  # "Mst"
+x_type = "mass"  # "Mst"
 lls = [0.2, 0.2, 0.2, 0.2]
-mps = [False, True, True, True]
+mps = [True, True, False, False]
 # lls = [0.1, 0.15, 0.2, 0.2, 0.2]
 assoc_mthds = ["stellar_peak", "stellar_peak", "stellar_peak", "stellar_peak"]
 # assoc_mthds = [
@@ -89,8 +68,8 @@ assoc_mthds = ["stellar_peak", "stellar_peak", "stellar_peak", "stellar_peak"]
 #     "stellar_peak",
 # ]
 r200s = [1.0, 1.0, 1.0, 1.0]
-rstars = [1.0, 1.0, 0.5, 1.0]
-cleans = [False, False, False, True]
+rstars = [1.0, 1.0, 1.0, 1.0]
+cleans = [False, True, True, False]
 # r200s = [1.0, 1.0, 1.0, 1.0, 2.0]
 
 mnbins = 55
@@ -157,18 +136,22 @@ for iplot, (assoc_mthd, ll, r200, rstar, mp, clean) in enumerate(
         f"fescs_{redshift:.1f}_{assoc_mthd:s}_{ll:.2f}_{r200:.1f}_{rstar:.1f}_{mp_str:s}_{clean_str:s}_{fesc_type:s}_{x_type:s}.hdf5",
     )
 
+    if mp:
+        out_file += "_mp"
+    if clean:
+        out_file += "_clean"
+
+    dset = dataset(
+        rtwo=r200, ll=ll, assoc_mthd=assoc_mthd, clean=clean, mp=mp, rstar=rstar
+    )
+
     exists = os.path.isfile(out_file)
 
     if overwrite or not exists:
         mass, fesc = load_fescs(
             sim_name="CoDaIII",
             out_nb=out_nb,
-            assoc_mthd=assoc_mthd,
-            ll=ll,
-            r200=r200,
-            rstar=rstar,
-            mp=mp,
-            clean=clean,
+            dataset=dset,
             fesc_type=fesc_type,
             xkey=x_type,
         )
