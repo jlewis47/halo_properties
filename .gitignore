@@ -10,8 +10,6 @@
 *.out
 plots/figs
 plots/files
-*slurm*
 *.err
 *.out
 *~
-!*.slurm
